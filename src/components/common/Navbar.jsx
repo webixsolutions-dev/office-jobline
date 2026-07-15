@@ -3,7 +3,9 @@ import { NavLink } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { HiMenu, HiX } from 'react-icons/hi'
 import { HiOutlineBriefcase } from 'react-icons/hi2'
+import { FiUser, FiLogIn } from 'react-icons/fi'
 import logo from '../../assets/images/logo.png'
+
 const links = [
   { to: '/', label: 'Home' },
   { to: '/browse', label: 'Browser Jobs' },
@@ -28,12 +30,13 @@ export default function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled ? 'bg-navy-950/95 shadow-lg shadow-black/20 backdrop-blur' : 'bg-navy-950'
-        }`}
+      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+        scrolled ? 'bg-navy-950/95 shadow-lg shadow-black/20 backdrop-blur' : 'bg-navy-950'
+      }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <NavLink to="/" className="flex items-center gap-2.5 shrink-0" onClick={() => setOpen(false)}>
-       <img src={logo} className='w-50 h-auto' alt="" />
+          <img src={logo} className='w-50 h-auto' alt="" />
         </NavLink>
 
         <div className="hidden items-center gap-1 lg:flex">
@@ -42,7 +45,8 @@ export default function Navbar() {
               key={link.to}
               to={link.to}
               className={({ isActive }) =>
-                `relative px-4 py-2 text-sm font-medium transition-colors ${isActive ? 'text-gold-500' : 'text-slate-200 hover:text-gold-400'
+                `relative px-4 py-2 text-sm font-medium transition-colors ${
+                  isActive ? 'text-gold-500' : 'text-slate-200 hover:text-gold-400'
                 }`
               }
             >
@@ -54,15 +58,17 @@ export default function Navbar() {
         <div className="hidden items-center gap-3 lg:flex">
           <NavLink
             to="/post-a-job"
-            className="rounded-md bg-gold-500 px-5 py-2.5 text-sm font-semibold text-navy-950 shadow-sm transition hover:bg-gold-400 hover:shadow-md"
+            className="flex items-center gap-2 rounded-md bg-gold-500 px-5 py-2.5 text-sm font-semibold text-navy-950 shadow-sm transition hover:bg-gold-400 hover:shadow-md"
           >
+            <HiOutlineBriefcase className="h-4 w-4" />
             Post a Job
           </NavLink>
-           <NavLink
-            to="/post-a-job"
-            className="rounded-md  px-5 py-2.5 text-sm font-semibold text-white  border shadow-sm transition hover:bg-gold-400 hover:shadow-md border-none "
+          <NavLink
+            to="/signin"
+            className="flex items-center gap-2 rounded-md border-2 border-amber-400/60 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:border-amber-400 hover:bg-amber-400/10 hover:shadow-md"
           >
-            Sign in
+            <FiLogIn className="h-4 w-4" />
+            Sign In
           </NavLink>
         </div>
 
@@ -91,7 +97,8 @@ export default function Navbar() {
                   to={link.to}
                   onClick={() => setOpen(false)}
                   className={({ isActive }) =>
-                    `rounded-md px-3 py-2.5 text-base font-medium ${isActive ? 'bg-white/5 text-gold-500' : 'text-slate-200 hover:bg-white/5'
+                    `rounded-md px-3 py-2.5 text-base font-medium ${
+                      isActive ? 'bg-white/5 text-gold-500' : 'text-slate-200 hover:bg-white/5'
                     }`
                   }
                 >
@@ -101,16 +108,18 @@ export default function Navbar() {
               <NavLink
                 to="/post-a-job"
                 onClick={() => setOpen(false)}
-                className="mt-2 rounded-md bg-gold-500 px-4 py-2.5 text-center text-base font-semibold text-navy-950"
+                className="flex items-center justify-center gap-2 mt-2 rounded-md bg-gold-500 px-4 py-2.5 text-center text-base font-semibold text-navy-950"
               >
+                <HiOutlineBriefcase className="h-5 w-5" />
                 Post a Job
               </NavLink>
               <NavLink
-                to="/sign-in"
+                to="/signin"
                 onClick={() => setOpen(false)}
-                className="mt-2 rounded-md bg-gold-500 px-4 py-2.5 text-center text-base font-semibold text-navy-950"
+                className="flex items-center justify-center gap-2 mt-2 rounded-md border-2 border-amber-400/60 px-4 py-2.5 text-center text-base font-semibold text-white"
               >
-                Sign in
+                <FiLogIn className="h-5 w-5" />
+                Sign In
               </NavLink>
             </div>
           </motion.div>
