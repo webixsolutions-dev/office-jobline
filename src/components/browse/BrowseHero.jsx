@@ -1,0 +1,177 @@
+import React, { useState } from "react";
+import {
+  FiBriefcase,
+  FiUser,
+  FiMenu,
+  FiX,
+  FiSearch,
+  FiMapPin,
+  FiClock,
+  FiHome,
+  FiBarChart2,
+  FiFileText,
+  FiStar,
+  FiUsers,
+  FiShield,
+  FiLock,
+  FiCheckCircle,
+} from "react-icons/fi";
+import { HiOutlineOfficeBuilding } from "react-icons/hi";
+
+const GREEN = "#0E5C4C";
+
+const BuildingIcon = ({ className }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="currentColor">
+    <path d="M3 21V9l6-4v4l6-4v16H3zm2-2h2v-2H5v2zm0-4h2v-2H5v2zm0-4h2V9H5v2zm6 8h2v-2h-2v2zm0-4h2v-2h-2v2zm6 4h2v-9h-2v9zM18 2l1 2 2 .3-1.5 1.4.4 2.1L18 6.7 16.1 7.8l.4-2.1L15 4.3 17 4l1-2z" />
+  </svg>
+);
+
+const Logo = () => (
+  <div className="flex items-center gap-2">
+    <div className="flex h-10 w-10 items-center justify-center rounded-lg border-2 border-amber-400">
+      <BuildingIcon className="h-6 w-6 text-amber-400" />
+    </div>
+    <span className="text-xl font-extrabold tracking-tight text-white">Office Jobline</span>
+  </div>
+);
+
+
+
+const FilterPill = ({ icon, label }) => (
+  <button className="flex items-center gap-1.5 whitespace-nowrap rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:border-emerald-700 hover:text-emerald-800 sm:text-sm">
+    {icon} {label}
+  </button>
+);
+
+const Stat = ({ icon, value, title, children }) => (
+  <div className="flex items-start gap-4 rounded-2xl border border-slate-100 bg-white p-5 shadow-sm sm:p-6">
+    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full" style={{ backgroundColor: "#E4F0EC" }}>
+      <span style={{ color: GREEN }}>{icon}</span>
+    </div>
+    <div>
+      <p className="text-2xl font-extrabold" style={{ color: GREEN }}>
+        {value}
+      </p>
+      <p className="font-bold text-slate-900">{title}</p>
+      <p className="mt-0.5 text-sm text-slate-500">{children}</p>
+    </div>
+  </div>
+);
+
+const Trust = ({ icon, title, children }) => (
+  <div className="flex items-start gap-3">
+    <span className="mt-0.5 flex-shrink-0" style={{ color: GREEN }}>
+      {icon}
+    </span>
+    <div>
+      <p className="font-bold text-slate-900">{title}</p>
+      <p className="text-sm text-slate-500">{children}</p>
+    </div>
+  </div>
+);
+
+export default function BrowseHero() {
+  return (
+    <div className="bg-slate-50 font-sans">
+
+      <section className="relative overflow-hidden">
+        <div className="grid gap-8 px-4 py-12 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8 lg:py-16">
+          {/* Left */}
+          <div>
+            <span
+              className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold sm:text-sm"
+              style={{ backgroundColor: "#E4F0EC", color: GREEN }}
+            >
+              <FiStar /> Canada's Trusted Office Job Board
+            </span>
+            <h1 className="mt-4 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl md:text-5xl">
+              Browse Office &amp; Administrative Jobs Across Canada
+            </h1>
+            <p className="mt-4 max-w-xl text-sm text-slate-500 sm:text-base">
+              Find office jobs, administrative jobs, receptionist jobs, executive assistant
+              jobs, office coordinator jobs, data entry jobs, customer service office roles, and
+              office manager jobs with top employers hiring across Canada.
+            </p>
+          </div>
+
+          {/* Right image */}
+          <div className="relative min-h-[220px] overflow-hidden rounded-2xl sm:min-h-[300px] lg:min-h-[380px]">
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{
+                backgroundImage:
+                  "url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1400&q=80')",
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+          </div>
+        </div>
+
+        {/* Search bar */}
+        <div className="mx-4 -mt-2 rounded-2xl bg-white p-5 shadow-lg ring-1 ring-slate-100 sm:mx-6 sm:p-6 lg:mx-8">
+          <div className="flex flex-col gap-3 md:flex-row">
+            <div className="flex flex-1 items-center gap-2 rounded-lg border border-slate-200 px-3 py-2.5">
+              <FiSearch className="text-slate-400" />
+              <input
+                type="text"
+                placeholder="Job title, keyword or company"
+                className="w-full text-sm text-slate-700 placeholder-slate-400 outline-none"
+              />
+            </div>
+            <div className="flex flex-1 items-center gap-2 rounded-lg border border-slate-200 px-3 py-2.5">
+              <FiMapPin className="text-slate-400" />
+              <input
+                type="text"
+                placeholder="City, province or region"
+                className="w-full text-sm text-slate-700 placeholder-slate-400 outline-none"
+              />
+            </div>
+            <button
+              className="flex items-center justify-center gap-2 whitespace-nowrap rounded-lg px-6 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
+              style={{ backgroundColor: GREEN }}
+            >
+              <FiSearch /> Search Jobs
+            </button>
+          </div>
+
+          <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-4">
+            <span className="text-xs font-semibold text-slate-500 sm:text-sm">Filter by:</span>
+            <FilterPill icon={<FiBriefcase />} label="Full-Time" />
+            <FilterPill icon={<FiClock />} label="Part-Time" />
+            <FilterPill icon={<FiHome />} label="Remote" />
+            <FilterPill icon={<HiOutlineOfficeBuilding />} label="Hybrid" />
+            <FilterPill icon={<FiBarChart2 />} label="Entry Level" />
+            <FilterPill icon={<FiFileText />} label="Contract" />
+          </div>
+        </div>
+      </section>
+
+      {/* Stats */}
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="grid gap-6 md:grid-cols-3">
+          <Stat icon={<FiBriefcase size={22} />} value="10,248+" title="Active Office Jobs">
+            New office &amp; administrative jobs posted every day.
+          </Stat>
+          <Stat icon={<FiUsers size={22} />} value="2,350+" title="Employers Hiring">
+            Trusted companies actively hiring across Canada.
+          </Stat>
+          <Stat icon={<span aria-hidden>🍁</span>} value="" title="Canada-Wide Opportunities">
+            Find the right job wherever you are in Canada.
+          </Stat>
+        </div>
+
+        <div className="mt-8 flex flex-col gap-6 rounded-2xl border border-slate-100 bg-white p-6 shadow-sm sm:flex-row sm:justify-between sm:p-8">
+          <Trust icon={<FiShield size={20} />} title="100% Free for Job Seekers">
+            Browse and apply to jobs at no cost.
+          </Trust>
+          <Trust icon={<FiLock size={20} />} title="Secure & Private">
+            Your data is safe and never shared.
+          </Trust>
+          <Trust icon={<FiCheckCircle size={20} />} title="Trusted by Thousands">
+            Thousands of professionals find jobs every month.
+          </Trust>
+        </div>
+      </section>
+    </div>
+  );
+}
