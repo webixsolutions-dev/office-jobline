@@ -1,40 +1,22 @@
-import { Routes, Route, useLocation } from 'react-router-dom'
-import { AnimatePresence } from 'framer-motion'
+import { useLocation } from 'react-router-dom'
 import Navbar from './components/common/Navbar'
 import Footer from './components/common/Footer'
 import ScrollToTop from './components/common/ScrollToTop'
-import Home from './pages/Home'
-import Browse from './pages/Browse'
-import Employers from './pages/Employers'
-import PostJob from './pages/PostJob'
-import AboutUs from './pages/AboutUs'
-import ContactUs from './pages/ContactUs'
-import SignIn from './pages/auth/SignIn'
-import SignUp from './pages/auth/SignUp'
+import AppRoutes from './routes/AppRoutes'
+
+// Auth pages list (keep in sync with AppRoutes)
+const AUTH_PAGES = ['/signin', '/signup', '/register']
 
 function App() {
   const location = useLocation()
-  
-  const authPages = ['/signin', '/signup', '/register']
-  const isAuthPage = authPages.includes(location.pathname)
+  const isAuthPage = AUTH_PAGES.includes(location.pathname)
 
   return (
     <div className="flex min-h-screen flex-col bg-[#f7f8fb]">
       {!isAuthPage && <Navbar />}
       <ScrollToTop />
       <main className="flex-1">
-        <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<Home />} />
-            <Route path="/browse" element={<Browse />} />
-            <Route path="/employers" element={<Employers />} />
-            <Route path="/post-a-job" element={<PostJob />} />
-            <Route path="/about-us" element={<AboutUs />} />
-            <Route path="/contact-us" element={<ContactUs />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} />
-          </Routes>
-        </AnimatePresence>
+        <AppRoutes />
       </main>
       {!isAuthPage && <Footer />}
     </div>

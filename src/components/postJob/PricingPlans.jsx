@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { FiCheckCircle, FiHeadphones, FiArrowRight } from "react-icons/fi";
 
 const plans = [
@@ -15,6 +16,7 @@ const plans = [
       "Employer Dashboard Access",
       "Email Support",
     ],
+    path: "/signup"
   },
   {
     name: "Growth",
@@ -30,6 +32,7 @@ const plans = [
       "Priority Email Support",
     ],
     starred: ["Featured Job Listing"],
+    path: "/signup"
   },
   {
     name: "Enterprise",
@@ -46,6 +49,7 @@ const plans = [
       "Custom Branding (Optional)",
     ],
     starred: ["Featured Job Listings"],
+    path: "/contact-us"
   },
 ];
 
@@ -57,6 +61,7 @@ const testimonials = [
     role: "HR Manager, Northbridge Solutions",
     initials: "N",
     color: "#0B1B3A",
+    path: "/employers"
   },
   {
     quote:
@@ -65,10 +70,11 @@ const testimonials = [
     role: "Operations Director, Brightpath Consulting",
     initials: "BC",
     color: "#0E5C4C",
+    path: "/employers"
   },
 ];
 
-const PlanCard = ({ plan }) => (
+const PlanCard = ({ plan, onGetStarted }) => (
   <div
     className={`relative flex flex-col rounded-2xl bg-white shadow-sm ${
       plan.popular ? "ring-2 ring-amber-400" : "ring-1 ring-slate-100"
@@ -102,6 +108,7 @@ const PlanCard = ({ plan }) => (
       </ul>
 
       <button
+        onClick={() => onGetStarted(plan.path)}
         className={`mt-7 w-full rounded-lg py-3 text-sm font-semibold transition ${
           plan.popular
             ? "bg-amber-400 text-slate-900 hover:bg-amber-300"
@@ -114,8 +121,11 @@ const PlanCard = ({ plan }) => (
   </div>
 );
 
-const TestimonialCard = ({ t }) => (
-  <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 sm:p-7">
+const TestimonialCard = ({ t, onClick }) => (
+  <div 
+    onClick={onClick}
+    className="cursor-pointer rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 transition hover:shadow-md hover:scale-[1.02] sm:p-7"
+  >
     <span className="text-3xl font-serif text-amber-400">&ldquo;</span>
     <p className="-mt-3 text-sm text-slate-600">{t.quote}</p>
     <div className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4">
@@ -134,8 +144,25 @@ const TestimonialCard = ({ t }) => (
 );
 
 export default function PricingPlans() {
+  const navigate = useNavigate();
+
+  // Handle Get Started button
+  const handleGetStarted = (path) => {
+    navigate(path);
+  };
+
+  // Handle Contact Sales button
+  const handleContactSales = () => {
+    navigate("/contact-us");
+  };
+
+  // Handle Testimonial click
+  const handleTestimonialClick = (path) => {
+    navigate(path);
+  };
+
   return (
-    <section className="bg-slate-50 px-4 py-16 sm:px-6 lg:px-8">
+    <section className="bg-slate-50 px-4 py-16 sm:px-6 lg:px-8" id="employer-pricing">
       <div className="mx-auto max-w-5xl text-center">
         <h2 className="text-3xl font-extrabold text-slate-900 sm:text-4xl">Choose a Posting Plan</h2>
         <p className="mx-auto mt-3 max-w-2xl text-slate-500">
@@ -146,7 +173,7 @@ export default function PricingPlans() {
 
       <div className="mx-auto mt-10 grid max-w-6xl items-start gap-6 md:grid-cols-3">
         {plans.map((p) => (
-          <PlanCard key={p.name} plan={p} />
+          <PlanCard key={p.name} plan={p} onGetStarted={handleGetStarted} />
         ))}
       </div>
 
@@ -156,13 +183,17 @@ export default function PricingPlans() {
         </h3>
         <div className="mt-8 grid gap-6 md:grid-cols-2">
           {testimonials.map((t) => (
-            <TestimonialCard key={t.name} t={t} />
+            <TestimonialCard 
+              key={t.name} 
+              t={t} 
+              onClick={() => handleTestimonialClick(t.path)}
+            />
           ))}
         </div>
 
         <div className="mt-6 flex flex-col items-start gap-4 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#0B1B3A] text-amber-400">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#0B1B3A] text-amber-400">
               <FiHeadphones size={20} />
             </div>
             <div>
@@ -173,7 +204,10 @@ export default function PricingPlans() {
               </p>
             </div>
           </div>
-          <button className="flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 sm:w-auto">
+          <button 
+            onClick={handleContactSales}
+            className="flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 sm:w-auto"
+          >
             Contact Sales <FiArrowRight />
           </button>
         </div>

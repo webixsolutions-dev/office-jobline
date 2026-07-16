@@ -1,8 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import { FiSearch, FiMapPin, FiArrowRight } from "react-icons/fi";
 import { FiBriefcase } from "react-icons/fi";
 import { HiOutlineUserGroup, HiOutlineBuildingOffice2 } from "react-icons/hi2";
 import { GiMapleLeaf } from "react-icons/gi";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
+import { useState } from 'react';
 
 const STATS = [
   {
@@ -10,22 +12,55 @@ const STATS = [
     value: "10,000+",
     label: "Office Jobs",
     desc: "New opportunities added every day",
+    path: "/browse"
   },
   {
     icon: HiOutlineUserGroup,
     value: "2,000+",
     label: "Employers",
     desc: "Trusted companies hiring now",
+    path: "/employers"
   },
   {
     icon: GiMapleLeaf,
     value: "Canada-Wide",
     label: "Opportunities",
     desc: "Find the right role wherever you are",
+    path: "/browse"
   },
 ];
 
 export default function Hero() {
+  const navigate = useNavigate();
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [searchLocation, setSearchLocation] = useState('');
+
+  // Handle Search
+  const handleSearch = () => {
+    if (searchKeyword.trim() || searchLocation.trim()) {
+      navigate(`/browse?keyword=${encodeURIComponent(searchKeyword)}&location=${encodeURIComponent(searchLocation)}`);
+    } else {
+      navigate('/browse');
+    }
+  };
+
+  // Handle Enter key press
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
+  // Handle Stats click
+  const handleStatClick = (path) => {
+    navigate(path);
+  };
+
+  // Handle Employers button
+  const handleEmployersClick = () => {
+    navigate('/employers');
+  };
+
   return (
     <section id="home" className="bg-white">
       {/* Hero banner */}
@@ -65,6 +100,9 @@ export default function Hero() {
               <input
                 type="text"
                 placeholder="Job title, keyword or company"
+                value={searchKeyword}
+                onChange={(e) => setSearchKeyword(e.target.value)}
+                onKeyPress={handleKeyPress}
                 className="w-full bg-transparent text-sm text-navy placeholder:text-muted focus:outline-none"
               />
             </div>
@@ -74,10 +112,16 @@ export default function Hero() {
               <input
                 type="text"
                 placeholder="City, province or region"
+                value={searchLocation}
+                onChange={(e) => setSearchLocation(e.target.value)}
+                onKeyPress={handleKeyPress}
                 className="w-full bg-transparent text-sm text-navy placeholder:text-muted focus:outline-none"
               />
             </div>
-            <button className="flex items-center justify-center gap-2 rounded-xl bg-teal px-6 py-3 text-sm font-semibold text-white  bg-yellow-500 transition-colors hover:bg-teal-dark">
+            <button 
+              onClick={handleSearch}
+              className="flex items-center justify-center gap-2 rounded-xl bg-teal px-6 py-3 text-sm font-semibold text-white bg-yellow-500 transition-colors hover:bg-teal-dark"
+            >
               <FiSearch className="h-4 w-4" />
               Search Jobs
             </button>
@@ -88,10 +132,11 @@ export default function Hero() {
       {/* Stats row */}
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {STATS.map(({ icon: Icon, value, label, desc }) => (
+          {STATS.map(({ icon: Icon, value, label, desc, path }) => (
             <div
               key={label}
-              className="flex items-start gap-4 rounded-xl border border-gray-100 bg-white p-6 shadow-sm"
+              onClick={() => handleStatClick(path)}
+              className="flex cursor-pointer items-start gap-4 rounded-xl border border-gray-100 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:scale-[1.02]"
             >
               <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-teal-light">
                 <Icon className="h-6 w-6 text-teal" />
@@ -144,13 +189,13 @@ export default function Hero() {
               </p>
             </div>
           </div>
-          <a
-            href="#employers"
+          <button
+            onClick={handleEmployersClick}
             className="flex w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-teal px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-teal-dark sm:w-auto"
           >
             Learn More for Employers
             <FiArrowRight className="h-4 w-4" />
-          </a>
+          </button>
         </div>
       </div>
     </section>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FaBriefcase,
   FaPhoneAlt,
@@ -12,6 +13,18 @@ import {
 } from "react-icons/fa";
 
 export default function EmployerCTA() {
+  const navigate = useNavigate();
+
+  // Handle Post a Job
+  const handlePostJob = () => {
+    navigate("/post-a-job");
+  };
+
+  // Handle Contact Sales
+  const handleContactSales = () => {
+    navigate("/contact-us");
+  };
+
   return (
     <>
       <section className="w-full bg-slate-50 py-12">
@@ -32,10 +45,16 @@ export default function EmployerCTA() {
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 z-10 w-full lg:w-auto">
-              <button className="flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-slate-900 font-semibold px-6 py-3 rounded-md transition">
+              <button 
+                onClick={handlePostJob}
+                className="flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-slate-900 font-semibold px-6 py-3 rounded-md transition"
+              >
                 <FaBriefcase /> Post a Job
               </button>
-              <button className="flex items-center justify-center gap-2 border border-white text-white hover:bg-white/10 font-semibold px-6 py-3 rounded-md transition">
+              <button 
+                onClick={handleContactSales}
+                className="flex items-center justify-center gap-2 border border-white text-white hover:bg-white/10 font-semibold px-6 py-3 rounded-md transition"
+              >
                 <FaPhoneAlt /> Contact Sales
               </button>
             </div>
@@ -57,8 +76,6 @@ export default function EmployerCTA() {
           </div>
         </div>
       </section>
-
-   
     </>
   );
 }

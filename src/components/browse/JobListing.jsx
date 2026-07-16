@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FiBriefcase,
   FiUser,
@@ -12,8 +13,20 @@ import {
   FiClock,
   FiHeart,
   FiBookmark,
+  FiSearch,
+  FiFilter,
 } from "react-icons/fi";
 import { HiOutlineOfficeBuilding } from "react-icons/hi";
+import { GiMapleLeaf } from "react-icons/gi";
+import {
+  featuredJobs,
+  filterOptions,
+  filterGroups,
+  jobTypes,
+  salaryRanges,
+  jobCategories,
+} from "../../data/job"; 
+import { provinces } from "../../data/employers";
 
 const GREEN = "#0E5C4C";
 
@@ -32,9 +45,7 @@ const Logo = () => (
   </div>
 );
 
-
-
-const CheckGroup = ({ title, items }) => (
+const CheckGroup = ({ title, items, onItemClick }) => (
   <div className="border-b border-slate-100 py-4">
     <div className="flex items-center justify-between">
       <span className="text-sm font-bold text-slate-800">{title}</span>
@@ -44,7 +55,11 @@ const CheckGroup = ({ title, items }) => (
       {items.map(([label, count]) => (
         <label key={label} className="flex cursor-pointer items-center justify-between text-sm text-slate-600">
           <span className="flex items-center gap-2">
-            <input type="checkbox" className="h-4 w-4 rounded border-slate-300 text-[#0E5C4C] focus:ring-[#0E5C4C]" />
+            <input 
+              type="checkbox" 
+              className="h-4 w-4 rounded border-slate-300 text-[#0E5C4C] focus:ring-[#0E5C4C]" 
+              onChange={() => onItemClick && onItemClick(label)}
+            />
             {label}
           </span>
           <span className="text-slate-400">({count})</span>
@@ -54,84 +69,185 @@ const CheckGroup = ({ title, items }) => (
   </div>
 );
 
-const Select = ({ title, placeholder }) => (
+const Select = ({ title, placeholder, options, onChange }) => (
   <div className="border-b border-slate-100 py-4">
     <div className="flex items-center justify-between">
       <span className="text-sm font-bold text-slate-800">{title}</span>
       <FiChevronDown className="text-slate-400" />
     </div>
-    <select className="mt-3 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-500 outline-none focus:border-[#0E5C4C]">
-      <option>{placeholder}</option>
+    <select 
+      className="mt-3 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-500 outline-none focus:border-[#0E5C4C]"
+      onChange={onChange}
+    >
+      <option value="">{placeholder}</option>
+      {options && options.map((opt) => (
+        <option key={opt} value={opt}>{opt}</option>
+      ))}
     </select>
   </div>
 );
 
-const jobs = [
-  { title: "Administrative Assistant", company: "Maple Ridge Solutions", initials: "M", color: "#0B1B3A", location: "Toronto, ON", type: "Full-time", mode: "On-site", pay: "$45,000 - $55,000 / year", desc: "Provide administrative support to ensure efficient daily office operations. Manage schedules, correspondence, and documentation with professionalism and attention to detail." },
-  { title: "Receptionist", company: "Greenfield Offices", initials: "🌿", color: "#DFF3E8", location: "Vancouver, BC", type: "Full-time", mode: "On-site", pay: "$40,000 - $48,000 / year", desc: "Greet visitors, answer calls, and provide general administrative support. Maintain a welcoming front desk and ensure smooth office operations." },
-  { title: "Office Coordinator", company: "Summit Business Group", initials: "S", color: "#0B1B3A", location: "Calgary, AB", type: "Full-time", mode: "Hybrid", pay: "$50,000 - $60,000 / year", desc: "Coordinate office activities, manage calendars, and support team members. Ensure efficient workflows and a well-organized office environment." },
-  { title: "Executive Assistant", company: "NorthPoint Consulting", initials: "N", color: "#0B1B3A", location: "Ottawa, ON", type: "Full-time", mode: "Hybrid", pay: "$60,000 - $75,000 / year", desc: "Provide high-level administrative support to executives. Manage schedules, travel arrangements, and confidential documents with discretion." },
-  { title: "Data Entry Clerk", company: "ProData Services", initials: "P", color: "#0E5C4C", location: "Montreal, QC", type: "Part-time", mode: "On-site", pay: "$38,000 - $45,000 / year", desc: "Accurately input and maintain data in databases and systems. Ensure data quality and support reporting requirements." },
-  { title: "Customer Service Representative", company: "Bright Customer Care", initials: "B", color: "#F0B429", location: "Halifax, NS", type: "Full-time", mode: "Hybrid", pay: "$42,000 - $52,000 / year", desc: "Assist customers via phone, email, and chat. Resolve inquiries and provide excellent service to ensure customer satisfaction." },
-  { title: "HR Assistant", company: "People First HR", initials: "P", color: "#7C3AED", location: "Edmonton, AB", type: "Full-time", mode: "On-site", pay: "$45,000 - $55,000 / year", desc: "Support HR functions including recruitment, onboarding, and employee records management. Help foster a positive workplace." },
-  { title: "Office Manager", company: "Alpine Corporate Services", initials: "A", color: "#0B1B3A", location: "Winnipeg, MB", type: "Full-time", mode: "On-site", pay: "$65,000 - $80,000 / year", desc: "Oversee daily office operations, manage budgets, and lead administrative staff. Ensure efficiency and a productive work environment." },
-];
+const JobCard = ({ job, onApply, onSave, onSaveJob }) => {
+  const [isSaved, setIsSaved] = useState(false);
 
-const JobCard = ({ job }) => (
-  <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6">
-    <div className="flex items-start justify-between">
-      <div className="flex items-start gap-3">
-        <div
-          className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
-          style={{ backgroundColor: job.color }}
+  const handleSave = () => {
+    setIsSaved(!isSaved);
+    if (onSaveJob) onSaveJob(job.id);
+  };
+
+  return (
+    <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6">
+      <div className="flex items-start justify-between">
+        <div className="flex items-start gap-3">
+          <div
+            className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
+            style={{ backgroundColor: job.color }}
+          >
+            {job.initials}
+          </div>
+          <div>
+            <h3 className="font-bold text-slate-900">{job.title}</h3>
+            <p className="text-sm font-medium" style={{ color: GREEN }}>
+              {job.company}
+            </p>
+          </div>
+        </div>
+        <button 
+          onClick={handleSave}
+          aria-label="Save" 
+          className={`transition ${isSaved ? 'text-rose-500' : 'text-slate-300 hover:text-rose-500'}`}
         >
-          {job.initials}
-        </div>
-        <div>
-          <h3 className="font-bold text-slate-900">{job.title}</h3>
-          <p className="text-sm font-medium" style={{ color: GREEN }}>
-            {job.company}
-          </p>
-        </div>
+          <FiHeart />
+        </button>
       </div>
-      <button aria-label="Save" className="text-slate-300 transition hover:text-rose-500">
-        <FiHeart />
-      </button>
-    </div>
 
-    <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 sm:text-sm">
-      <span className="flex items-center gap-1">
-        <FiMapPin /> {job.location}
-      </span>
-      <span className="flex items-center gap-1">
-        <FiBriefcase /> {job.type}
-      </span>
-      <span className="flex items-center gap-1">
-        <HiOutlineOfficeBuilding /> {job.mode}
-      </span>
-    </div>
+      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 sm:text-sm">
+        <span className="flex items-center gap-1">
+          <FiMapPin /> {job.location}
+        </span>
+        <span className="flex items-center gap-1">
+          <FiBriefcase /> {job.type}
+        </span>
+        <span className="flex items-center gap-1">
+          <HiOutlineOfficeBuilding /> {job.mode}
+        </span>
+      </div>
 
-    <p className="mt-2 text-sm font-bold text-slate-900">{job.pay}</p>
-    <p className="mt-2 text-sm text-slate-500">{job.desc}</p>
+      <p className="mt-2 text-sm font-bold text-slate-900">{job.pay}</p>
+      <p className="mt-2 text-sm text-slate-500">{job.desc}</p>
 
-    <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-      <button
-        className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
-        style={{ backgroundColor: GREEN }}
-      >
-        Apply Now
-      </button>
-      <button className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-slate-200 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300">
-        Save Job <FiBookmark />
-      </button>
+      <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+        <button
+          onClick={() => onApply && onApply(job.id)}
+          className="flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
+          style={{ backgroundColor: GREEN }}
+        >
+          Apply Now
+        </button>
+        <button 
+          onClick={() => onSave && onSave(job.id)}
+          className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-slate-200 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300"
+        >
+          Save Job <FiBookmark />
+        </button>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default function JobListings() {
+  const navigate = useNavigate();
+  const [selectedFilters, setSelectedFilters] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [savedJobs, setSavedJobs] = useState([]);
+  const totalPages = 256;
+
+  // Handle filter selection
+  const handleFilterClick = (filter) => {
+    setSelectedFilters(prev => 
+      prev.includes(filter) 
+        ? prev.filter(f => f !== filter)
+        : [...prev, filter]
+    );
+  };
+
+  // Handle Clear All Filters
+  const handleClearAll = () => {
+    setSelectedFilters([]);
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+  };
+
+  // Handle Reset Filters
+  const handleResetFilters = () => {
+    setSelectedFilters([]);
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+    document.querySelectorAll('select').forEach(sel => sel.selectedIndex = 0);
+  };
+
+  // Handle Show Results
+  const handleShowResults = () => {
+    const params = new URLSearchParams();
+    if (selectedFilters.length > 0) {
+      params.append('filters', selectedFilters.join(','));
+    }
+    navigate(`/browse?${params.toString()}`);
+  };
+
+  // Handle Apply Job
+  const handleApply = (jobId) => {
+    navigate(`/post-a-job?jobId=${jobId}`);
+  };
+
+  // Handle Save Job
+  const handleSaveJob = (jobId) => {
+    setSavedJobs(prev => 
+      prev.includes(jobId) 
+        ? prev.filter(id => id !== jobId)
+        : [...prev, jobId]
+    );
+  };
+
+  // Handle Pagination
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // Handle Sort Change
+  const handleSortChange = (e) => {
+    const value = e.target.value;
+    console.log('Sort by:', value);
+  };
+
+  // Handle Per Page Change
+  const handlePerPageChange = (e) => {
+    const value = e.target.value;
+    console.log('Show:', value);
+  };
+
+  // Handle Province Select
+  const handleProvinceChange = (e) => {
+    const value = e.target.value;
+    if (value) {
+      navigate(`/browse?location=${encodeURIComponent(value)}`);
+    }
+  };
+
+  // Handle Category Select
+  const handleCategoryChange = (e) => {
+    const value = e.target.value;
+    if (value) {
+      navigate(`/browse?category=${encodeURIComponent(value)}`);
+    }
+  };
+
+  // Get category names for select
+  const categoryNames = jobCategories.items.map(item => item.title);
+
   return (
     <div className="bg-slate-50 font-sans">
-
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
           {/* Sidebar */}
@@ -140,39 +256,36 @@ export default function JobListings() {
               <h3 className="flex items-center gap-2 font-bold text-slate-900">
                 <FiSliders /> Filter Jobs
               </h3>
-              <button className="text-sm font-semibold" style={{ color: GREEN }}>
+              <button 
+                onClick={handleClearAll}
+                className="text-sm font-semibold transition hover:opacity-80" 
+                style={{ color: GREEN }}
+              >
                 Clear All
               </button>
             </div>
 
             <CheckGroup
               title="Job Type"
-              items={[
-                ["Full-time", "6,234"],
-                ["Part-time", "1,842"],
-                ["Contract", "1,256"],
-                ["Temporary", "668"],
-                ["Internship", "312"],
-              ]}
+              items={filterGroups.jobType}
+              onItemClick={handleFilterClick}
             />
             <CheckGroup
               title="Work Mode"
-              items={[
-                ["On-site", "6,078"],
-                ["Hybrid", "1,876"],
-                ["Remote", "1,102"],
-              ]}
+              items={filterGroups.workMode}
+              onItemClick={handleFilterClick}
             />
             <CheckGroup
               title="Experience Level"
-              items={[
-                ["Entry Level", "2,356"],
-                ["1-3 Years", "3,412"],
-                ["3-5 Years", "2,648"],
-                ["5+ Years", "1,596"],
-              ]}
+              items={filterGroups.experience}
+              onItemClick={handleFilterClick}
             />
-            <Select title="Province" placeholder="Select province" />
+            <Select 
+              title="Province" 
+              placeholder="Select province"
+              options={provinces}
+              onChange={handleProvinceChange}
+            />
 
             <div className="border-b border-slate-100 py-4">
               <div className="flex items-center justify-between">
@@ -182,23 +295,43 @@ export default function JobListings() {
               <div className="mt-3 flex items-center gap-2">
                 <select className="w-full rounded-lg border border-slate-200 px-2 py-2 text-xs text-slate-500 outline-none focus:border-[#0E5C4C]">
                   <option>Min Salary</option>
+                  <option>$30,000</option>
+                  <option>$40,000</option>
+                  <option>$50,000</option>
+                  <option>$60,000</option>
+                  <option>$70,000</option>
                 </select>
                 <span className="text-slate-400">to</span>
                 <select className="w-full rounded-lg border border-slate-200 px-2 py-2 text-xs text-slate-500 outline-none focus:border-[#0E5C4C]">
                   <option>Max Salary</option>
+                  <option>$50,000</option>
+                  <option>$60,000</option>
+                  <option>$70,000</option>
+                  <option>$80,000</option>
+                  <option>$100,000</option>
                 </select>
               </div>
             </div>
 
-            <Select title="Category" placeholder="Select category" />
+            <Select 
+              title="Category" 
+              placeholder="Select category"
+              options={categoryNames}
+              onChange={handleCategoryChange}
+            />
 
             <button
+              onClick={handleShowResults}
               className="mt-5 w-full rounded-lg py-3 text-sm font-semibold text-white transition hover:opacity-90"
               style={{ backgroundColor: GREEN }}
             >
               Show Results
             </button>
-            <button className="mt-3 w-full text-center text-sm font-semibold" style={{ color: GREEN }}>
+            <button 
+              onClick={handleResetFilters}
+              className="mt-3 w-full text-center text-sm font-semibold transition hover:opacity-80" 
+              style={{ color: GREEN }}
+            >
               Reset Filters
             </button>
           </aside>
@@ -211,50 +344,93 @@ export default function JobListings() {
               </p>
               <div className="flex items-center gap-2 text-sm">
                 <span className="text-slate-500">Sort by:</span>
-                <select className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-[#0E5C4C]">
-                  <option>Most Relevant</option>
+                <select 
+                  onChange={handleSortChange}
+                  className="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 outline-none focus:border-[#0E5C4C]"
+                >
+                  <option value="relevance">Most Relevant</option>
+                  <option value="newest">Newest First</option>
+                  <option value="oldest">Oldest First</option>
+                  <option value="highest">Highest Salary</option>
+                  <option value="lowest">Lowest Salary</option>
                 </select>
               </div>
             </div>
 
             <div className="mt-6 grid gap-5 md:grid-cols-2">
-              {jobs.map((job) => (
-                <JobCard key={job.title} job={job} />
+              {featuredJobs.map((job) => (
+                <JobCard 
+                  key={job.id} 
+                  job={job} 
+                  onApply={handleApply}
+                  onSaveJob={handleSaveJob}
+                  isSaved={savedJobs.includes(job.id)}
+                />
               ))}
             </div>
 
             {/* Pagination */}
             <div className="mt-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
               <div className="flex items-center gap-1">
-                <button className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:border-slate-300">
+                <button 
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className={`flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:border-slate-300 ${
+                    currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                >
                   <FiChevronLeft />
                 </button>
-                {["1", "2", "3", "...", "256"].map((p) => (
-                  <button
-                    key={p}
-                    className={`flex h-9 w-9 items-center justify-center rounded-lg text-sm font-semibold ${
-                      p === "1" ? "text-white" : "border border-slate-200 text-slate-600 hover:border-slate-300"
-                    }`}
-                    style={p === "1" ? { backgroundColor: GREEN } : {}}
-                  >
-                    {p}
-                  </button>
-                ))}
-                <button className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300">
+                {[1, 2, 3, 4, 5, '...', totalPages].map((p, index) => {
+                  if (p === '...') {
+                    return (
+                      <span key={`ellipsis-${index}`} className="flex h-9 w-9 items-center justify-center text-sm text-slate-400">
+                        ...
+                      </span>
+                    );
+                  }
+                  return (
+                    <button
+                      key={p}
+                      onClick={() => handlePageChange(p)}
+                      className={`flex h-9 w-9 items-center justify-center rounded-lg text-sm font-semibold ${
+                        p === currentPage 
+                          ? 'text-white' 
+                          : 'border border-slate-200 text-slate-600 hover:border-slate-300'
+                      }`}
+                      style={p === currentPage ? { backgroundColor: GREEN } : {}}
+                    >
+                      {p}
+                    </button>
+                  );
+                })}
+                <button 
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className={`flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 hover:border-slate-300 ${
+                    currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                >
                   <FiChevronRight />
                 </button>
               </div>
               <div className="flex items-center gap-2 text-sm text-slate-500">
                 Show:
-                <select className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-700 outline-none focus:border-[#0E5C4C]">
-                  <option>12 per page</option>
+                <select 
+                  onChange={handlePerPageChange}
+                  className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-700 outline-none focus:border-[#0E5C4C]"
+                >
+                  <option value="12">12 per page</option>
+                  <option value="24">24 per page</option>
+                  <option value="48">48 per page</option>
+                  <option value="96">96 per page</option>
                 </select>
               </div>
             </div>
 
             <p className="mt-6 flex items-center gap-1 text-xs text-slate-500 sm:text-sm">
               Browse office and administrative jobs across Canada. New opportunities added
-              daily. <span aria-hidden>🍁</span>
+              daily. <GiMapleLeaf className="inline-block h-3 w-3" />
             </p>
           </div>
         </div>

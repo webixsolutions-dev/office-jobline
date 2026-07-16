@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { FaCheck, FaQuoteRight, FaStar, FaLandmark } from "react-icons/fa";
 import { GiMapleLeaf } from "react-icons/gi";
 
@@ -16,6 +17,7 @@ const plans = [
       "Email Support",
     ],
     cta: "Get Started",
+    path: "/signup"
   },
   {
     name: "Growth",
@@ -30,6 +32,7 @@ const plans = [
       "Priority Email Support",
     ],
     cta: "Get Started",
+    path: "/signup"
   },
   {
     name: "Enterprise",
@@ -44,6 +47,7 @@ const plans = [
       "Priority Phone & Email Support",
     ],
     cta: "Contact Sales",
+    path: "/contact-us"
   },
 ];
 
@@ -54,6 +58,7 @@ const testimonials = [
     icon: <GiMapleLeaf className="text-teal-800 text-xl" />,
     company: "Maple Leaf Consulting",
     location: "Toronto, ON",
+    path: "/employers"
   },
   {
     quote:
@@ -61,12 +66,25 @@ const testimonials = [
     icon: <FaLandmark className="text-teal-800 text-xl" />,
     company: "Prairie Business Group",
     location: "Calgary, AB",
+    path: "/employers"
   },
 ];
 
 export default function Pricing() {
+  const navigate = useNavigate();
+
+  // Handle Plan Button Click
+  const handlePlanClick = (path) => {
+    navigate(path);
+  };
+
+  // Handle Testimonial Card Click
+  const handleTestimonialClick = (path) => {
+    navigate(path);
+  };
+
   return (
-    <section className="w-full bg-slate-50 py-16">
+    <section className="w-full bg-slate-50 py-16" id="employer-pricing">
       <div className="max-w-7xl mx-auto px-6 sm:px-10">
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-3">
@@ -115,7 +133,8 @@ export default function Pricing() {
                   ))}
                 </ul>
                 <button
-                  className={`w-full py-3 rounded-md font-semibold transition ${
+                  onClick={() => handlePlanClick(plan.path)}
+                  className={`w-full py-3 my-3~ rounded-md font-semibold transition ${
                     plan.featured
                       ? "bg-teal-800 hover:bg-teal-900 text-white"
                       : "border border-teal-800 text-teal-800 hover:bg-teal-50"
@@ -141,7 +160,11 @@ export default function Pricing() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {testimonials.map((t, i) => (
-              <div key={i} className="bg-white rounded-lg p-6 shadow-sm">
+              <div 
+                key={i} 
+                onClick={() => handleTestimonialClick(t.path)}
+                className="bg-white rounded-lg p-6 shadow-sm cursor-pointer transition hover:shadow-md hover:scale-[1.02]"
+              >
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex text-yellow-400 gap-1">
                     {[...Array(5)].map((_, s) => (

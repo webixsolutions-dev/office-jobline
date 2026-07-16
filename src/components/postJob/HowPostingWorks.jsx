@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FiUserPlus,
   FiEdit3,
@@ -9,6 +10,7 @@ import {
   FiZap,
   FiGrid,
 } from "react-icons/fi";
+import { GiMapleLeaf } from "react-icons/gi";
 
 const GREEN = "#0E5C4C";
 
@@ -24,24 +26,28 @@ const steps = [
     icon: <FiUserPlus size={26} />,
     title: "Create Employer Account",
     desc: "Sign up as an employer and set up your company profile in just a few easy steps.",
+    path: "/signup"
   },
   {
     number: 2,
     icon: <FiEdit3 size={26} />,
     title: "Add Job Details",
     desc: "Fill in your job title, description, requirements, location, and compensation details.",
+    path: "/post-a-job"
   },
   {
     number: 3,
     icon: <FiCheckSquare size={26} />,
     title: "Review & Publish",
     desc: "Review your listing and publish to make your job visible to thousands of job seekers.",
+    path: "/post-a-job"
   },
   {
     number: 4,
     icon: <FiUsers size={26} />,
     title: "Receive Applications",
     desc: "Qualified candidates apply and you can review, shortlist, and connect with the right talent.",
+    path: "/employers"
   },
 ];
 
@@ -50,27 +56,34 @@ const reasons = [
     icon: <FiUserCheck size={22} />,
     title: "Qualified Office Talent",
     desc: "Access a pool of pre-screened candidates with office, administrative, and customer service experience.",
+    path: "/employers"
   },
   {
-    icon: <span aria-hidden className="text-xl">🍁</span>,
+    icon: <GiMapleLeaf size={22} />,
     title: "Canada-Wide Reach",
     desc: "Reach job seekers from Toronto to Vancouver and everywhere in between. Post nationwide with ease.",
+    path: "/browse"
   },
   {
     icon: <FiZap size={22} />,
     title: "Fast Posting",
     desc: "Get your office job live in minutes and start receiving applications right away.",
+    path: "/post-a-job"
   },
   {
     icon: <FiGrid size={22} />,
     title: "Simple Employer Dashboard",
     desc: "Manage your job postings, review applications, and communicate with candidates all in one place.",
+    path: "/employers"
   },
 ];
 
-const StepCard = ({ step, isLast }) => (
+const StepCard = ({ step, isLast, onClick }) => (
   <div className="flex items-center">
-    <div className="w-full rounded-2xl border border-slate-100 bg-white p-6 text-center shadow-sm sm:p-7">
+    <div 
+      onClick={onClick}
+      className="w-full cursor-pointer rounded-2xl border border-slate-100 bg-white p-6 text-center shadow-sm transition hover:shadow-md hover:scale-[1.02] sm:p-7"
+    >
       <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full" style={{ backgroundColor: "#E4F0EC", color: GREEN }}>
         {step.icon}
       </div>
@@ -91,8 +104,11 @@ const StepCard = ({ step, isLast }) => (
   </div>
 );
 
-const ReasonCard = ({ icon, title, desc }) => (
-  <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 sm:p-7">
+const ReasonCard = ({ icon, title, desc, onClick }) => (
+  <div 
+    onClick={onClick}
+    className="cursor-pointer rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 transition hover:shadow-md hover:scale-[1.02] sm:p-7"
+  >
     <div className="flex h-14 w-14 items-center justify-center rounded-full" style={{ backgroundColor: "#E4F0EC", color: GREEN }}>
       {icon}
     </div>
@@ -103,6 +119,23 @@ const ReasonCard = ({ icon, title, desc }) => (
 );
 
 export default function HowPostingWorks() {
+  const navigate = useNavigate();
+
+  // Handle Step Card Click
+  const handleStepClick = (path) => {
+    navigate(path);
+  };
+
+  // Handle Reason Card Click
+  const handleReasonClick = (path) => {
+    navigate(path);
+  };
+
+  // Handle CTA Button Click
+  const handlePostJobToday = () => {
+    navigate("/post-a-job");
+  };
+
   return (
     <div className="font-sans">
       {/* How Posting Works */}
@@ -117,7 +150,12 @@ export default function HowPostingWorks() {
 
         <div className="mx-auto mt-10 grid max-w-7xl gap-6 lg:grid-cols-4">
           {steps.map((s, i) => (
-            <StepCard key={s.number} step={s} isLast={i === steps.length - 1} />
+            <StepCard 
+              key={s.number} 
+              step={s} 
+              isLast={i === steps.length - 1}
+              onClick={() => handleStepClick(s.path)}
+            />
           ))}
         </div>
       </section>
@@ -144,7 +182,11 @@ export default function HowPostingWorks() {
 
         <div className="relative mx-auto mt-10 grid max-w-7xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {reasons.map((r) => (
-            <ReasonCard key={r.title} {...r} />
+            <ReasonCard 
+              key={r.title} 
+              {...r} 
+              onClick={() => handleReasonClick(r.path)}
+            />
           ))}
         </div>
 
@@ -165,6 +207,7 @@ export default function HowPostingWorks() {
             </div>
           </div>
           <button
+            onClick={handlePostJobToday}
             className="flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg px-6 py-3 text-sm font-semibold text-white transition hover:opacity-90 sm:w-auto"
             style={{ backgroundColor: GREEN }}
           >

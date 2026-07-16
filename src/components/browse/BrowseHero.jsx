@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FiBriefcase,
   FiUser,
@@ -15,8 +16,17 @@ import {
   FiShield,
   FiLock,
   FiCheckCircle,
+  FiGlobe,
 } from "react-icons/fi";
 import { HiOutlineOfficeBuilding } from "react-icons/hi";
+import { GiMapleLeaf } from "react-icons/gi";
+import {
+  browseContent,
+  browseStats,
+  browseTrustPills,
+  filterOptions,
+  browseImage,
+} from "../../data/browse";
 
 const GREEN = "#0E5C4C";
 
@@ -35,17 +45,25 @@ const Logo = () => (
   </div>
 );
 
-
-
-const FilterPill = ({ icon, label }) => (
-  <button className="flex items-center gap-1.5 whitespace-nowrap rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:border-emerald-700 hover:text-emerald-800 sm:text-sm">
+const FilterPill = ({ icon, label, isActive, onClick }) => (
+  <button
+    onClick={onClick}
+    className={`flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-xs font-medium transition sm:text-sm ${
+      isActive
+        ? "border-emerald-700 bg-emerald-50 text-emerald-800"
+        : "border-slate-200 bg-white text-slate-600 hover:border-emerald-700 hover:text-emerald-800"
+    }`}
+  >
     {icon} {label}
   </button>
 );
 
-const Stat = ({ icon, value, title, children }) => (
-  <div className="flex items-start gap-4 rounded-2xl border border-slate-100 bg-white p-5 shadow-sm sm:p-6">
-    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full" style={{ backgroundColor: "#E4F0EC" }}>
+const Stat = ({ icon, value, title, children, onClick }) => (
+  <div 
+    onClick={onClick}
+    className="flex cursor-pointer items-start gap-4 rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition-transform hover:scale-[1.02] sm:p-6"
+  >
+    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full" style={{ backgroundColor: "#E4F0EC" }}>
       <span style={{ color: GREEN }}>{icon}</span>
     </div>
     <div>
@@ -58,8 +76,11 @@ const Stat = ({ icon, value, title, children }) => (
   </div>
 );
 
-const Trust = ({ icon, title, children }) => (
-  <div className="flex items-start gap-3">
+const Trust = ({ icon, title, children, onClick }) => (
+  <div 
+    onClick={onClick}
+    className="flex cursor-pointer items-start gap-3 transition-opacity hover:opacity-80"
+  >
     <span className="mt-0.5 flex-shrink-0" style={{ color: GREEN }}>
       {icon}
     </span>
@@ -71,9 +92,44 @@ const Trust = ({ icon, title, children }) => (
 );
 
 export default function BrowseHero() {
+  const navigate = useNavigate();
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [searchLocation, setSearchLocation] = useState("");
+  const [activeFilters, setActiveFilters] = useState([]);
+
+  // Handle Search
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (searchKeyword.trim()) params.append("keyword", searchKeyword.trim());
+    if (searchLocation.trim()) params.append("location", searchLocation.trim());
+    if (activeFilters.length > 0) params.append("filters", activeFilters.join(","));
+    
+    navigate(`/browse?${params.toString()}`);
+  };
+
+  // Handle Enter key
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
+  // Handle filter toggle
+  const handleFilterToggle = (filterValue) => {
+    setActiveFilters((prev) =>
+      prev.includes(filterValue)
+        ? prev.filter((f) => f !== filterValue)
+        : [...prev, filterValue]
+    );
+  };
+
+  // Handle Stat clicks
+  const handleStatClick = (path) => {
+    navigate(path);
+  };
+
   return (
     <div className="bg-slate-50 font-sans">
-
       <section className="relative overflow-hidden">
         <div className="grid gap-8 px-4 py-12 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8 lg:py-16">
           {/* Left */}
@@ -82,15 +138,13 @@ export default function BrowseHero() {
               className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold sm:text-sm"
               style={{ backgroundColor: "#E4F0EC", color: GREEN }}
             >
-              <FiStar /> Canada's Trusted Office Job Board
+              <FiStar /> {browseContent.badge}
             </span>
             <h1 className="mt-4 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl md:text-5xl">
-              Browse Office &amp; Administrative Jobs Across Canada
+              {browseContent.title}
             </h1>
             <p className="mt-4 max-w-xl text-sm text-slate-500 sm:text-base">
-              Find office jobs, administrative jobs, receptionist jobs, executive assistant
-              jobs, office coordinator jobs, data entry jobs, customer service office roles, and
-              office manager jobs with top employers hiring across Canada.
+              {browseContent.description}
             </p>
           </div>
 
@@ -99,8 +153,7 @@ export default function BrowseHero() {
             <div
               className="absolute inset-0 bg-cover bg-center"
               style={{
-                backgroundImage:
-                  "url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1400&q=80')",
+                backgroundImage: `url("${browseImage}")`,
               }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
@@ -114,7 +167,10 @@ export default function BrowseHero() {
               <FiSearch className="text-slate-400" />
               <input
                 type="text"
-                placeholder="Job title, keyword or company"
+                placeholder={browseContent.searchPlaceholder}
+                value={searchKeyword}
+                onChange={(e) => setSearchKeyword(e.target.value)}
+                onKeyPress={handleKeyPress}
                 className="w-full text-sm text-slate-700 placeholder-slate-400 outline-none"
               />
             </div>
@@ -122,26 +178,33 @@ export default function BrowseHero() {
               <FiMapPin className="text-slate-400" />
               <input
                 type="text"
-                placeholder="City, province or region"
+                placeholder={browseContent.locationPlaceholder}
+                value={searchLocation}
+                onChange={(e) => setSearchLocation(e.target.value)}
+                onKeyPress={handleKeyPress}
                 className="w-full text-sm text-slate-700 placeholder-slate-400 outline-none"
               />
             </div>
             <button
+              onClick={handleSearch}
               className="flex items-center justify-center gap-2 whitespace-nowrap rounded-lg px-6 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
               style={{ backgroundColor: GREEN }}
             >
-              <FiSearch /> Search Jobs
+              <FiSearch /> {browseContent.searchButton}
             </button>
           </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-4">
             <span className="text-xs font-semibold text-slate-500 sm:text-sm">Filter by:</span>
-            <FilterPill icon={<FiBriefcase />} label="Full-Time" />
-            <FilterPill icon={<FiClock />} label="Part-Time" />
-            <FilterPill icon={<FiHome />} label="Remote" />
-            <FilterPill icon={<HiOutlineOfficeBuilding />} label="Hybrid" />
-            <FilterPill icon={<FiBarChart2 />} label="Entry Level" />
-            <FilterPill icon={<FiFileText />} label="Contract" />
+            {filterOptions.map((filter) => (
+              <FilterPill
+                key={filter.value}
+                icon={<filter.icon />}
+                label={filter.label}
+                isActive={activeFilters.includes(filter.value)}
+                onClick={() => handleFilterToggle(filter.value)}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -149,27 +212,30 @@ export default function BrowseHero() {
       {/* Stats */}
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-6 md:grid-cols-3">
-          <Stat icon={<FiBriefcase size={22} />} value="10,248+" title="Active Office Jobs">
-            New office &amp; administrative jobs posted every day.
-          </Stat>
-          <Stat icon={<FiUsers size={22} />} value="2,350+" title="Employers Hiring">
-            Trusted companies actively hiring across Canada.
-          </Stat>
-          <Stat icon={<span aria-hidden>🍁</span>} value="" title="Canada-Wide Opportunities">
-            Find the right job wherever you are in Canada.
-          </Stat>
+          {browseStats.map((stat) => (
+            <Stat
+              key={stat.title}
+              icon={<stat.icon size={22} />}
+              value={stat.value}
+              title={stat.title}
+              onClick={() => handleStatClick(stat.path)}
+            >
+              {stat.desc}
+            </Stat>
+          ))}
         </div>
 
         <div className="mt-8 flex flex-col gap-6 rounded-2xl border border-slate-100 bg-white p-6 shadow-sm sm:flex-row sm:justify-between sm:p-8">
-          <Trust icon={<FiShield size={20} />} title="100% Free for Job Seekers">
-            Browse and apply to jobs at no cost.
-          </Trust>
-          <Trust icon={<FiLock size={20} />} title="Secure & Private">
-            Your data is safe and never shared.
-          </Trust>
-          <Trust icon={<FiCheckCircle size={20} />} title="Trusted by Thousands">
-            Thousands of professionals find jobs every month.
-          </Trust>
+          {browseTrustPills.map((pill) => (
+            <Trust
+              key={pill.title}
+              icon={<pill.icon size={20} />}
+              title={pill.title}
+              onClick={() => navigate(pill.path)}
+            >
+              {pill.desc}
+            </Trust>
+          ))}
         </div>
       </section>
     </div>

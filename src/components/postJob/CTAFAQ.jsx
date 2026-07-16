@@ -1,16 +1,29 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FiBriefcase, FiPhone, FiHelpCircle, FiChevronDown } from "react-icons/fi";
 
 const GREEN = "#0E5C4C";
 
 const faqs = [
-  "How much does it cost to post a job?",
-  "How long will my job posting stay active?",
-  "Can I edit or update my job posting after it's live?",
-  "What types of office and administrative jobs can I post?",
+  {
+    question: "How much does it cost to post a job?",
+    answer: "We offer flexible pricing plans starting from $99/month. Check our Pricing page for detailed plan options including Starter, Growth, and Enterprise plans."
+  },
+  {
+    question: "How long will my job posting stay active?",
+    answer: "Job postings stay active for 30 days on Starter and Growth plans, and 60 days on Enterprise plans. You can also renew or extend your posting at any time."
+  },
+  {
+    question: "Can I edit or update my job posting after it's live?",
+    answer: "Yes! You can edit, update, or modify your job posting at any time through your employer dashboard. Changes are reflected immediately."
+  },
+  {
+    question: "What types of office and administrative jobs can I post?",
+    answer: "You can post any office and administrative roles including Office Managers, Receptionists, Executive Assistants, Administrative Assistants, Data Entry Clerks, Customer Service Representatives, Payroll Clerks, HR Support, and more."
+  },
 ];
 
-const FaqItem = ({ question }) => {
+const FaqItem = ({ question, answer }) => {
   const [open, setOpen] = useState(false);
   return (
     <div className="rounded-xl bg-white shadow-sm ring-1 ring-slate-100">
@@ -23,8 +36,7 @@ const FaqItem = ({ question }) => {
       </button>
       {open && (
         <div className="px-5 pb-4 text-sm text-slate-500 sm:px-6">
-          Reach out to our support team or check your employer dashboard for the most up to
-          date details on this.
+          {answer}
         </div>
       )}
     </div>
@@ -32,6 +44,18 @@ const FaqItem = ({ question }) => {
 };
 
 export default function CTAFAQ() {
+  const navigate = useNavigate();
+
+  // Handle Post a Job
+  const handlePostJob = () => {
+    navigate("/post-a-job");
+  };
+
+  // Handle Contact Sales
+  const handleContactSales = () => {
+    navigate("/contact-us");
+  };
+
   return (
     <section className="bg-slate-50 px-4 py-16 sm:px-6 lg:px-8">
       {/* CTA banner */}
@@ -51,10 +75,16 @@ export default function CTAFAQ() {
           </div>
         </div>
         <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-          <button className="flex items-center justify-center gap-2 rounded-lg bg-amber-400 px-6 py-3 text-sm font-semibold text-[#0B1B3A] transition hover:bg-amber-300">
+          <button 
+            onClick={handlePostJob}
+            className="flex items-center justify-center gap-2 rounded-lg bg-amber-400 px-6 py-3 text-sm font-semibold text-[#0B1B3A] transition hover:bg-amber-300"
+          >
             <FiBriefcase /> Post a Job
           </button>
-          <button className="flex items-center justify-center gap-2 rounded-lg border border-slate-500 px-6 py-3 text-sm font-semibold text-white transition hover:border-amber-400 hover:text-amber-400">
+          <button 
+            onClick={handleContactSales}
+            className="flex items-center justify-center gap-2 rounded-lg border border-slate-500 px-6 py-3 text-sm font-semibold text-white transition hover:border-amber-400 hover:text-amber-400"
+          >
             <FiPhone /> Contact Sales
           </button>
         </div>
@@ -80,7 +110,7 @@ export default function CTAFAQ() {
 
           <div className="space-y-3">
             {faqs.map((q) => (
-              <FaqItem key={q} question={q} />
+              <FaqItem key={q.question} question={q.question} answer={q.answer} />
             ))}
           </div>
         </div>

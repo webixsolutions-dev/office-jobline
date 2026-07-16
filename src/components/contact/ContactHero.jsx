@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   FiMail,
   FiPhone,
   FiClock,
   FiSend,
   FiMapPin,
+  FiCheckCircle,
+  FiAlertCircle,
 } from "react-icons/fi";
 
 const InfoRow = ({ icon, title, children }) => (
@@ -20,6 +22,74 @@ const InfoRow = ({ icon, title, children }) => (
 );
 
 export default function ContactHero() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', null
+
+  // Handle form input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      // API call - replace with your actual endpoint
+      const response = await fetch('https://your-api-endpoint.com/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+        });
+        // Reset success message after 5 seconds
+        setTimeout(() => setSubmitStatus(null), 5000);
+      } else {
+        setSubmitStatus('error');
+        setTimeout(() => setSubmitStatus(null), 5000);
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus(null), 5000);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Handle email click
+  const handleEmailClick = (email) => {
+    window.location.href = `mailto:${email}`;
+  };
+
+  // Handle phone click
+  const handlePhoneClick = (phone) => {
+    window.location.href = `tel:${phone}`;
+  };
+
   return (
     <section className="relative overflow-hidden bg-slate-50">
       <div className="flex flex-col lg:grid lg:grid-cols-[1.2fr_1fr]">
@@ -55,14 +125,32 @@ export default function ContactHero() {
                 </div>
               </div>
 
-              <form className="mt-5 space-y-4">
+              {/* Status Messages */}
+              {submitStatus === 'success' && (
+                <div className="mt-4 flex items-center gap-2 rounded-lg bg-green-50 p-3 text-sm text-green-700">
+                  <FiCheckCircle className="h-5 w-5 text-green-500" />
+                  Message sent successfully! We'll get back to you soon.
+                </div>
+              )}
+              {submitStatus === 'error' && (
+                <div className="mt-4 flex items-center gap-2 rounded-lg bg-red-50 p-3 text-sm text-red-700">
+                  <FiAlertCircle className="h-5 w-5 text-red-500" />
+                  Failed to send message. Please try again or contact us directly.
+                </div>
+              )}
+
+              <form className="mt-5 space-y-4" onSubmit={handleSubmit}>
                 <div>
                   <label className="mb-1 block text-xs font-semibold text-slate-700 sm:text-sm">
                     Full Name
                   </label>
                   <input
                     type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
                     placeholder="Enter your full name"
+                    required
                     className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm placeholder:text-sm placeholder:text-slate-400 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-100 sm:px-4 sm:py-2.5"
                   />
                 </div>
@@ -72,7 +160,11 @@ export default function ContactHero() {
                   </label>
                   <input
                     type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
                     placeholder="Enter your email address"
+                    required
                     className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm placeholder:text-sm placeholder:text-slate-400 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-100 sm:px-4 sm:py-2.5"
                   />
                 </div>
@@ -80,8 +172,20 @@ export default function ContactHero() {
                   <label className="mb-1 block text-xs font-semibold text-slate-700 sm:text-sm">
                     Subject
                   </label>
-                  <select className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-100 sm:px-4 sm:py-2.5">
-                    <option>Select or type a subject</option>
+                  <select
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    required
+                    className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-100 sm:px-4 sm:py-2.5"
+                  >
+                    <option value="">Select a subject</option>
+                    <option value="Job Seeker Support">Job Seeker Support</option>
+                    <option value="Employer Support">Employer Support</option>
+                    <option value="General Inquiry">General Inquiry</option>
+                    <option value="Partnership">Partnership</option>
+                    <option value="Feedback">Feedback</option>
+                    <option value="Other">Other</option>
                   </select>
                 </div>
                 <div>
@@ -90,15 +194,34 @@ export default function ContactHero() {
                   </label>
                   <textarea
                     rows={3}
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
                     placeholder="How can we help you?"
+                    required
                     className="w-full resize-none rounded-lg border border-slate-200 px-3 py-2 text-sm placeholder:text-sm placeholder:text-slate-400 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-100 sm:px-4 sm:py-2.5"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#0B1B3A] py-2.5 text-sm font-semibold text-white transition hover:bg-[#132a56] sm:py-3"
+                  disabled={isSubmitting}
+                  className={`flex w-full items-center justify-center gap-2 rounded-lg bg-[#0B1B3A] py-2.5 text-sm font-semibold text-white transition sm:py-3 ${
+                    isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-[#132a56]'
+                  }`}
                 >
-                  <FiSend className="h-4 w-4" /> Send Message
+                  {isSubmitting ? (
+                    <>
+                      <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+                      </svg>
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <FiSend className="h-4 w-4" /> Send Message
+                    </>
+                  )}
                 </button>
               </form>
             </div>
@@ -108,15 +231,21 @@ export default function ContactHero() {
               <h3 className="mb-1 font-bold text-slate-900">Contact Information</h3>
               <div className="mt-2 space-y-0">
                 <InfoRow icon={<FiMail className="h-4 w-4" />} title="Email Us">
-                  <a href="mailto:info@officejobline.com" className="font-semibold text-amber-500 hover:underline">
+                  <button
+                    onClick={() => handleEmailClick('info@officejobline.com')}
+                    className="font-semibold text-amber-500 hover:underline"
+                  >
                     info@officejobline.com
-                  </a>
+                  </button>
                   <p className="text-xs text-slate-500">We aim to reply within one business day.</p>
                 </InfoRow>
                 <InfoRow icon={<FiPhone className="h-4 w-4" />} title="Call Us">
-                  <a href="tel:+16475550198" className="font-semibold text-amber-500 hover:underline">
+                  <button
+                    onClick={() => handlePhoneClick('+16475550198')}
+                    className="font-semibold text-amber-500 hover:underline"
+                  >
                     +1 (647) 555-0198
-                  </a>
+                  </button>
                   <p className="text-xs text-slate-500">Mon – Fri, 9:00 AM – 5:00 PM ET</p>
                 </InfoRow>
                 <InfoRow icon={<FiClock className="h-4 w-4" />} title="Office Hours">
@@ -127,7 +256,7 @@ export default function ContactHero() {
               </div>
               <div className="mt-4 flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-2.5 text-xs text-slate-700 sm:px-4 sm:py-3 sm:text-sm">
                 <FiMapPin className="flex-shrink-0 text-amber-500" />
-                <span>Proudly supporting job seekers and employers across Canada. 🍁</span>
+                <span>Proudly supporting job seekers and employers across Canada. </span>
               </div>
             </div>
           </div>

@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import {
   FiSearch,
   FiBriefcase,
@@ -49,6 +50,17 @@ const SOCIALS = [
 ];
 
 export default function HomeCTA() {
+  const navigate = useNavigate();
+
+  // Handle CTA button clicks
+  const handleBrowseJobs = () => {
+    navigate('/browse');
+  };
+
+  const handlePostJob = () => {
+    navigate('/post-a-job');
+  };
+
   return (
     <section className="bg-white">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
@@ -70,21 +82,21 @@ export default function HomeCTA() {
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               {/* Browse Jobs - Teal/Green button */}
-              <a
-                href="#browse-jobs"
+              <button
+                onClick={handleBrowseJobs}
                 className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#0d9488] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#0f766e] sm:w-auto"
               >
                 <FiSearch className="h-4 w-4" />
                 Browse Jobs
-              </a>
+              </button>
               {/* Post a Job - Gold button */}
-              <a
-                href="#post-job"
+              <button
+                onClick={handlePostJob}
                 className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#d4af37] px-6 py-3 text-sm font-semibold text-[#1a2a4a] transition-colors hover:bg-[#b8960f] sm:w-auto"
               >
                 <FiBriefcase className="h-4 w-4" />
                 Post a Job
-              </a>
+              </button>
             </div>
           </div>
         </div>
