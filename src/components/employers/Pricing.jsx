@@ -97,11 +97,11 @@ export default function Pricing() {
           <p className="text-slate-600">Transparent pricing. No hidden fees. Cancel anytime.</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1  lg:grid-cols-3 gap-8 mb-16 ">
           {plans.map((plan, i) => (
             <div
               key={i}
-              className={`bg-white rounded-xl overflow-hidden border ${
+              className={`bg-white rounded-xl overflow-hidden border  ${
                 plan.featured
                   ? "border-teal-800 shadow-lg lg:-translate-y-2"
                   : "border-slate-200"
@@ -134,7 +134,7 @@ export default function Pricing() {
                 </ul>
                 <button
                   onClick={() => handlePlanClick(plan.path)}
-                  className={`w-full py-3 my-3~ rounded-md font-semibold transition ${
+                  className={`w-full py-3 my-3 rounded-md font-semibold transition ${
                     plan.featured
                       ? "bg-teal-800 hover:bg-teal-900 text-white"
                       : "border border-teal-800 text-teal-800 hover:bg-teal-50"

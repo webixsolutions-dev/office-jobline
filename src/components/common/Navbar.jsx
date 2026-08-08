@@ -6,9 +6,10 @@ import { HiOutlineBriefcase } from 'react-icons/hi2'
 import { FiUser, FiLogIn } from 'react-icons/fi'
 import logo from '../../assets/images/logo.png'
 
+// ✅ Data directly in component - No import from data/navigation
 const links = [
   { to: '/', label: 'Home' },
-  { to: '/browse', label: 'Browser Jobs' },
+  { to: '/browse', label: 'Browse Jobs' },
   { to: '/employers', label: 'Employers' },
   { to: '/about-us', label: 'About Us' },
   { to: '/contact-us', label: 'Contact Us' },

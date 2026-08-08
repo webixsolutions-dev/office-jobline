@@ -18,15 +18,144 @@ import {
 } from "react-icons/fi";
 import { HiOutlineOfficeBuilding } from "react-icons/hi";
 import { GiMapleLeaf } from "react-icons/gi";
-import {
-  featuredJobs,
-  filterOptions,
-  filterGroups,
-  jobTypes,
-  salaryRanges,
-  jobCategories,
-} from "../../data/job"; 
-import { provinces } from "../../data/employers";
+
+// ✅ Data directly in component - No import from data/employers
+
+// ============================================
+// PROVINCES DATA (Moved from data/employers)
+// ============================================
+const provinces = [
+  "Ontario",
+  "British Columbia",
+  "Alberta",
+  "Quebec",
+  "Manitoba",
+  "Saskatchewan",
+  "Nova Scotia",        
+  "New Brunswick",
+  "Newfoundland and Labrador",
+  "Prince Edward Island",
+  "Yukon",
+  "Northwest Territories",
+  "Nunavut",
+];
+
+// ============================================
+// FEATURED JOBS DATA
+// ============================================
+const featuredJobs = [
+  {
+    id: 1,
+    title: "Senior React Developer",
+    company: "TechCorp Inc.",
+    location: "Toronto, ON",
+    type: "Full Time",
+    mode: "Remote",
+    pay: "$90,000 - $120,000/yr",
+    desc: "Build and maintain high-performance web applications with a collaborative team.",
+    color: "#0B4FA0",
+    initials: "TC",
+  },
+  {
+    id: 2,
+    title: "UX/UI Designer",
+    company: "Design Studio",
+    location: "Vancouver, BC",
+    type: "Full Time",
+    mode: "Hybrid",
+    pay: "$70,000 - $90,000/yr",
+    desc: "Design intuitive user interfaces and delightful experiences for our products.",
+    color: "#D3222A",
+    initials: "DS",
+  },
+  {
+    id: 3,
+    title: "Full Stack Developer",
+    company: "StartupHub",
+    location: "Montreal, QC",
+    type: "Contract",
+    mode: "Remote",
+    pay: "$80,000 - $100,000/yr",
+    desc: "Work on both frontend and backend systems for our growing platform.",
+    color: "#17A24A",
+    initials: "SH",
+  },
+  {
+    id: 4,
+    title: "Product Manager",
+    company: "Enterprise Co.",
+    location: "Ottawa, ON",
+    type: "Full Time",
+    mode: "On-site",
+    pay: "$100,000 - $130,000/yr",
+    desc: "Lead product strategy and collaborate with cross-functional teams.",
+    color: "#F5A623",
+    initials: "EC",
+  },
+];
+
+// ============================================
+// FILTER OPTIONS
+// ============================================
+const filterOptions = [
+  { label: "Full-Time", value: "full-time" },
+  { label: "Part-Time", value: "part-time" },
+  { label: "Remote", value: "remote" },
+  { label: "Hybrid", value: "hybrid" },
+  { label: "Entry Level", value: "entry-level" },
+  { label: "Contract", value: "contract" },
+];
+
+const filterGroups = {
+  jobType: [
+    ["Full-Time", 3421],
+    ["Part-Time", 893],
+    ["Contract", 453],
+    ["Temporary", 256],
+    ["Internship", 178],
+    ["Seasonal", 95],
+  ],
+  workMode: [
+    ["Remote", 2104],
+    ["Hybrid", 1893],
+    ["On-site", 6250],
+  ],
+  experience: [
+    ["Entry Level", 1245],
+    ["Intermediate", 3421],
+    ["Senior", 2104],
+    ["Manager", 893],
+  ],
+};
+
+const jobTypes = [
+  "Full-Time",
+  "Part-Time",
+  "Contract",
+  "Temporary",
+  "Internship",
+  "Seasonal",
+];
+
+const salaryRanges = [
+  { label: "$30,000 - $40,000", value: "30000-40000" },
+  { label: "$40,000 - $50,000", value: "40000-50000" },
+  { label: "$50,000 - $60,000", value: "50000-60000" },
+  { label: "$60,000 - $70,000", value: "60000-70000" },
+  { label: "$70,000 - $80,000", value: "70000-80000" },
+  { label: "$80,000 - $100,000", value: "80000-100000" },
+];
+
+const jobCategories = {
+  items: [
+    { title: "Administrative" },
+    { title: "Executive Assistant" },
+    { title: "Receptionist" },
+    { title: "Data Entry" },
+    { title: "Customer Service" },
+    { title: "Office Manager" },
+  ],
+};
 
 const GREEN = "#0E5C4C";
 

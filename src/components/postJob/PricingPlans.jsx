@@ -94,11 +94,11 @@ const PlanCard = ({ plan, onGetStarted }) => (
       </div>
 
       <ul className="mt-6 space-y-3 border-t border-slate-100 pt-6">
-        {plan.features.map((f) => (
-          <li key={f} className="flex items-center gap-2 text-sm text-slate-600">
+        {plan.features.map((feature) => (
+          <li key={feature} className="flex items-center gap-2 text-sm text-slate-600">
             <FiCheckCircle className="flex-shrink-0 text-amber-400" />
-            {f}
-            {plan.starred?.includes(f) && (
+            {feature}
+            {plan.starred?.includes(feature) && (
               <span className="ml-1 flex h-4 w-4 items-center justify-center rounded-full bg-amber-400 text-[10px] text-white">
                 ★
               </span>
@@ -121,23 +121,23 @@ const PlanCard = ({ plan, onGetStarted }) => (
   </div>
 );
 
-const TestimonialCard = ({ t, onClick }) => (
+const TestimonialCard = ({ testimonial, onClick }) => (
   <div 
     onClick={onClick}
     className="cursor-pointer rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 transition hover:shadow-md hover:scale-[1.02] sm:p-7"
   >
     <span className="text-3xl font-serif text-amber-400">&ldquo;</span>
-    <p className="-mt-3 text-sm text-slate-600">{t.quote}</p>
+    <p className="-mt-3 text-sm text-slate-600">{testimonial.quote}</p>
     <div className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4">
       <div
         className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-white"
-        style={{ backgroundColor: t.color }}
+        style={{ backgroundColor: testimonial.color }}
       >
-        {t.initials}
+        {testimonial.initials}
       </div>
       <div>
-        <p className="font-bold text-slate-900">{t.name}</p>
-        <p className="text-xs text-slate-500">{t.role}</p>
+        <p className="font-bold text-slate-900">{testimonial.name}</p>
+        <p className="text-xs text-slate-500">{testimonial.role}</p>
       </div>
     </div>
   </div>
@@ -146,17 +146,14 @@ const TestimonialCard = ({ t, onClick }) => (
 export default function PricingPlans() {
   const navigate = useNavigate();
 
-  // Handle Get Started button
   const handleGetStarted = (path) => {
     navigate(path);
   };
 
-  // Handle Contact Sales button
   const handleContactSales = () => {
     navigate("/contact-us");
   };
 
-  // Handle Testimonial click
   const handleTestimonialClick = (path) => {
     navigate(path);
   };
@@ -172,8 +169,8 @@ export default function PricingPlans() {
       </div>
 
       <div className="mx-auto mt-10 grid max-w-6xl items-start gap-6 md:grid-cols-3">
-        {plans.map((p) => (
-          <PlanCard key={p.name} plan={p} onGetStarted={handleGetStarted} />
+        {plans.map((plan) => (
+          <PlanCard key={plan.name} plan={plan} onGetStarted={handleGetStarted} />
         ))}
       </div>
 
@@ -182,11 +179,11 @@ export default function PricingPlans() {
           Trusted by Employers Across Canada
         </h3>
         <div className="mt-8 grid gap-6 md:grid-cols-2">
-          {testimonials.map((t) => (
+          {testimonials.map((testimonial) => (
             <TestimonialCard 
-              key={t.name} 
-              t={t} 
-              onClick={() => handleTestimonialClick(t.path)}
+              key={testimonial.name} 
+              testimonial={testimonial} 
+              onClick={() => handleTestimonialClick(testimonial.path)}
             />
           ))}
         </div>
@@ -199,7 +196,7 @@ export default function PricingPlans() {
             <div>
               <p className="font-bold text-slate-900">Need help choosing the right plan?</p>
               <p className="text-sm text-slate-500">
-                Contact our team and we'll help you find the best solution for your hiring
+                Contact our team and we will help you find the best solution for your hiring
                 goals.
               </p>
             </div>

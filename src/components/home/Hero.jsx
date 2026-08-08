@@ -6,7 +6,14 @@ import { GiMapleLeaf } from "react-icons/gi";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { useState } from 'react';
 
-const STATS = [
+// ✅ Data directly in component - No import from data/hero
+const heroContent = {
+  title: "Find Office & Administrative Jobs Across Canada",
+  description: "Explore office jobs, administrative jobs, receptionist jobs, executive assistant jobs, office coordinator roles, data entry jobs, customer service office roles, and more. Connect with top employers hiring across Canada today.",
+  backgroundImage: "https://media.istockphoto.com/id/2217361086/photo/businesswomen-shaking-hands-while-attending-a-conference-meeting.webp?a=1&b=1&s=612x612&w=0&k=20&c=lNbHeugtq08AhQa6nPZxXlsPQaKb8ThnEByC6QHorjE=",
+};
+
+const heroStats = [
   {
     icon: FiBriefcase,
     value: "10,000+",
@@ -67,7 +74,7 @@ export default function Hero() {
       <div 
         className="relative overflow-hidden bg-offwhite"
         style={{
-          backgroundImage: `url("https://media.istockphoto.com/id/2217361086/photo/businesswomen-shaking-hands-while-attending-a-conference-meeting.webp?a=1&b=1&s=612x612&w=0&k=20&c=lNbHeugtq08AhQa6nPZxXlsPQaKb8ThnEByC6QHorjE=")`,
+          backgroundImage: `url("${heroContent.backgroundImage}")`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -75,25 +82,20 @@ export default function Hero() {
         {/* Background overlay on left side - blur removed */}
         <div className="absolute left-0 top-0 h-full w-1/2 bg-gradient-to-r from-white/90 via-white/60 to-transparent lg:w-2/5" />
         
-        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-14 sm:px-6 lg:grid-cols-2 lg:gap-8 lg:px-8 lg:py-0">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-10 sm:px-6 lg:grid-cols-2 lg:gap-8 lg:px-8 lg:py-0">
           {/* Text content */}
           <div className="relative z-10 lg:py-24">
             <h1 className="font-display text-4xl font-extrabold leading-tight text-navy sm:text-5xl lg:text-[3.4rem]">
-              Find Office &amp; Administrative Jobs Across Canada
+              {heroContent.title}
             </h1>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-navy/80 sm:text-lg">
-              Explore office jobs, administrative jobs, receptionist jobs,
-              executive assistant jobs, office coordinator roles, data entry
-              jobs, customer service office roles, and more. Connect with top
-              employers hiring across Canada today.
+              {heroContent.description}
             </p>
           </div>
-
-          {/* Optional: Image overlay removed since we're using background image */}
         </div>
 
         {/* Search bar */}
-        <div className="relative z-10 mx-auto max-w-7xl px-4 pb-14 sm:px-6 lg:absolute lg:bottom-0 lg:left-0 lg:right-auto lg:w-full lg:px-8 lg:pb-12">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 pb-14  sm:px-6 lg:absolute lg:bottom-0 lg:left-0 lg:right-auto lg:w-full lg:px-8 lg:pb-12">
           <div className="flex flex-col gap-3 rounded-2xl bg-white p-3 shadow-xl ring-1 ring-black/5 sm:flex-row sm:items-center lg:max-w-3xl">
             <div className="flex flex-1 items-center gap-3 px-3 py-2">
               <FiSearch className="h-5 w-5 shrink-0 text-muted" />
@@ -132,7 +134,7 @@ export default function Hero() {
       {/* Stats row */}
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {STATS.map(({ icon: Icon, value, label, desc, path }) => (
+          {heroStats.map(({ icon: Icon, value, label, desc, path }) => (
             <div
               key={label}
               onClick={() => handleStatClick(path)}

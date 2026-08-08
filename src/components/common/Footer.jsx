@@ -4,6 +4,7 @@ import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from 'react-icons/f
 import { GiMapleLeaf } from 'react-icons/gi';
 import logo from '../../assets/images/logo.png'
 
+// ✅ Data directly in component - No import from data/navigation
 const quickLinks = [
   { to: '/', label: 'Home' },
   { to: '/browse', label: 'Browse Jobs' },

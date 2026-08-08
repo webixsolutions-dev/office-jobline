@@ -1,8 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FaBriefcase, FaCommentDots, FaUsers, FaBolt, FaChartBar } from "react-icons/fa";
+import { FaBriefcase, FaCommentDots, FaUsers, FaBolt, FaChartBar, FaUserTie } from "react-icons/fa";
 import { GiMapleLeaf } from "react-icons/gi";
 
+// ✅ Data directly in component - No import from data/employers
+
+// ============================================
+// FEATURES DATA
+// ============================================
 const features = [
   {
     icon: <FaUsers className="text-teal-800 text-2xl" />,
@@ -34,6 +39,93 @@ const features = [
   },
 ];
 
+// ============================================
+// EMPLOYER STATS
+// ============================================
+const employerStats = [
+  {
+    icon: FaUsers,
+    value: "10,248+",
+    label: "Active Office Jobs",
+    desc: "New office & administrative jobs posted every day.",
+  },
+  {
+    icon: FaUserTie,
+    value: "2,350+",
+    label: "Employers Hiring",
+    desc: "Trusted companies actively hiring across Canada.",
+  },
+  {
+    icon: GiMapleLeaf,
+    value: "",
+    label: "Canada-Wide Opportunities",
+    desc: "Find the right job wherever you are in Canada.",
+  },
+];
+
+// ============================================
+// FEATURED EMPLOYERS
+// ============================================
+const featuredEmployers = {
+  title: "Featured Employers Hiring Office Talent",
+  description: "Trusted Canadian companies actively hiring office and administrative professionals.",
+  viewMore: "View More Employers",
+  items: [
+    { name: "RBC", jobs: "120+ Office Jobs", location: "Toronto, ON", color: "#0B4FA0", mark: "RBC" },
+    { name: "Scotiabank", jobs: "85+ Office Jobs", location: "Across Canada", color: "#D3222A", mark: "S" },
+    { name: "TD Bank Group", jobs: "90+ Office Jobs", location: "Across Canada", color: "#17A24A", mark: "TD" },
+    { name: "Sun Life", jobs: "60+ Office Jobs", location: "Toronto, ON", color: "#F5A623", mark: "☀" },
+    { name: "TELUS", jobs: "70+ Office Jobs", location: "Vancouver, BC", color: "#4B2E83", mark: "T" },
+    { name: "Loblaw Companies Limited", jobs: "55+ Office Jobs", location: "Brampton, ON", color: "#1A1A1A", mark: "L" },
+  ],
+};
+
+// ============================================
+// CITIES DATA
+// ============================================
+const cities = {
+  title: "Browse Office Jobs by City",
+  description: "Find office and administrative jobs in Canada's top cities.",
+  viewAll: "View All Cities",
+  items: [
+    { name: "Toronto, ON", jobs: "4,512 jobs", path: "/browse" },
+    { name: "Calgary, AB", jobs: "1,893 jobs", path: "/browse" },
+    { name: "Vancouver, BC", jobs: "2,104 jobs", path: "/browse" },
+    { name: "Edmonton, AB", jobs: "1,245 jobs", path: "/browse" },
+    { name: "Winnipeg, MB", jobs: "876 jobs", path: "/browse" },
+    { name: "Ottawa, ON", jobs: "1,621 jobs", path: "/browse" },
+  ],
+};
+
+// ============================================
+// PROVINCES DATA
+// ============================================
+const provinces = [
+  "Ontario",
+  "British Columbia",
+  "Alberta",
+  "Quebec",
+  "Manitoba",
+  "Saskatchewan",
+  "Nova Scotia",        
+  "New Brunswick",
+  "Newfoundland and Labrador",
+  "Prince Edward Island",
+  "Yukon",
+  "Northwest Territories",
+  "Nunavut",
+];
+
+// ============================================
+// EMPLOYER CTA
+// ============================================
+const employerCTA = {
+  title: "Ready to Hire Office Talent Across Canada?",
+  description: "Post your job and connect with qualified office professionals from coast to coast.",
+  postButton: { label: "Post a Job", path: "/post-a-job" },
+  salesButton: { label: "Contact Sales", path: "/contact-us" },
+};
+
 export default function EmployerHero() {
   const navigate = useNavigate();
 
@@ -54,6 +146,7 @@ export default function EmployerHero() {
 
   return (
     <section className="w-full bg-white">
+      {/* Hero Section */}
       <div className="relative bg-slate-50 overflow-hidden">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 px-6 sm:px-10 py-12 lg:py-20 items-center">
           <div>
@@ -95,6 +188,7 @@ export default function EmployerHero() {
         </div>
       </div>
 
+      {/* Features Grid */}
       <div className="max-w-7xl mx-auto px-6 sm:px-10 py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((f, i) => (

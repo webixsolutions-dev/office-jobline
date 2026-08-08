@@ -15,12 +15,57 @@ import {
 } from "react-icons/fi";
 import { HiOutlineOfficeBuilding } from "react-icons/hi";
 import { FaCalculator, FaUserTie, FaConciergeBell, FaIdCard } from "react-icons/fa";
-import {
-  jobCategories,
-  featuredEmployers,
-  cities,
-  categoryCTA,
-} from "../../data/job";
+
+// ✅ Data directly in component - No import from data/job
+const jobCategories = {
+  title: "Popular Office Job Categories",
+  description: "Explore the most in-demand office and administrative jobs across Canada.",
+  items: [
+    { icon: FiUser, title: "Administrative Assistant", jobs: "3,245 jobs", path: "/browse" },
+    { icon: FaConciergeBell, title: "Receptionist", jobs: "1,892 jobs", path: "/browse" },
+    { icon: FiBriefcase, title: "Executive Assistant", jobs: "1,567 jobs", path: "/browse" },
+    { icon: FiUsers, title: "Office Manager", jobs: "1,234 jobs", path: "/browse" },
+    { icon: FiFileText, title: "Data Entry", jobs: "2,345 jobs", path: "/browse" },
+    { icon: FiHeadphones, title: "Customer Service", jobs: "2,789 jobs", path: "/browse" },
+    { icon: FaCalculator, title: "Payroll Clerk", jobs: "987 jobs", path: "/browse" },
+    { icon: FaIdCard, title: "HR Support", jobs: "1,114 jobs", path: "/browse" },
+  ],
+};
+
+const featuredEmployers = {
+  title: "Featured Employers Hiring Office Talent",
+  description: "Trusted Canadian companies actively hiring office and administrative professionals.",
+  viewMore: "View More Employers",
+  items: [
+    { name: "RBC", jobs: "120+ Office Jobs", location: "Toronto, ON", color: "#0B4FA0", mark: "RBC", path: "/employers" },
+    { name: "Scotiabank", jobs: "85+ Office Jobs", location: "Across Canada", color: "#D3222A", mark: "S", path: "/employers" },
+    { name: "TD Bank Group", jobs: "90+ Office Jobs", location: "Across Canada", color: "#17A24A", mark: "TD", path: "/employers" },
+    { name: "Sun Life", jobs: "60+ Office Jobs", location: "Toronto, ON", color: "#F5A623", mark: "☀", path: "/employers" },
+    { name: "TELUS", jobs: "70+ Office Jobs", location: "Vancouver, BC", color: "#4B2E83", mark: "T", path: "/employers" },
+    { name: "Loblaw Companies Limited", jobs: "55+ Office Jobs", location: "Brampton, ON", color: "#1A1A1A", mark: "L", path: "/employers" },
+  ],
+};
+
+const cities = {
+  title: "Browse Office Jobs by City",
+  description: "Find office and administrative jobs in Canada's top cities.",
+  viewAll: "View All Cities",
+  items: [
+    { name: "Toronto, ON", jobs: "4,512 jobs", path: "/browse" },
+    { name: "Calgary, AB", jobs: "1,893 jobs", path: "/browse" },
+    { name: "Vancouver, BC", jobs: "2,104 jobs", path: "/browse" },
+    { name: "Edmonton, AB", jobs: "1,245 jobs", path: "/browse" },
+    { name: "Winnipeg, MB", jobs: "876 jobs", path: "/browse" },
+    { name: "Ottawa, ON", jobs: "1,621 jobs", path: "/browse" },
+  ],
+};
+
+const categoryCTA = {
+  title: "Don't Miss Your Next Opportunity",
+  description: "Create job alerts and be the first to know about new office jobs that match your skills and experience.",
+  alertButton: "Create Job Alert",
+  uploadButton: "Upload Your Resume",
+};
 
 const GREEN = "#0E5C4C";
 

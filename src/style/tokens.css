@@ -1,0 +1,164 @@
+/* src/styles/tokens.css */
+/* ============================================
+   DESIGN TOKENS - Centralized Theme Variables
+   ============================================ */
+
+/* ============================================
+   1. BRAND COLORS (Different per site)
+   ============================================ */
+:root {
+  /* Primary Brand Colors - Office Jobline */
+  --color-primary: #0B1B3A;           /* navy-950 */
+  --color-primary-light: #1a2d5a;
+  --color-primary-dark: #060f1f;
+  --color-primary-rgb: 11, 27, 58;
+  
+  --color-secondary: #D4A843;          /* gold-500 */
+  --color-secondary-light: #e8c86a;
+  --color-secondary-dark: #b8922e;
+  --color-secondary-rgb: 212, 168, 67;
+  
+  /* Surface Colors */
+  --color-background: #f7f8fb;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f8f9fa;
+  
+  /* Text Colors */
+  --color-text: #0B1B3A;
+  --color-text-secondary: #1e293b;
+  --color-text-muted: #64748b;
+  --color-text-inverse: #ffffff;
+}
+
+/* ============================================
+   2. STATUS COLORS (Same across all sites)
+   ============================================ */
+:root {
+  --status-success: #10b981;           /* Emerald */
+  --status-success-bg: #ecfdf5;
+  --status-success-text: #065f46;
+  
+  --status-warning: #f59e0b;           /* Amber */
+  --status-warning-bg: #fffbeb;
+  --status-warning-text: #92400e;
+  
+  --status-error: #ef4444;             /* Rose */
+  --status-error-bg: #fff1f2;
+  --status-error-text: #9f1239;
+  
+  --status-info: #3b82f6;              /* Blue */
+  --status-info-bg: #eff6ff;
+  --status-info-text: #1e3a8a;
+  
+  --status-neutral: #94a3b8;           /* Slate */
+  --status-neutral-bg: #f1f5f9;
+  --status-neutral-text: #475569;
+}
+
+/* ============================================
+   3. SPACING TOKENS
+   ============================================ */
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+}
+
+/* ============================================
+   4. TYPOGRAPHY TOKENS
+   ============================================ */
+:root {
+  --font-family-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  --font-size-xs: 0.75rem;      /* 12px */
+  --font-size-sm: 0.875rem;     /* 14px */
+  --font-size-base: 1rem;       /* 16px */
+  --font-size-lg: 1.125rem;     /* 18px */
+  --font-size-xl: 1.25rem;      /* 20px */
+  --font-size-2xl: 1.5rem;      /* 24px */
+  --font-size-3xl: 1.875rem;    /* 30px */
+  --font-size-4xl: 2.25rem;     /* 36px */
+  --font-size-5xl: 3rem;        /* 48px */
+  --font-size-6xl: 3.75rem;     /* 60px */
+  
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+}
+
+/* ============================================
+   5. BORDER RADIUS TOKENS
+   ============================================ */
+:root {
+  --radius-none: 0;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-3xl: 32px;
+  --radius-full: 9999px;
+}
+
+/* ============================================
+   6. SHADOW TOKENS
+   ============================================ */
+:root {
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.10);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+  --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.25);
+  
+  --shadow-primary: 0 4px 14px rgba(var(--color-primary-rgb), 0.15);
+  --shadow-secondary: 0 4px 14px rgba(var(--color-secondary-rgb), 0.20);
+}
+
+/* ============================================
+   7. TRANSITION TOKENS
+   ============================================ */
+:root {
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 350ms ease;
+  --transition-slower: 500ms ease;
+}
+
+/* ============================================
+   8. Z-INDEX TOKENS
+   ============================================ */
+:root {
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-modal: 30;
+  --z-toast: 40;
+  --z-tooltip: 50;
+}
+
+/* ============================================
+   9. CONTAINER TOKENS
+   ============================================ */
+:root {
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+  --container-2xl: 1536px;
+}
