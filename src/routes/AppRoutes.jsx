@@ -10,6 +10,7 @@ import ContactUs from '../pages/ContactUs';
 import SignIn from '../pages/auth/SignIn';
 import SignUp from '../pages/auth/SignUp';
 import Pricing from '../components/employers/Pricing';
+import ComingSoonPage from '../pages/ComingSoonPage';
 
 import DashboardLayout from '../components/dashboard/common/DashboardLayout';
 
@@ -143,6 +144,10 @@ function AppRoutes() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/pricing" element={<Pricing />} />
+        <Route path="/privacy-policy" element={<ComingSoonPage title="Privacy Policy" />} />
+        <Route path="/terms-of-service" element={<ComingSoonPage title="Terms of Use" />} />
+        <Route path="/accessibility" element={<ComingSoonPage title="Accessibility" />} />
+        <Route path="/sitemap" element={<ComingSoonPage title="Sitemap" />} />
 
         {/* Job Seeker Dashboard Routes - /dashboard/* */}
         <Route path="/dashboard" element={<DashboardLayout {...seekerDashboardProps} />}>

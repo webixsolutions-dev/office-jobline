@@ -1,52 +1,54 @@
-import { FiArrowRight, FiHeadphones, FiBriefcase, FiMail } from "react-icons/fi";
+import { FiArrowRight, FiHeadphones, FiBriefcase, FiMail } from 'react-icons/fi'
+import IconCircle from '../ui/IconCircle'
+import { contactInfo } from '../../constants/contactInfo'
 
-const CONTACT_CARDS = [
+const cards = [
   {
     icon: FiHeadphones,
-    title: "Job Seeker Support",
-    desc: "Need help with your account, applications, or career resources?",
-    email: "support@officejobline.ca",
+    title: 'Job Seeker Support',
+    desc: 'Need help with your account, applications, or career resources?',
+    email: contactInfo.support.seeker,
   },
   {
     icon: FiBriefcase,
-    title: "Employer Support",
-    desc: "Get assistance with postings, plans, or finding the right talent.",
-    email: "employers@officejobline.ca",
+    title: 'Employer Support',
+    desc: 'Get assistance with postings, plans, or finding the right talent.',
+    email: contactInfo.support.employer,
   },
   {
     icon: FiMail,
-    title: "General Inquiries",
+    title: 'General Inquiries',
     desc: "Have a question or feedback? We'd love to hear from you.",
-    email: "info@officejobline.ca",
+    email: contactInfo.support.general,
   },
-];
+]
 
 export default function ContactCards() {
   return (
-    <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-3">
-      {CONTACT_CARDS.map(({ icon: Icon, title, desc, email }) => (
-        <div
-          key={title}
-          className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm"
-        >
-          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#ccfbf1]">
-            <Icon className="h-6 w-6 text-[#0d9488]" />
-          </span>
-          <p className="mt-4 font-display text-base font-bold text-[#1a2a4a]">
-            {title}
-          </p>
-          <p className="mt-2 text-sm leading-relaxed text-gray-500">
-            {desc}
-          </p>
-          <a
-            href={`mailto:${email}`}
-            className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#0d9488] hover:text-[#0f766e]"
-          >
-            {email}
-            <FiArrowRight className="h-4 w-4" />
-          </a>
+    <section className="bg-offwhite" aria-label="Ways to contact us">
+      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+          {cards.map(({ icon, title, desc, email }) => (
+            <article
+              key={title}
+              className="flex items-start gap-4 rounded-xl bg-white p-6 shadow-card"
+            >
+              <IconCircle icon={icon} color="teal" />
+              <div>
+                <h3 className="font-display text-lg font-semibold text-navy">{title}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted">{desc}</p>
+                <a
+                  href={`mailto:${email}`}
+                  className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-teal hover:text-teal-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+                >
+                  {email}
+                  <FiArrowRight className="h-4 w-4" aria-hidden />
+                </a>
+              </div>
+            </article>
+          ))}
         </div>
-      ))}
-    </div>
-  );
+      </div>
+    </section>
+  )
 }

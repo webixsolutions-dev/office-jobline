@@ -1,82 +1,63 @@
-import { NavLink, useNavigate } from 'react-router-dom'
-import { HiOutlineBriefcase, HiOutlineMail, HiOutlinePhone, HiOutlineLocationMarker } from 'react-icons/hi'
-import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
-import { GiMapleLeaf } from 'react-icons/gi';
+import { NavLink } from 'react-router-dom'
+import {
+  HiOutlineMail,
+  HiOutlinePhone,
+  HiOutlineLocationMarker,
+  HiOutlineClock,
+} from 'react-icons/hi'
+import { FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube } from 'react-icons/fa'
+import { GiMapleLeaf } from 'react-icons/gi'
 import logo from '../../assets/images/logo.png'
+import { contactInfo } from '../../constants/contactInfo'
+import {
+  footerQuickLinks,
+  footerEmployerLinks,
+  footerLegalLinks,
+} from '../../constants/navLinks'
 
-// ✅ Data directly in component - No import from data/navigation
-const quickLinks = [
-  { to: '/', label: 'Home' },
-  { to: '/browse', label: 'Browse Jobs' },
-  { to: '/employers', label: 'Employers' },
-  { to: '/about-us', label: 'About Us' },
-  { to: '/contact-us', label: 'Contact Us' },
-  { to: '/browse', label: 'Job Alerts' },
-  { to: '/browse', label: 'Career Resources' },
-]
-
-const employerLinks = [
-  { to: '/post-a-job', label: 'Post a Job' },
-  { to: '/employers', label: 'Browse Resumes' },
-  { to: '/pricing', label: 'Employer Pricing' },
-  { to: '/employers', label: 'Recruitment Solutions' },
-  { to: '/post-a-job', label: 'Job Posting Tips' },
-  { to: '/contact-us', label: 'Contact Sales' },
-]
-
-const socialLinks = [
-  { icon: FaFacebookF, url: 'https://facebook.com', label: 'Facebook' },
-  { icon: FaTwitter, url: 'https://twitter.com', label: 'Twitter' },
-  { icon: FaLinkedinIn, url: 'https://linkedin.com', label: 'LinkedIn' },
-  { icon: FaInstagram, url: 'https://instagram.com', label: 'Instagram' },
-]
+const socialIcons = {
+  LinkedIn: FaLinkedinIn,
+  Facebook: FaFacebookF,
+  Instagram: FaInstagram,
+  YouTube: FaYoutube,
+}
 
 export default function Footer() {
-  const navigate = useNavigate();
-
-  const handleSocialClick = (url) => {
-    window.open(url, '_blank');
-  };
-
   return (
-    <footer className="bg-navy-950 text-slate-300">
+    <footer className="bg-navy text-slate-300">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
-          {/* Brand Section */}
           <div>
-            <img src={logo} alt="Office Jobline" className='w-50 h-auto' />
-            <p className="mt-4 text-sm leading-relaxed text-slate-400">
-              Office Jobline connects employers with skilled office and administrative 
-              professionals across Canada. Post jobs, find top talent, and grow your 
-              team with ease.
-            </p>
-            <div className="mt-5 flex gap-3">
-              {socialLinks.map(({ icon: Icon, url, label }) => (
-                <button
-                  key={label}
-                  onClick={() => handleSocialClick(url)}
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-white/5 text-slate-300 transition hover:bg-gold-500 hover:text-navy-950"
-                  aria-label={label}
-                >
-                  <Icon className="h-4 w-4" />
-                </button>
-              ))}
+            <img src={logo} alt="Office Jobline" className="h-auto w-44 sm:w-52" />
+            <p className="mt-4 text-sm leading-relaxed text-white/70">{contactInfo.tagline}</p>
+            <div className="my-5 h-px w-24 bg-gold" aria-hidden />
+            <div className="flex gap-3">
+              {contactInfo.socials.map(({ name, url }) => {
+                const Icon = socialIcons[name]
+                return (
+                  <a
+                    key={name}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-white/40 text-white transition hover:border-gold hover:bg-gold hover:text-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+                    aria-label={name}
+                  >
+                    {Icon && <Icon className="h-4 w-4" />}
+                  </a>
+                )
+              })}
             </div>
           </div>
 
-          {/* Quick Links */}
           <div>
-            <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-white">
-              Quick Links
-            </h4>
+            <h2 className="font-display text-sm font-semibold text-white">Quick Links</h2>
             <ul className="mt-4 space-y-3 text-sm">
-              {quickLinks.map((l) => (
+              {footerQuickLinks.map((l) => (
                 <li key={l.label}>
-                  <NavLink 
-                    to={l.to} 
-                    className={({ isActive }) => 
-                      `transition hover:text-gold-500 ${isActive ? 'text-gold-500' : 'text-slate-400'}`
-                    }
+                  <NavLink
+                    to={l.to}
+                    className="text-white/70 transition hover:text-gold"
                   >
                     {l.label}
                   </NavLink>
@@ -85,19 +66,14 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* For Employers */}
           <div>
-            <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-white">
-              For Employers
-            </h4>
+            <h2 className="font-display text-sm font-semibold text-white">For Employers</h2>
             <ul className="mt-4 space-y-3 text-sm">
-              {employerLinks.map((l) => (
+              {footerEmployerLinks.map((l) => (
                 <li key={l.label}>
-                  <NavLink 
-                    to={l.to} 
-                    className={({ isActive }) => 
-                      `transition hover:text-gold-500 ${isActive ? 'text-gold-500' : 'text-slate-400'}`
-                    }
+                  <NavLink
+                    to={l.to}
+                    className="text-white/70 transition hover:text-gold"
                   >
                     {l.label}
                   </NavLink>
@@ -106,43 +82,45 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact Us */}
           <div>
-            <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-white">
-              Contact Us
-            </h4>
-            <ul className="mt-4 space-y-3 text-sm text-slate-400">
+            <h2 className="font-display text-sm font-semibold text-white">Contact Us</h2>
+            <ul className="mt-4 space-y-3 text-sm text-white/70">
               <li className="flex items-start gap-2.5">
-                <HiOutlineLocationMarker className="mt-0.5 h-4 w-4 shrink-0 text-gold-500" />
-                <span>1 Yonge Street, Suite 1801, Toronto, ON M5E 1W7</span>
+                <HiOutlineLocationMarker className="mt-0.5 h-4 w-4 shrink-0 text-gold" aria-hidden />
+                <span>{contactInfo.address}</span>
               </li>
               <li className="flex items-center gap-2.5">
-                <HiOutlinePhone className="h-4 w-4 shrink-0 text-gold-500" />
-                <span>1-888-555-0123</span>
+                <HiOutlineMail className="h-4 w-4 shrink-0 text-gold" aria-hidden />
+                <a href={`mailto:${contactInfo.email}`} className="hover:text-gold">
+                  {contactInfo.email}
+                </a>
               </li>
               <li className="flex items-center gap-2.5">
-                <HiOutlineMail className="h-4 w-4 shrink-0 text-gold-500" />
-                <span>hello@officejobline.ca</span>
+                <HiOutlinePhone className="h-4 w-4 shrink-0 text-gold" aria-hidden />
+                <a href={`tel:${contactInfo.phone.replace(/[^\d+]/g, '')}`} className="hover:text-gold">
+                  {contactInfo.phone}
+                </a>
               </li>
               <li className="flex items-center gap-2.5">
-                <HiOutlineBriefcase className="h-4 w-4 shrink-0 text-gold-500" />
-                <span>Mon - Fri: 8:00 AM - 6:00 PM EST</span>
+                <HiOutlineClock className="h-4 w-4 shrink-0 text-gold" aria-hidden />
+                <span>{contactInfo.hours}</span>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-sm text-slate-500 sm:flex-row">
-          <p className="flex items-center gap-2">
-            <GiMapleLeaf className="h-4 w-4 text-gold-500" />
-            © {new Date().getFullYear()} Office Jobline. All rights reserved.
-          </p>
-          <div className="flex gap-6">
-            <NavLink to="/privacy-policy" className="hover:text-gold-500">Privacy Policy</NavLink>
-            <NavLink to="/terms-of-service" className="hover:text-gold-500">Terms of Service</NavLink>
-            <NavLink to="/accessibility" className="hover:text-gold-500">Accessibility</NavLink>
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-gold/80 pt-8 text-sm text-white/60 sm:flex-row">
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+            {footerLegalLinks.map((l) => (
+              <NavLink key={l.label} to={l.to} className="hover:text-gold">
+                {l.label}
+              </NavLink>
+            ))}
           </div>
+          <p className="flex items-center gap-2 text-white/80">
+            <GiMapleLeaf className="h-4 w-4 text-gold" aria-hidden />
+            Proudly Canadian
+          </p>
         </div>
       </div>
     </footer>

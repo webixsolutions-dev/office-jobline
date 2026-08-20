@@ -8,26 +8,40 @@
    ============================================ */
 :root {
   /* Primary Brand Colors - Office Jobline */
-  --color-primary: #0B1B3A;           /* navy-950 */
-  --color-primary-light: #1a2d5a;
+  --color-navy: #0A1F3D;
+  --color-navy-light: #0F2A4D;
+  --color-gold: #F2B705;
+  --color-gold-dark: #D9A404;
+  --color-teal: #0E5D4E;
+  --color-teal-light: #E4F1EC;
+  --color-gold-tint: #FDF3DC;
+  --color-bg-page: #F7F8FA;
+  --color-white: #FFFFFF;
+  --color-text-primary: #0A1F3D;
+  --color-text-secondary: #5B6472;
+  --color-border: #E5E8EC;
+
+  --color-primary: #0A1F3D;
+  --color-primary-light: #0F2A4D;
   --color-primary-dark: #060f1f;
-  --color-primary-rgb: 11, 27, 58;
-  
-  --color-secondary: #D4A843;          /* gold-500 */
-  --color-secondary-light: #e8c86a;
-  --color-secondary-dark: #b8922e;
-  --color-secondary-rgb: 212, 168, 67;
-  
+  --color-primary-rgb: 10, 31, 61;
+
+  --color-secondary: #F2B705;
+  --color-secondary-light: #f0cd6e;
+  --color-secondary-dark: #D9A404;
+  --color-secondary-rgb: 242, 183, 5;
+
   /* Surface Colors */
-  --color-background: #f7f8fb;
+  --color-background: #F7F8FA;
   --color-surface: #ffffff;
   --color-surface-alt: #f8f9fa;
-  
+
   /* Text Colors */
-  --color-text: #0B1B3A;
-  --color-text-secondary: #1e293b;
-  --color-text-muted: #64748b;
+  --color-text: #0A1F3D;
+  --color-text-muted: #5B6472;
   --color-text-inverse: #ffffff;
+
+  --shadow-card: 0 2px 12px rgba(10, 31, 61, 0.06);
 }
 
 /* ============================================

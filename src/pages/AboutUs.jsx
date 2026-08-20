@@ -1,23 +1,27 @@
-import React from 'react'
 import AboutHero from '../components/about/AboutHero'
-import MissionValues from '../components/about/MissionValues'
+import WhoWeAre from '../components/about/WhoWeAre'
+import OurMission from '../components/about/OurMission'
+import OurValues from '../components/about/OurValues'
+import StatsStrip from '../components/about/StatsStrip'
 import HowWeHelp from '../components/about/HowWeHelp'
-import AboutCTAFooter from '../components/about/AboutCTA'
+import FeatureHighlights from '../components/about/FeatureHighlights'
+import Testimonials from '../components/about/Testimonials'
+import AboutCTA from '../components/about/AboutCTA'
 import ContactCards from '../components/about/ContactCard'
 
-const AboutUs = () => {
+export default function AboutUs() {
   return (
-    <div>
- <AboutHero/>
- <MissionValues/>
- <HowWeHelp/>
- <ContactCards/>
- <AboutCTAFooter/>
-
-
-
-    </div>
+    <>
+      <AboutHero />
+      <WhoWeAre />
+      <OurMission />
+      <OurValues />
+      <StatsStrip />
+      <HowWeHelp />
+      <FeatureHighlights />
+      <Testimonials />
+      <AboutCTA />
+      <ContactCards />
+    </>
   )
 }
-
-export default AboutUs

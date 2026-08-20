@@ -1,111 +1,49 @@
-import {
-  FiSearch,
-  FiBriefcase,
-  FiMail,
-  FiArrowRight,
-  FiMapPin,
-  FiPhone,
-  FiClock,
-  FiHeadphones,
-} from "react-icons/fi";
-import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
-import { GiMapleLeaf } from "react-icons/gi";
-import { FaLinkedinIn, FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { FiSearch, FiBriefcase } from 'react-icons/fi'
+import { GiMapleLeaf } from 'react-icons/gi'
+import Button from '../ui/Button'
 
-const CONTACT_CARDS = [
-  {
-    icon: FiHeadphones,
-    title: "Job Seeker Support",
-    desc: "Need help with your account, applications, or career resources?",
-    email: "support@officejobline.ca",
-  },
-  {
-    icon: FiBriefcase,
-    title: "Employer Support",
-    desc: "Get assistance with postings, plans, or finding the right talent.",
-    email: "employers@officejobline.ca",
-  },
-  {
-    icon: FiMail,
-    title: "General Inquiries",
-    desc: "Have a question or feedback? We'd love to hear from you.",
-    email: "info@officejobline.ca",
-  },
-];
-
-const QUICK_LINKS = ["Browse Jobs", "Employers", "About Us", "Contact Us", "Career Resources"];
-const EMPLOYER_LINKS = [
-  "Post a Job",
-  "Browse Resumes",
-  "Hiring Solutions",
-  "Pricing",
-  "Employer Support",
-];
-const SOCIALS = [
-  { icon: FaLinkedinIn, label: "LinkedIn" },
-  { icon: FaFacebookF, label: "Facebook" },
-  { icon: FaInstagram, label: "Instagram" },
-  { icon: FaYoutube, label: "YouTube" },
-];
-
-export default function AboutCTAFooter() {
-  const navigate = useNavigate();
-
-  // Handle Browse Jobs
-  const handleBrowseJobs = () => {
-    navigate("/browse");
-  };
-
-  // Handle Post a Job
-  const handlePostJob = () => {
-    navigate("/post-a-job");
-  };
-
+function SkylineGraphic() {
   return (
-    <section className="bg-white">
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        {/* CTA banner - Navy background with gold accent */}
-        <div className="relative overflow-hidden rounded-2xl bg-[#1a2a4a] px-6 py-14 text-center sm:px-10">
-          <HiOutlineBuildingOffice2 className="pointer-events-none absolute -right-6 bottom-0 hidden h-64 w-64 text-white/5 sm:block" />
-          <div className="relative">
-            <h2 className="font-display text-3xl font-extrabold text-white sm:text-4xl">
-              Ready to Find Office Opportunities or Hire Great Talent?
-            </h2>
-            <div className="mt-5 flex items-center justify-center gap-4">
-              <span className="h-px w-24 bg-[#d4af37]" />
-              <GiMapleLeaf className="h-4 w-4 shrink-0 text-[#d4af37]" />
-              <span className="h-px w-24 bg-[#d4af37]" />
-            </div>
-            <p className="mx-auto mt-5 max-w-2xl text-sm text-white/75 sm:text-base">
-              Join thousands of office professionals and employers building
-              successful careers and teams across Canada.
-            </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              {/* Browse Jobs - Teal/Green button */}
-              <button
-                onClick={handleBrowseJobs}
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#0d9488] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#0f766e] sm:w-auto"
-              >
-                <FiSearch className="h-4 w-4" />
-                Browse Jobs
-              </button>
-              {/* Post a Job - Gold button */}
-              <button
-                onClick={handlePostJob}
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#d4af37] px-6 py-3 text-sm font-semibold text-[#1a2a4a] transition-colors hover:bg-[#b8960f] sm:w-auto"
-              >
-                <FiBriefcase className="h-4 w-4" />
-                Post a Job
-              </button>
-            </div>
-          </div>
+    <svg
+      viewBox="0 0 480 280"
+      className="pointer-events-none absolute right-0 top-1/2 hidden h-[140%] w-[46%] -translate-y-1/2 text-white/10 lg:block"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      aria-hidden
+    >
+      <rect x="40" y="80" width="70" height="180" />
+      <rect x="120" y="40" width="90" height="220" />
+      <rect x="220" y="100" width="60" height="160" />
+      <rect x="290" y="20" width="80" height="240" />
+      <rect x="380" y="70" width="70" height="190" />
+      <path d="M330 20 L350 0 L370 20" />
+    </svg>
+  )
+}
+
+export default function AboutCTA() {
+  return (
+    <section className="relative overflow-hidden bg-navy">
+      <SkylineGraphic />
+      <div className="relative mx-auto max-w-4xl px-4 py-16 text-center sm:px-6 lg:px-8 lg:py-20">
+        <h2 className="font-display text-3xl font-bold text-white sm:text-4xl">
+          Ready to Find Office Opportunities or Hire Great Talent?
+        </h2>
+        <GiMapleLeaf className="mx-auto mt-5 h-5 w-5 text-gold" aria-hidden />
+        <p className="mx-auto mt-5 max-w-2xl text-sm text-white/80 sm:text-base">
+          Join thousands of office professionals and employers building successful careers and
+          teams across Canada.
+        </p>
+        <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <Button variant="teal" to="/browse" icon={FiSearch} className="w-full sm:w-auto">
+            Browse Jobs
+          </Button>
+          <Button variant="gold" to="/post-a-job" icon={FiBriefcase} className="w-full sm:w-auto">
+            Post a Job
+          </Button>
         </div>
-
-      
       </div>
-
-    
     </section>
-  );
+  )
 }
