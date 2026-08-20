@@ -31,15 +31,16 @@ export default function FAQAccordionItem({ question, answer, id }) {
           />
         </button>
       </h3>
-      <div
-        id={panelId}
-        role="region"
-        aria-labelledby={buttonId}
-        hidden={!open}
-        className={open ? 'px-6 pb-4 text-sm leading-relaxed text-muted' : ''}
-      >
-        {answer}
-      </div>
+      {open ? (
+        <div
+          id={panelId}
+          role="region"
+          aria-labelledby={buttonId}
+          className="px-6 pb-4 text-sm leading-relaxed text-muted"
+        >
+          {answer}
+        </div>
+      ) : null}
     </div>
   )
 }

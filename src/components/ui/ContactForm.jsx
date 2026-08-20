@@ -27,7 +27,9 @@ export default function ContactForm() {
   const [status, setStatus] = useState('idle')
 
   useEffect(() => {
-    const fromQuery = searchParams.get('subject')
+    const topic = searchParams.get('topic')
+    const fromQuery =
+      searchParams.get('subject') || (topic === 'sales' ? 'employer' : null)
     if (fromQuery) {
       const match = contactSubjects.find((s) => s.value === fromQuery)
       if (match) {

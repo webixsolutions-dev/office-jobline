@@ -64,7 +64,7 @@ export default function Navbar() {
             Post a Job
           </NavLink>
           <NavLink
-            to="/signin"
+            to="/sign-in"
             className="inline-flex items-center gap-2 rounded-lg border-2 border-white px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
           >
             <FiUser className="h-4 w-4" aria-hidden />
@@ -116,7 +116,7 @@ export default function Navbar() {
                 Post a Job
               </NavLink>
               <NavLink
-                to="/signin"
+                to="/sign-in"
                 onClick={() => setOpen(false)}
                 className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg border-2 border-white px-4 py-2.5 text-base font-semibold text-white"
               >

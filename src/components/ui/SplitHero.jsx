@@ -6,6 +6,7 @@ import { FiArrowRight } from 'react-icons/fi'
  * @param {'left' | 'right'} [imagePosition]
  * @param {'before' | 'after'} [eyebrowPlacement] default `after` keeps About Us unchanged
  * @param {{ label: string, to?: string, href?: string, variant?: string, icon?: object, iconPosition?: string }} [secondaryCta]
+ * @param {import('react').ReactNode} [overlay] Optional bar (e.g. SearchBar) that floats across the text/image seam on desktop
  */
 export default function SplitHero({
   heading,
@@ -24,12 +25,27 @@ export default function SplitHero({
   imageAlt = '',
   imagePosition = 'right',
   imageFade = false,
+  overlay,
   children,
 }) {
+  const hasOverlay = Boolean(overlay)
+
   const imageOrder =
-    imagePosition === 'left' ? 'order-1 lg:order-1' : 'order-1 lg:order-2'
+    imagePosition === 'left'
+      ? hasOverlay
+        ? 'order-2 lg:order-1'
+        : 'order-1 lg:order-1'
+      : hasOverlay
+        ? 'order-2 lg:order-2'
+        : 'order-1 lg:order-2'
   const textOrder =
-    imagePosition === 'left' ? 'order-2 lg:order-2' : 'order-2 lg:order-1'
+    imagePosition === 'left'
+      ? hasOverlay
+        ? 'order-1 lg:order-2'
+        : 'order-2 lg:order-2'
+      : hasOverlay
+        ? 'order-1 lg:order-1'
+        : 'order-2 lg:order-1'
 
   const eyebrowEl = eyebrow ? <p className={eyebrowClassName}>{eyebrow}</p> : null
 
@@ -47,59 +63,69 @@ export default function SplitHero({
     </div>
   )
 
+  const defaultContent = (
+    <>
+      {eyebrowPlacement === 'before' && eyebrowEl}
+      <h1 className="font-display text-4xl font-bold leading-tight text-navy sm:text-5xl">
+        {heading}
+      </h1>
+      {eyebrowPlacement === 'after' && eyebrowEl}
+      {paragraphs.map((p) => (
+        <p key={p} className="mt-4 max-w-xl text-base leading-relaxed text-muted">
+          {p}
+        </p>
+      ))}
+      {ctaLabel && (
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <Button
+            variant={ctaVariant}
+            href={ctaHref}
+            to={ctaTo}
+            icon={CtaIcon}
+            iconPosition={ctaIconPosition}
+          >
+            {ctaLabel}
+          </Button>
+          {secondaryCta?.label && (
+            <Button
+              variant={secondaryCta.variant || 'teal'}
+              href={secondaryCta.href}
+              to={secondaryCta.to}
+              icon={secondaryCta.icon}
+              iconPosition={secondaryCta.iconPosition || 'left'}
+            >
+              {secondaryCta.label}
+            </Button>
+          )}
+        </div>
+      )}
+    </>
+  )
+
   const textCol = (
     <div className={`flex items-center bg-offwhite ${textOrder}`}>
       <div
         className={`mx-auto w-full px-6 py-14 sm:px-10 lg:ml-auto lg:mr-8 lg:px-16 lg:py-20 ${
           children ? 'max-w-2xl' : 'max-w-xl'
-        }`}
+        } ${hasOverlay ? 'lg:pb-36' : ''}`}
       >
-        {children ?? (
-          <>
-            {eyebrowPlacement === 'before' && eyebrowEl}
-            <h1 className="font-display text-4xl font-bold leading-tight text-navy sm:text-5xl">
-              {heading}
-            </h1>
-            {eyebrowPlacement === 'after' && eyebrowEl}
-            {paragraphs.map((p) => (
-              <p key={p} className="mt-4 max-w-xl text-base leading-relaxed text-muted">
-                {p}
-              </p>
-            ))}
-            {ctaLabel && (
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Button
-                  variant={ctaVariant}
-                  href={ctaHref}
-                  to={ctaTo}
-                  icon={CtaIcon}
-                  iconPosition={ctaIconPosition}
-                >
-                  {ctaLabel}
-                </Button>
-                {secondaryCta?.label && (
-                  <Button
-                    variant={secondaryCta.variant || 'teal'}
-                    href={secondaryCta.href}
-                    to={secondaryCta.to}
-                    icon={secondaryCta.icon}
-                    iconPosition={secondaryCta.iconPosition || 'left'}
-                  >
-                    {secondaryCta.label}
-                  </Button>
-                )}
-              </div>
-            )}
-          </>
-        )}
+        {children ?? defaultContent}
+        {hasOverlay && <div className="relative z-10 mt-8 lg:hidden">{overlay}</div>}
       </div>
     </div>
   )
 
   return (
-    <section className="grid grid-cols-1 lg:grid-cols-2">
+    <section className="relative grid grid-cols-1 lg:grid-cols-2">
       {imageCol}
       {textCol}
+      {hasOverlay && (
+        <div className="pointer-events-none absolute inset-x-0 bottom-8 z-20 hidden lg:block">
+          <div className="pointer-events-auto w-[min(92vw,46rem)] pl-16 xl:w-[min(88vw,52rem)] xl:pl-[max(4rem,calc((100vw-80rem)/2+4rem))]">
+            {overlay}
+          </div>
+        </div>
+      )}
     </section>
   )
 }

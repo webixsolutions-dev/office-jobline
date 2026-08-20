@@ -1,132 +1,137 @@
-// src/pages/auth/SignIn.jsx
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { auth } from '../../lib/auth';
-import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { FiMail, FiLock, FiArrowRight } from 'react-icons/fi'
+import AuthLayout from '../../components/auth/AuthLayout'
+import RoleToggle from '../../components/ui/RoleToggle'
+import Input from '../../components/ui/Input'
+import Button from '../../components/ui/Button'
+import { images } from '../../constants/images'
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+const signInTestimonial = {
+  quote:
+    'Office Jobline made it simple to manage our administrative hiring. We filled a receptionist role in days, not weeks.',
+  name: 'Priya S.',
+  location: 'Office Manager, Harbourview Partners',
+  avatar: { type: 'initials', initials: 'PS', color: 'teal' },
+  showRating: true,
+}
 
 export default function SignIn() {
-  const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+  const [role, setRole] = useState('job_seeker')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [rememberMe, setRememberMe] = useState(false)
+  const [errors, setErrors] = useState({})
+  const [submitting, setSubmitting] = useState(false)
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    setError('');
-  };
+  const validate = () => {
+    const next = {}
+    if (!email.trim()) next.email = 'Enter your email address.'
+    else if (!EMAIL_PATTERN.test(email.trim())) next.email = 'Enter a valid email address.'
+    if (!password) next.password = 'Enter your password.'
+    return next
+  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const next = validate()
+    setErrors(next)
+    if (Object.keys(next).length > 0) return
 
-    try {
-      const result = await auth.signIn(formData.email, formData.password);
-      
-      if (result.success) {
-        // Redirect based on role
-        if (result.user.role === 'recruiter') {
-          navigate('/recruiter');
-        } else {
-          navigate('/dashboard');
-        }
-      }
-    } catch (error) {
-      setError(error.message || 'Failed to sign in. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    setSubmitting(true)
+    console.log('Sign in (placeholder)', {
+      role,
+      email: email.trim(),
+      rememberMe,
+      redirectTo: role === 'employer' ? '/recruiter' : '/dashboard',
+    })
+    window.setTimeout(() => setSubmitting(false), 400)
+  }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-extrabold text-navy-950">Sign In</h1>
-          <p className="mt-2 text-sm text-slate-600">
-            Your account works across all partner sites
-          </p>
+    <AuthLayout
+      backgroundImage={images.signInHero}
+      heading="Welcome back to"
+      headingAccent="Office Jobline."
+      subtitle="Log in to manage your applications, saved jobs, or job postings — all in one place."
+      testimonial={signInTestimonial}
+    >
+      <RoleToggle value={role} onChange={setRole} />
+
+      <form className="mt-6 space-y-4" onSubmit={handleSubmit} noValidate>
+        <Input
+          label="Email address"
+          name="email"
+          type="email"
+          icon={FiMail}
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value)
+            setErrors((prev) => ({ ...prev, email: undefined }))
+          }}
+          placeholder="you@example.com"
+          required
+          autoComplete="email"
+          error={errors.email}
+        />
+        <Input
+          label="Password"
+          name="password"
+          type="password"
+          icon={FiLock}
+          showToggle
+          value={password}
+          onChange={(e) => {
+            setPassword(e.target.value)
+            setErrors((prev) => ({ ...prev, password: undefined }))
+          }}
+          placeholder="Enter your password"
+          required
+          autoComplete="current-password"
+          error={errors.password}
+        />
+
+        <div className="flex items-center justify-between gap-3 text-sm">
+          <label className="inline-flex items-center gap-2 text-muted">
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+              className="h-4 w-4 rounded border-border text-teal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+            />
+            Remember me
+          </label>
+          <Link
+            to="/forgot-password"
+            className="font-semibold text-gold hover:text-gold-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+          >
+            Forgot password?
+          </Link>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-slate-200">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {error && (
-              <div className="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-lg text-sm">
-                {error}
-              </div>
-            )}
+        <Button
+          type="submit"
+          variant="gold"
+          icon={FiArrowRight}
+          iconPosition="right"
+          disabled={submitting}
+          className="w-full"
+        >
+          Log In
+        </Button>
+      </form>
 
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">
-                Email Address
-              </label>
-              <div className="flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2.5 focus-within:border-amber-400 focus-within:ring-2 focus-within:ring-amber-100">
-                <FiMail className="text-slate-400" />
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  placeholder="you@example.com"
-                  className="w-full text-sm text-slate-700 placeholder-slate-400 outline-none"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1">
-                Password
-              </label>
-              <div className="flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2.5 focus-within:border-amber-400 focus-within:ring-2 focus-within:ring-amber-100">
-                <FiLock className="text-slate-400" />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                  placeholder="Enter your password"
-                  className="w-full text-sm text-slate-700 placeholder-slate-400 outline-none"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="text-slate-400 hover:text-slate-600"
-                >
-                  {showPassword ? <FiEyeOff /> : <FiEye />}
-                </button>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between text-sm">
-              <Link to="/forgot-password" className="text-amber-500 hover:underline">
-                Forgot password?
-              </Link>
-            </div>
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full rounded-lg bg-navy-950 py-3 text-sm font-semibold text-white transition hover:bg-navy-800 disabled:opacity-60 disabled:cursor-not-allowed"
-            >
-              {isLoading ? 'Signing in...' : 'Sign In'}
-            </button>
-          </form>
-
-          <p className="mt-6 text-center text-sm text-slate-500">
-            Don't have an account?{' '}
-            <Link to="/signup" className="font-semibold text-amber-500 hover:underline">
-              Sign up
-            </Link>
-          </p>
-        </div>
-      </div>
-    </div>
-  );
+      <p className="mt-6 text-center text-sm text-muted">
+        Don&apos;t have an account?{' '}
+        <Link
+          to="/sign-up"
+          className="font-semibold text-gold hover:text-gold-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+        >
+          Sign Up
+        </Link>
+      </p>
+    </AuthLayout>
+  )
 }

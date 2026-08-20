@@ -146,12 +146,17 @@ function AppRoutes() {
         <Route path="/job-alerts" element={<ComingSoonPage title="Job Alerts" />} />
         <Route path="/upload-resume" element={<ComingSoonPage title="Upload Your Resume" />} />
         <Route path="/career-tips/:slug" element={<ComingSoonPage title="Career Tips" />} />
+        <Route path="/resources/:slug" element={<ComingSoonPage title="Career Resource" />} />
+        <Route path="/contact" element={<Navigate to={`/contact-us${location.search}${location.hash}`} replace />} />
+        <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/signin" element={<Navigate to="/sign-in" replace />} />
+        <Route path="/sign-up" element={<ComingSoonPage title="Sign Up" />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/forgot-password" element={<ComingSoonPage title="Forgot Password" />} />
+        <Route path="/post-a-job/create" element={<ComingSoonPage title="Create a Job Posting" />} />
         <Route path="/post-a-job" element={<PostJob />} />
         <Route path="/about-us" element={<AboutUs />} />
-        <Route path="/contact" element={<Navigate to="/contact-us" replace />} />
-        <Route path="/contact-us" element={<ContactUs />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
         <Route path="/pricing" element={<PricingSection />} />
         <Route path="/why-hire-with-us" element={<ComingSoonPage title="Why Hire With Us" />} />
         <Route path="/talent-search" element={<ComingSoonPage title="Talent Search" />} />

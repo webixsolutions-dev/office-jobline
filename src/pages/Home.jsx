@@ -1,25 +1,27 @@
+import HomeHero from '../components/home/HomeHero'
+import HomeStatsStrip from '../components/home/HomeStatsStrip'
+import WhyChooseUs from '../components/home/WhyChooseUs'
+import PopularJobCategories from '../components/home/PopularJobCategories'
+import HowItWorks from '../components/home/HowItWorks'
+import ForEmployersHighlight from '../components/home/ForEmployersHighlight'
+import HomeTestimonials from '../components/home/HomeTestimonials'
+import PostAJobCTA from '../components/home/PostAJobCTA'
+import CareerResources from '../components/home/CareerResources'
+import HomeClosingCTA from '../components/home/HomeClosingCTA'
 
-
-import React from 'react'
-import Hero from '../components/home/Hero'
-import WhyChoose from '../components/home/WhyChooseUs'
-import HowItWorks from '../components/home/HowItsWorks'
-import CareerSupport from '../components/home/CareerSupport'
-import HomeCTA from '../components/home/HomeCTA'
-
-const Home = () => {
+export default function Home() {
   return (
-<>
-<Hero />
-<WhyChoose/>
-<HowItWorks/>
-<CareerSupport/>
-<HomeCTA/>
-
-
-
-</>
+    <>
+      <HomeHero />
+      <HomeStatsStrip />
+      <WhyChooseUs />
+      <PopularJobCategories />
+      <HowItWorks />
+      <ForEmployersHighlight />
+      <HomeTestimonials />
+      <PostAJobCTA />
+      <CareerResources />
+      <HomeClosingCTA />
+    </>
   )
 }
-
-export default Home

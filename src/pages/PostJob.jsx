@@ -1,21 +1,17 @@
-
-
-import React from 'react'
-import PostJobHero from '../components/postJob/PostJobHero'
+import HeroWithForm from '../components/postJob/HeroWithForm'
 import HowPostingWorks from '../components/postJob/HowPostingWorks'
+import WhyEmployersChooseUs from '../components/postJob/WhyEmployersChooseUs'
 import PricingPlans from '../components/postJob/PricingPlans'
-import CTAFAQ from '../components/postJob/CTAFAQ'
+import PostJobFAQ from '../components/postJob/PostJobFAQ'
 
-const PostJob = () => {
+export default function PostJob() {
   return (
-    <div>
-      <PostJobHero />
-
+    <>
+      <HeroWithForm />
       <HowPostingWorks />
+      <WhyEmployersChooseUs />
       <PricingPlans />
-      <CTAFAQ />
-    </div>
+      <PostJobFAQ />
+    </>
   )
 }
-
-export default PostJob

@@ -7,10 +7,12 @@ const variants = {
   'navy-gold': 'bg-navy text-gold hover:bg-navy-light',
   outline: 'border-2 border-white bg-transparent text-white hover:bg-white/10',
   'outline-teal': 'border-2 border-teal bg-transparent text-teal hover:bg-teal-light',
+  'outline-navy': 'border-2 border-navy bg-white text-navy hover:bg-offwhite',
+  'outline-gold': 'border-2 border-gold bg-white text-navy hover:bg-gold-tint',
 }
 
 /**
- * @param {'teal' | 'gold' | 'navy' | 'navy-gold' | 'outline' | 'outline-teal'} [variant]
+ * @param {'teal' | 'gold' | 'navy' | 'navy-gold' | 'outline' | 'outline-teal' | 'outline-navy' | 'outline-gold'} [variant]
  * @param {string} [to] React Router destination
  * @param {string} [href] Native link (anchors, mailto)
  * @param {React.ComponentType} [icon]

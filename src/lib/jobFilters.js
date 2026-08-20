@@ -85,7 +85,7 @@ function listParam(params, key) {
 export function filtersFromSearchParams(searchParams) {
   const params = searchParams instanceof URLSearchParams ? searchParams : new URLSearchParams(searchParams)
   return {
-    keyword: params.get('keyword') || '',
+    keyword: params.get('keyword') || params.get('q') || '',
     location: params.get('location') || '',
     types: listParam(params, 'type'),
     modes: listParam(params, 'mode'),
