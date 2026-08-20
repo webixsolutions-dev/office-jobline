@@ -15,11 +15,11 @@ export default function TrustCard({
   return (
     <article className="relative flex flex-col justify-center overflow-hidden rounded-xl bg-offwhite p-6">
       <GiMapleLeaf
-        className="pointer-events-none absolute -right-2 -bottom-4 h-24 w-24 text-navy/5"
+        className="pointer-events-none absolute -right-6 -bottom-8 h-16 w-16 text-navy/[0.04]"
         aria-hidden
       />
-      <p className="text-sm text-muted">{title}</p>
-      <div className="mt-2 flex items-center gap-2">
+      <p className="relative z-10 text-sm text-muted">{title}</p>
+      <div className="relative z-10 mt-2 flex items-center gap-2">
         <div className="flex text-gold" aria-label={`${rating} out of 5 stars`}>
           <FaStar aria-hidden />
           <FaStar aria-hidden />
@@ -29,7 +29,7 @@ export default function TrustCard({
         </div>
         <span className="text-sm font-semibold text-navy">{rating}</span>
       </div>
-      {caption && <p className="mt-1 text-sm text-muted">{caption}</p>}
+      {caption && <p className="relative z-10 mt-1 pr-8 text-sm text-muted">{caption}</p>}
     </article>
   )
 }

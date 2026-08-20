@@ -16,7 +16,7 @@ export default function PricingSection() {
           subtitle="Choose the right plan to hire office staff, administrative professionals, and support teams across Canada. Transparent pricing. No hidden fees. Cancel anytime."
         />
 
-        <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-stretch lg:gap-8">
+        <div className="mt-12 grid grid-cols-1 items-stretch gap-6 lg:grid-cols-3 lg:gap-8">
           {pricingPlans.map((plan) => (
             <PricingCard
               key={plan.name}
@@ -28,6 +28,8 @@ export default function PricingSection() {
               ctaLabel={plan.ctaLabel}
               ctaTo={plan.ctaTo}
               featured={plan.isFeatured}
+              highlighted={plan.highlighted}
+              accent="gold"
             />
           ))}
         </div>

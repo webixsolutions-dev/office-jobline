@@ -68,7 +68,7 @@ export default function SearchBar({
             className="w-full bg-transparent text-sm text-navy placeholder:text-muted outline-none"
           />
         </div>
-        <Button type="submit" variant="teal" icon={FiSearch} className="w-full shrink-0 lg:w-auto">
+        <Button type="submit" variant="green" icon={FiSearch} className="w-full shrink-0 lg:w-auto">
           Search Jobs
         </Button>
       </div>

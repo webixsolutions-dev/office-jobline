@@ -31,45 +31,49 @@ export default function PricingCard({
 }) {
   const isGold = highlighted || accent === 'gold'
   const isPopular = featured || highlighted
-  const checkClass = isGold ? 'text-gold' : 'text-teal'
+  const checkWrap = isGold ? 'bg-gold-tint text-gold-dark' : 'bg-teal-light text-teal'
   const ctaVariant = highlighted ? 'gold' : featured ? 'teal' : isGold ? 'outline-navy' : 'outline-teal'
 
   return (
     <article
-      className={`flex h-full flex-col overflow-hidden rounded-xl bg-white shadow-card ${
+      className={`relative flex h-full flex-col overflow-hidden rounded-2xl bg-white transition duration-200 ${
         highlighted
-          ? 'order-first border-2 border-gold lg:order-none lg:-translate-y-2'
+          ? 'order-first z-10 border-2 border-gold shadow-xl lg:order-none lg:-translate-y-3'
           : featured
-            ? 'order-first border-2 border-teal lg:order-none lg:-translate-y-2'
-            : 'border border-border'
+            ? 'order-first z-10 border-2 border-teal shadow-xl lg:order-none lg:-translate-y-3'
+            : 'border border-border shadow-card hover:-translate-y-1 hover:shadow-lg'
       }`}
     >
       {isPopular && (
         <p
-          className={`py-2 text-center text-sm font-semibold ${
+          className={`py-2.5 text-center text-xs font-bold uppercase tracking-[0.14em] ${
             highlighted ? 'bg-gold text-navy' : 'bg-teal text-white'
           }`}
         >
           Most Popular
         </p>
       )}
-      <div className="flex flex-1 flex-col p-8">
+      <div className="flex flex-1 flex-col p-8 sm:p-9">
         <h3 className={`font-display text-2xl font-bold ${featured && !highlighted ? 'text-teal' : 'text-navy'}`}>
           {name}
         </h3>
-        <p className="mt-1 text-sm text-muted">{tagline}</p>
-        <p className="mt-5 font-display text-4xl font-bold text-navy">
+        <p className="mt-2 min-h-[2.5rem] text-sm leading-relaxed text-muted">{tagline}</p>
+        <p className="mt-6 flex items-end gap-1 font-display text-5xl font-bold tracking-tight text-navy">
           {price}
-          <span className="ml-1 text-base font-semibold text-muted">{period}</span>
+          <span className="mb-1 text-base font-semibold text-muted">{period}</span>
         </p>
-        <hr className="my-6 border-border" />
-        <ul className="flex-1 space-y-3">
+        <hr className="my-7 border-border" />
+        <ul className="flex-1 space-y-3.5">
           {features.map((feature) => {
             const label = featureLabel(feature)
             return (
-              <li key={label} className="flex items-start gap-2 text-sm text-navy">
-                <FiCheck className={`mt-0.5 h-4 w-4 shrink-0 ${checkClass}`} aria-hidden />
-                <span>{label}</span>
+              <li key={label} className="flex items-start gap-3 text-sm text-navy">
+                <span
+                  className={`mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${checkWrap}`}
+                >
+                  <FiCheck className="h-3 w-3" aria-hidden />
+                </span>
+                <span className="leading-relaxed">{label}</span>
                 {featureBadge(feature) && (
                   <FaStar className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold" aria-label="Featured" />
                 )}

@@ -11,7 +11,7 @@ export default function ImageTextRow({
 }) {
   const image = (
     <div className="h-64 w-full overflow-hidden rounded-xl sm:h-80 lg:h-[400px]">
-      <img src={imageUrl} alt={imageAlt} className="h-full w-full object-cover" />
+      <img src={imageUrl} alt={imageAlt} className="h-full w-full object-cover object-[center_25%]" />
     </div>
   )
 

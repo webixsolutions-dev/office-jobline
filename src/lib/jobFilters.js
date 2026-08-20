@@ -151,13 +151,15 @@ export function applyJobFilters(jobs, filters) {
 
   switch (filters.sort) {
     case 'newest':
-      result = [...result].sort((a, b) => new Date(b.postedDate) - new Date(a.postedDate))
+      result = [...result].sort(
+        (a, b) => new Date(b.postedDate) - new Date(a.postedDate) || a.title.localeCompare(b.title),
+      )
       break
     case 'salary-high':
-      result = [...result].sort((a, b) => b.salaryMax - a.salaryMax)
+      result = [...result].sort((a, b) => b.salaryMax - a.salaryMax || a.title.localeCompare(b.title))
       break
     case 'salary-low':
-      result = [...result].sort((a, b) => a.salaryMin - b.salaryMin)
+      result = [...result].sort((a, b) => a.salaryMin - b.salaryMin || a.title.localeCompare(b.title))
       break
     default:
       break

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 
 const variants = {
   teal: 'bg-teal text-white hover:bg-teal-dark',
+  green: 'bg-green text-white hover:bg-green-dark',
   gold: 'bg-gold text-navy hover:bg-gold-dark',
   navy: 'bg-navy text-white hover:bg-navy-light',
   'navy-gold': 'bg-navy text-gold hover:bg-navy-light',
@@ -12,7 +13,7 @@ const variants = {
 }
 
 /**
- * @param {'teal' | 'gold' | 'navy' | 'navy-gold' | 'outline' | 'outline-teal' | 'outline-navy' | 'outline-gold'} [variant]
+ * @param {'teal' | 'green' | 'gold' | 'navy' | 'navy-gold' | 'outline' | 'outline-teal' | 'outline-navy' | 'outline-gold'} [variant]
  * @param {string} [to] React Router destination
  * @param {string} [href] Native link (anchors, mailto)
  * @param {React.ComponentType} [icon]

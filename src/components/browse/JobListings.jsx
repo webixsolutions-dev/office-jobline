@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { FiFilter, FiX } from 'react-icons/fi'
 import { GiMapleLeaf } from 'react-icons/gi'
 import FilterSidebar from '../ui/FilterSidebar'
@@ -17,7 +17,8 @@ import {
 } from '../../lib/jobFilters'
 
 export default function JobListings() {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
   const applied = filtersFromSearchParams(searchParams)
   const [draft, setDraft] = useState(applied)
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -48,9 +49,17 @@ export default function JobListings() {
   const filtered = applyJobFilters(jobs, applied)
   const { items, total, pageCount, page } = paginate(filtered, applied.page, applied.perPage)
 
-  const commit = (next) => {
-    setSearchParams(filtersToSearchParams(next))
-    setDrawerOpen(false)
+  const commit = (next, { closeDrawer = true } = {}) => {
+    const query = filtersToSearchParams(next).toString()
+    navigate({ pathname: '/browse', search: query ? `?${query}` : '' }, { preventScrollReset: true })
+    if (closeDrawer) setDrawerOpen(false)
+  }
+
+  const handleDraftChange = (next) => {
+    setDraft(next)
+    if (!drawerOpen) {
+      commit({ ...next, page: 1 }, { closeDrawer: false })
+    }
   }
 
   const handleApply = () => {
@@ -63,7 +72,7 @@ export default function JobListings() {
   }
 
   const sidebar = (
-    <FilterSidebar draft={draft} onDraftChange={setDraft} onApply={handleApply} onReset={handleReset} />
+    <FilterSidebar draft={draft} onDraftChange={handleDraftChange} onApply={handleApply} onReset={handleReset} />
   )
   const mobileSidebar = (
     <FilterSidebar

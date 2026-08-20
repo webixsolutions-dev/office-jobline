@@ -26,6 +26,7 @@ export default function SplitHero({
   imagePosition = 'right',
   imageFade = false,
   overlay,
+  imageClassName = 'object-cover object-[center_20%]',
   children,
 }) {
   const hasOverlay = Boolean(overlay)
@@ -53,7 +54,7 @@ export default function SplitHero({
     <div
       className={`relative h-80 w-full self-stretch sm:h-[320px] lg:h-auto lg:min-h-[520px] ${imageOrder}`}
     >
-      <img src={imageUrl} alt={imageAlt} className="h-full w-full object-cover" />
+      <img src={imageUrl} alt={imageAlt} className={`h-full w-full ${imageClassName}`} />
       {imageFade && (
         <div
           className="pointer-events-none absolute inset-0 bg-gradient-to-r from-offwhite via-offwhite/30 to-transparent"
@@ -103,14 +104,18 @@ export default function SplitHero({
   )
 
   const textCol = (
-    <div className={`flex items-center bg-offwhite ${textOrder}`}>
+    <div className={`relative z-10 flex items-center overflow-visible bg-offwhite ${textOrder}`}>
       <div
         className={`mx-auto w-full px-6 py-14 sm:px-10 lg:ml-auto lg:mr-8 lg:px-16 lg:py-20 ${
           children ? 'max-w-2xl' : 'max-w-xl'
-        } ${hasOverlay ? 'lg:pb-36' : ''}`}
+        }`}
       >
         {children ?? defaultContent}
-        {hasOverlay && <div className="relative z-10 mt-8 lg:hidden">{overlay}</div>}
+        {hasOverlay && (
+          <div className="relative z-20 mt-8 w-full overflow-visible lg:w-[min(140%,36rem)] xl:w-[min(155%,42rem)]">
+            {overlay}
+          </div>
+        )}
       </div>
     </div>
   )
@@ -119,13 +124,6 @@ export default function SplitHero({
     <section className="relative grid grid-cols-1 lg:grid-cols-2">
       {imageCol}
       {textCol}
-      {hasOverlay && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-8 z-20 hidden lg:block">
-          <div className="pointer-events-auto w-[min(92vw,46rem)] pl-16 xl:w-[min(88vw,52rem)] xl:pl-[max(4rem,calc((100vw-80rem)/2+4rem))]">
-            {overlay}
-          </div>
-        </div>
-      )}
     </section>
   )
 }

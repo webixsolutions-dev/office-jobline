@@ -51,7 +51,7 @@ export default function HeroWithForm() {
   return (
     <section className="relative overflow-hidden">
       <div
-        className="absolute inset-0 scale-105 bg-cover bg-center blur-[2px]"
+        className="absolute inset-0 bg-cover bg-[center_30%]"
         style={{ backgroundImage: `url('${images.postJobHero}')` }}
         role="presentation"
       />

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { FiBarChart2, FiBriefcase, FiClock, FiFileText, FiHome, FiStar } from 'react-icons/fi'
 import { HiOutlineBuildingOffice2 } from 'react-icons/hi2'
 import SplitHero from '../ui/SplitHero'
@@ -24,7 +24,8 @@ const pillIcons = {
 }
 
 export default function BrowseHero() {
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
   const applied = filtersFromSearchParams(searchParams)
   const [keyword, setKeyword] = useState(applied.keyword)
   const [location, setLocation] = useState(applied.location)
@@ -35,7 +36,8 @@ export default function BrowseHero() {
   }, [applied.keyword, applied.location])
 
   const commit = (next, { scroll = true } = {}) => {
-    setSearchParams(filtersToSearchParams({ ...next, page: 1 }))
+    const query = filtersToSearchParams({ ...next, page: 1 }).toString()
+    navigate({ pathname: '/browse', search: query ? `?${query}` : '' }, { preventScrollReset: true })
     if (scroll) {
       requestAnimationFrame(() => scrollToJobListings())
     }

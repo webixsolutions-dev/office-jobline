@@ -41,7 +41,7 @@ export default function HowItWorks() {
             <img
               src={images.homeHowItWorks}
               alt="Office team reviewing candidates together on a laptop"
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-[center_25%]"
             />
           </div>
         </div>

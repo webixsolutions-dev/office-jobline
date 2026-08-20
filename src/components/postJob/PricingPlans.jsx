@@ -25,7 +25,7 @@ export default function PricingPlans() {
               period={plan.period}
               tagline={plan.tagline}
               features={plan.features}
-              ctaLabel="Get Started"
+              ctaLabel={plan.ctaLabel}
               ctaTo={`/post-a-job/create?plan=${plan.slug}`}
               highlighted={plan.highlighted}
               accent="gold"

@@ -16,7 +16,7 @@ export default function ArticleCard({ to, image, imageAlt, tag, title, descripti
       to={to}
       className="group flex h-full flex-col overflow-hidden rounded-xl bg-white shadow-card transition hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
     >
-      <img src={image} alt={imageAlt || title} className="h-44 w-full object-cover" />
+      <img src={image} alt={imageAlt || title} className="h-44 w-full object-cover object-center" />
       <div className="flex flex-1 flex-col p-6">
         {tag && (
           <span className="inline-block w-fit rounded-full bg-teal-light px-3 py-1 text-xs font-semibold text-teal">

@@ -10,6 +10,8 @@ import {
 import { GiMapleLeaf } from 'react-icons/gi'
 import { HiOutlineShieldCheck } from 'react-icons/hi2'
 
+export { pricingPlans as postJobPlans } from './pricingPlans'
+
 export const SALES_TO = '/contact?topic=sales#contact-form'
 
 export const jobTypeOptions = [
@@ -84,58 +86,6 @@ export const employerReasons = [
     icon: FiGrid,
     title: 'Simple Employer Dashboard',
     description: 'Manage your job postings, review applications, and communicate with candidates all in one place.',
-  },
-]
-
-export const postJobPlans = [
-  {
-    slug: 'starter',
-    name: 'Starter',
-    tagline: 'Perfect for small teams and occasional hiring.',
-    price: '$99',
-    period: '/month',
-    highlighted: false,
-    features: [
-      '1 Job Post',
-      'Standard Job Listing',
-      '30-Day Listing Duration',
-      'Applicant Access',
-      'Employer Dashboard Access',
-      'Email Support',
-    ],
-  },
-  {
-    slug: 'growth',
-    name: 'Growth',
-    tagline: 'Great for growing companies hiring regularly.',
-    price: '$199',
-    period: '/month',
-    highlighted: true,
-    features: [
-      '5 Job Posts',
-      { label: 'Featured Job Listing', badge: true },
-      '30-Day Listing Duration',
-      'Applicant Access',
-      'Employer Dashboard Access',
-      'Priority Email Support',
-    ],
-  },
-  {
-    slug: 'enterprise',
-    name: 'Enterprise',
-    tagline: 'For teams with high-volume hiring needs.',
-    price: '$399',
-    period: '/month',
-    highlighted: false,
-    features: [
-      '20 Job Posts',
-      { label: 'Featured Job Listing', badge: true },
-      '60-Day Listing Duration',
-      'Applicant Access',
-      'Employer Dashboard Access',
-      'Priority Support',
-      'Custom Branding (Optional)',
-    ],
   },
 ]
 

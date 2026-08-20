@@ -118,7 +118,7 @@ export default function ContactHero() {
           <img
             src={images.contactHero}
             alt="Bright meeting room overlooking a Canadian city skyline"
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover object-[center_25%]"
           />
           <div
             className="pointer-events-none absolute inset-0 bg-gradient-to-r from-offwhite via-offwhite/20 to-transparent lg:from-transparent lg:via-navy/20 lg:to-navy/50"

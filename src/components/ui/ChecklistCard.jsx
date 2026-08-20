@@ -57,7 +57,7 @@ export default function ChecklistCard({
           to={ctaTo}
           icon={FiArrowRight}
           iconPosition="right"
-          className="mt-8"
+          className="relative z-10 mt-8"
         >
           {ctaLabel}
         </Button>
