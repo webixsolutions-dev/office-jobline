@@ -22,7 +22,7 @@ export default function WhyChooseUs() {
               icon={item.icon}
               title={item.title}
               description={item.description}
-              layout="column"
+              layout="row"
             />
           ))}
         </div>

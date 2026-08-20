@@ -6,15 +6,16 @@ export function toTelHref(phone) {
 
 export const contactInfo = {
   name: 'Office Jobline',
-  tagline: 'Connecting job seekers and employers across Canada in office and administrative careers.',
-  address: '123 Front Street West, Toronto, ON M5J 2M2, Canada',
-  officeAddress: '150 King Street West, Suite 200, Toronto, ON M5H 1J9, Canada',
+  tagline:
+    'Connecting office professionals with great opportunities and helping employers build strong, productive teams across Canada.',
+  address: '100 King St W, Suite 5600, Toronto, ON M5X 1C7, Canada',
+  officeAddress: '100 King St W, Suite 5600, Toronto, ON M5X 1C7, Canada',
   email: 'info@officejobline.com',
-  phone: '+1 (647) 555-0198',
-  hours: 'Mon – Fri, 9:00 AM – 5:00 PM ET',
+  phone: '+1 (416) 555-0187',
+  hours: 'Mon - Fri: 9:00 AM - 5:00 PM EST',
   hoursDetail: {
     days: 'Monday – Friday',
-    time: '9:00 AM – 5:00 PM ET',
+    time: '9:00 AM – 5:00 PM EST',
     note: 'Closed on weekends and statutory holidays.',
   },
   support: {
@@ -24,7 +25,7 @@ export const contactInfo = {
     partnerships: 'partnerships@officejobline.com',
   },
   mapsSearchUrl:
-    'https://www.google.com/maps/search/?api=1&query=150+King+Street+West+Suite+200+Toronto+ON',
+    'https://www.google.com/maps/search/?api=1&query=100+King+St+W+Suite+5600+Toronto+ON+M5X+1C7',
   socials: [
     { name: 'LinkedIn', url: 'https://linkedin.com' },
     { name: 'Facebook', url: 'https://facebook.com' },

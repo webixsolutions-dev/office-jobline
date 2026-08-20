@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FiCheckCircle } from "react-icons/fi";
 import logo from '../../assets/images/logo.png'
+import { images } from '../../constants/images'
 const BuildingIcon = ({ className }) => (
     <svg viewBox="0 0 24 24" className={className} fill="currentColor">
         <path d="M3 21V9l6-4v4l6-4v16H3zm2-2h2v-2H5v2zm0-4h2v-2H5v2zm0-4h2V9H5v2zm6 8h2v-2h-2v2zm0-4h2v-2h-2v2zm6 4h2v-9h-2v9zM18 2l1 2 2 .3-1.5 1.4.4 2.1L18 6.7 16.1 7.8l.4-2.1L15 4.3 17 4l1-2z" />
@@ -22,8 +23,7 @@ export default function AuthLayout({ title, subtitle, children }) {
                 <div
                     className="absolute inset-0 bg-cover bg-center opacity-25"
                     style={{
-                        backgroundImage:
-                            "url('https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=80')",
+                        backgroundImage: `url('${images.signInHero}')`,
                     }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0B1B3A] via-[#0B1B3A]/70 to-[#0B1B3A]/40" />

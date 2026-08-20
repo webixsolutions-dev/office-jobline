@@ -45,13 +45,17 @@ Hero, mission, and testimonial photos live in `public/` and are mapped in `src/c
 - `img5.webp` — Browse Jobs hero (full-bleed split)
 - `img6.webp` — Contact Us hero (meeting room)
 - `img7.webp` — Employers hero (full-bleed split)
+- `img8.webp` — Home hero
+- `img9.webp` — Home How It Works
+- `img10.webp`–`img12.webp` — Home article cards
+- `img13.webp` — Post a Job hero
 - `map-toronto.svg` — static placeholder map for Visit Our Office (not a live Maps embed)
 
 Swap files or update that constants file to change imagery later.
 
 ## Home page (`/`)
 
-The Home page reuses the shared `Navbar`, `Footer`, `ScrollToTop`, and Module 1 UI primitives (`SplitHero`, `Button`, `IconTextCard`, `StatItem`, `TestimonialCard`, `SearchBar`, `CategoryCard`). It is composed from prop-driven home sections in `src/components/home/`.
+The Home page reuses the shared `Navbar`, `Footer`, `ScrollToTop`, and Module 1 UI primitives. The hero is a merged 50/50 layout (`HomeHero`): `img8.webp` is a right-half **background** with a fade into the left copy — not a separate image column.
 
 Hero photography and article thumbnails live in `public/` and are mapped in `src/constants/images.js`:
 
@@ -73,9 +77,9 @@ Hero search submits to `/jobs?q=…&location=…` (redirects to `/browse` with t
 
 `--color-teal-dark` was already in `tokens.css` and is used for teal hover states; the Home closing CTA uses `--color-teal` as a full-width band (intentionally distinct from the About Us navy closing CTA).
 
-### Footer discrepancy — flagged, not changed
+### Footer (canonical)
 
-Home design screenshots showed a different footer bottom bar (`Privacy Policy / Terms of Use / Cookie Policy`) than the canonical About Us footer (`Privacy Policy / Terms of Use / Accessibility / Sitemap` + Proudly Canadian). **The shared `Footer` was left unchanged** so every public page stays identical. Confirm design intent before editing that single source of truth.
+The Home, Browse, About, and Post a Job screenshots disagreed on footer columns and legal links. The **4-column footer** (Quick Links, For Employers, Contact Us, plus brand) with Privacy Policy / Terms of Use / Cookie Policy is now the site-wide source of truth, rendered once from `App.jsx`.
 
 ## Module 2 — Browse Jobs (`/browse`)
 
@@ -95,17 +99,16 @@ Hero photography: `public/img5.webp` mapped as `images.browseHero`.
 
 This module adds the Contact Us page with a **client-side validated contact form** (no backend yet), a **static placeholder map**, and an **FAQ accordion**. `/contact` redirects to `/contact-us`. Navbar **Contact Us** uses the existing `NavLink` active underline.
 
-### Footer update (site-wide)
+### Footer (site-wide)
 
-The canonical `Footer` in `src/components/common/Footer.jsx` is now **5 columns** on every public page (About Us, Browse Jobs, Home, Employers, Contact, Post a Job):
+The canonical `Footer` in `src/components/common/Footer.jsx` is **4 columns** on every public page (Home, Browse Jobs, Employers, About Us, Contact, Post a Job):
 
-1. Brand (logo, description, socials)
-2. Quick Links
-3. For Employers
-4. Contact Us
-5. **For Job Seekers** — Browse Jobs, Create Resume, Career Advice, Job Alerts, Help Centre (`footerJobSeekerLinks` in `src/constants/navLinks.js`)
+1. Brand (logo, tagline, LinkedIn / Facebook / Instagram / YouTube with gold outlines)
+2. Quick Links — Home, Browse Jobs, Employers, About Us, Contact Us
+3. For Employers — Post a Job, Browse Candidates, Employer Pricing, Hiring Resources, Help Centre
+4. Contact Us — address, email, phone, hours
 
-Social icons are LinkedIn, Facebook, Instagram, and **YouTube**. The bottom bar keeps copyright, Privacy Policy, Terms of Service, Accessibility, Sitemap, and Proudly Canadian.
+The bottom bar is copyright on the left and **Privacy Policy / Terms of Use / Cookie Policy** on the right. Navbar and Footer are rendered once from `App.jsx` so they stay identical on every public route.
 
 ### New reusable UI
 
@@ -149,13 +152,7 @@ Hero photography: `public/img7.webp` mapped as `images.employersHero`.
 - **Get Started** on Starter and Growth routes to `/signup` (`ComingSoon` until auth is finished).
 - **Post a Job** / **Start Hiring Today** route to the existing `/post-a-job` page.
 
-Footer-only destinations added to the existing **For Employers** list in `src/constants/navLinks.js` (column structure unchanged): **Why Hire With Us** (`/why-hire-with-us`) and **Talent Search** (`/talent-search`), both `ComingSoon`.
-
-### Footer discrepancy — needs a project-owner decision
-
-Module 4 source screenshots showed a **different footer** than the Module 3 canonical version: four columns, an “Employers” heading instead of “For Employers,” no “For Job Seekers” column, three social icons instead of four, and a different legal/bottom-bar layout.
-
-**The canonical 5-column `Footer` was deliberately left unchanged in this module.** Two design sources disagreeing is a content decision, not something to resolve by forking the component again. Please confirm whether the Module 3 footer remains site-wide, or whether Employers (or the whole site) should switch to the screenshot’s structure.
+The site-wide footer is the **4-column** layout (brand, Quick Links, For Employers, Contact Us) with Privacy Policy / Terms of Use / Cookie Policy in the bottom bar. Navbar and Footer are shared from `App.jsx` on every public page.
 
 ## Module 3 — Post a Job (`/post-a-job`) + Module 4 — Sign In (`/sign-in`)
 
@@ -167,7 +164,7 @@ Full-bleed hero (`HeroWithForm`) uses `public/img13.webp` (`images.postJobHero`)
 
 ### Sign In
 
-`AuthLayout` is a split overlay on a professional office photo (`images.signInHero` — Unsplash, distinct from marketing heroes). Branding is Office Jobline navy / gold / teal only; the layout pattern was taken from a separate product screenshot. Client-side validation only — no real auth call yet. **Forgot password?** → `/forgot-password` (`ComingSoon`). **Sign Up** → `/sign-up` (`ComingSoon`). `/signin` redirects to `/sign-in`.
+`AuthLayout` is a split overlay on a professional office photo (`images.signInHero` → `public/img2.webp`). Branding is Office Jobline navy / gold / teal only; the layout pattern was taken from a separate product screenshot. Client-side validation only — no real auth call yet. **Forgot password?** → `/forgot-password` (`ComingSoon`). **Sign Up** → `/sign-up` (`ComingSoon`). `/signin` redirects to `/sign-in`.
 
 ### New reusable UI
 
@@ -181,9 +178,7 @@ Full-bleed hero (`HeroWithForm`) uses `public/img13.webp` (`images.postJobHero`)
 
 ### Footer link data
 
-Footer markup was **not forked**. Quick Links, For Employers, For Job Seekers, Contact, and legal links remain the single source of truth in `src/constants/navLinks.js` and `src/constants/contactInfo.js`.
-
-Post a Job screenshots showed a shorter four-column footer (Job Alerts / Career Resources / Recruitment Solutions / Job Posting Tips, legal links without Cookie Policy or Proudly Canadian). **That set was not applied**, so every public page keeps the canonical five-column footer. Please confirm if the screenshot labels should replace the current lists.
+Footer markup was **not forked**. The 4-column lists and legal links are the single source of truth in `src/constants/navLinks.js` and `src/constants/contactInfo.js`.
 
 ## Shared chrome
 

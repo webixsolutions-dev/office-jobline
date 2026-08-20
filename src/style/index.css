@@ -58,6 +58,11 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-navy-950);
 }
 
+.hero-photo-fade {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.35) 18%, #000 38%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.35) 18%, #000 38%);
+}
+
 .bg-noise {
   background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0);
   background-size: 22px 22px;

@@ -166,6 +166,8 @@ function AppRoutes() {
         <Route path="/career-advice" element={<ComingSoonPage title="Career Advice" />} />
         <Route path="/privacy-policy" element={<ComingSoonPage title="Privacy Policy" />} />
         <Route path="/terms-of-service" element={<ComingSoonPage title="Terms of Use" />} />
+        <Route path="/terms-of-use" element={<Navigate to="/terms-of-service" replace />} />
+        <Route path="/cookie-policy" element={<ComingSoonPage title="Cookie Policy" />} />
         <Route path="/accessibility" element={<ComingSoonPage title="Accessibility" />} />
         <Route path="/sitemap" element={<ComingSoonPage title="Sitemap" />} />
 
