@@ -11,6 +11,8 @@ import Button from './Button'
  * @param {() => void} [onSubmit]
  * @param {(payload: { query: string, location: string }) => void} [onSearch]
  * @param {string} [className]
+ * @param {import('react').ReactNode} [children] Optional row under the fields (e.g. filter pills)
+ * @param {boolean} [flush] Divider-only fields, matching the Browse Jobs mockup
  */
 export default function SearchBar({
   keyword,
@@ -22,10 +24,15 @@ export default function SearchBar({
   keywordPlaceholder = 'Job title, keyword or company',
   locationPlaceholder = 'City, province or region',
   className = 'mt-8',
+  children,
+  flush = false,
 }) {
   const uid = useId()
   const keywordId = `${uid}-keyword`
   const locationId = `${uid}-location`
+  const fieldClass = flush
+    ? 'flex flex-1 items-center gap-2 px-1 py-1.5'
+    : 'flex flex-1 items-center gap-2 rounded-lg border border-border px-3 py-2.5'
 
   return (
     <form
@@ -37,7 +44,7 @@ export default function SearchBar({
       }}
     >
       <div className="flex flex-col gap-3 lg:flex-row lg:items-stretch">
-        <div className="flex flex-1 items-center gap-2 rounded-lg border border-border px-3 py-2.5">
+        <div className={fieldClass}>
           <FiSearch className="h-4 w-4 shrink-0 text-muted" aria-hidden />
           <label htmlFor={keywordId} className="sr-only">
             Job title, keyword or company
@@ -53,7 +60,7 @@ export default function SearchBar({
           />
         </div>
         <div className="hidden w-px bg-border lg:block" aria-hidden />
-        <div className="flex flex-1 items-center gap-2 rounded-lg border border-border px-3 py-2.5">
+        <div className={fieldClass}>
           <FiMapPin className="h-4 w-4 shrink-0 text-muted" aria-hidden />
           <label htmlFor={locationId} className="sr-only">
             City, province or region
@@ -72,6 +79,7 @@ export default function SearchBar({
           Search Jobs
         </Button>
       </div>
+      {children}
     </form>
   )
 }
