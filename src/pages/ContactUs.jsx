@@ -1,20 +1,19 @@
-
-import React from 'react'
 import ContactHero from '../components/contact/ContactHero'
-import WaysToReachUs from '../components/contact/WayToReachUs'
-import NeedHelpSection from '../components/contact/NeedHelpSection'
-import ContactCTA from '../components/contact/ContactCTA'
+import WaysToReachUs from '../components/contact/WaysToReachUs'
+import VisitOurOffice from '../components/contact/VisitOurOffice'
+import SpecificHelp from '../components/contact/SpecificHelp'
+import FAQSection from '../components/contact/FAQSection'
+import ContactClosingCTA from '../components/contact/ContactClosingCTA'
 
-const ContactUs = () => {
+export default function ContactUs() {
   return (
-    <div>
+    <>
       <ContactHero />
       <WaysToReachUs />
-      <NeedHelpSection />
-      <ContactCTA />
-
-    </div>
+      <VisitOurOffice />
+      <SpecificHelp />
+      <FAQSection />
+      <ContactClosingCTA />
+    </>
   )
 }
-
-export default ContactUs

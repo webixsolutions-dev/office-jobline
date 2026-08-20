@@ -1,20 +1,25 @@
-
-
-import React from 'react'
 import BrowseHero from '../components/browse/BrowseHero'
-import JobListings from '../components/browse/JobListing'
-import JobCategories from '../components/browse/JobCategories'
+import TrustStrip from '../components/browse/TrustStrip'
+import JobListings from '../components/browse/JobListings'
+import PopularCategories from '../components/browse/PopularCategories'
+import FeaturedEmployers from '../components/browse/FeaturedEmployers'
+import BrowseByCity from '../components/browse/BrowseByCity'
+import JobAlertBanner from '../components/browse/JobAlertBanner'
+import JobSeekerSupport from '../components/browse/JobSeekerSupport'
+import ClosingCTA from '../components/browse/ClosingCTA'
 
-const Browse = () => {
+export default function Browse() {
   return (
-    <div>
-<BrowseHero/>
-<JobListings/>
-<JobCategories/>
-
-
-    </div>
+    <>
+      <BrowseHero />
+      <TrustStrip />
+      <JobListings />
+      <PopularCategories />
+      <FeaturedEmployers />
+      <BrowseByCity />
+      <JobAlertBanner />
+      <JobSeekerSupport />
+      <ClosingCTA />
+    </>
   )
 }
-
-export default Browse

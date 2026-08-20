@@ -1,326 +1,154 @@
-import React, { useState } from "react";
+import { FiBriefcase, FiHeadphones, FiSearch, FiShield } from 'react-icons/fi'
 import {
-  FiMail,
-  FiPhone,
-  FiClock,
-  FiSend,
-  FiMapPin,
-  FiCheckCircle,
-  FiAlertCircle,
-  FiHeadphones,
-  FiBriefcase,
-} from "react-icons/fi";
+  HiOutlineBuildingOffice2,
+  HiOutlineClock,
+  HiOutlineEnvelope,
+  HiOutlineMapPin,
+  HiOutlinePhone,
+} from 'react-icons/hi2'
+import { GiMapleLeaf } from 'react-icons/gi'
+import IconCircle from '../ui/IconCircle'
+import ContactForm from '../ui/ContactForm'
+import InfoCard from '../ui/InfoCard'
+import { images } from '../../constants/images'
+import { contactInfo, toTelHref } from '../../constants/contactInfo'
 
-// ✅ Data directly in component - No import from data/contact
-const contactCards = [
+const trustItems = [
   {
-    icon: FiHeadphones,
-    title: "Job Seeker Support",
-    desc: "Need help with your account, applications, or career resources?",
-    email: "support@officejobline.ca",
-    path: "/contact-us"
+    icon: FiSearch,
+    title: 'Find Office Jobs',
+    description: 'Explore administrative and office opportunities across Canada.',
   },
   {
     icon: FiBriefcase,
-    title: "Employer Support",
-    desc: "Get assistance with postings, plans, or finding the right talent.",
-    email: "employers@officejobline.ca",
-    path: "/contact-us"
+    title: 'For Employers',
+    description: 'Post jobs and connect with qualified office professionals.',
   },
   {
-    icon: FiMail,
-    title: "General Inquiries",
-    desc: "Have a question or feedback? We'd love to hear from you.",
-    email: "info@officejobline.ca",
-    path: "/contact-us"
+    icon: FiHeadphones,
+    title: 'Employer Support',
+    description: 'Get hiring assistance and recruitment support tailored to your needs.',
   },
-];
-
-const contactInfo = {
-  address: "1 Yonge Street, Suite 1801, Toronto, ON M5E 1W7",
-  phone: "1-888-555-0123",
-  email: "hello@officejobline.ca",
-  hours: "Mon - Fri: 8:00 AM - 6:00 PM EST",
-};
-
-const InfoRow = ({ icon, title, children }) => (
-  <div className="flex gap-4 border-b border-slate-100 py-4 last:border-b-0">
-    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#0B1B3A] text-amber-400">
-      {icon}
-    </div>
-    <div>
-      <h4 className="font-bold text-slate-900">{title}</h4>
-      <div className="mt-0.5 text-sm text-slate-600">{children}</div>
-    </div>
-  </div>
-);
+  {
+    icon: FiShield,
+    title: 'Trusted in Canada',
+    description: 'Supporting communities and careers from coast to coast.',
+  },
+]
 
 export default function ContactHero() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', null
-
-  // Handle form input changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus(null);
-
-    try {
-      // API call - replace with your actual endpoint
-      const response = await fetch('https://your-api-endpoint.com/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        setSubmitStatus('success');
-        setFormData({
-          name: "",
-          email: "",
-          subject: "",
-          message: "",
-        });
-        // Reset success message after 5 seconds
-        setTimeout(() => setSubmitStatus(null), 5000);
-      } else {
-        setSubmitStatus('error');
-        setTimeout(() => setSubmitStatus(null), 5000);
-      }
-    } catch (error) {
-      console.error('Error sending message:', error);
-      setSubmitStatus('error');
-      setTimeout(() => setSubmitStatus(null), 5000);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  // Handle email click
-  const handleEmailClick = (email) => {
-    window.location.href = `mailto:${email}`;
-  };
-
-  // Handle phone click
-  const handlePhoneClick = (phone) => {
-    window.location.href = `tel:${phone}`;
-  };
-
   return (
-    <section className="relative overflow-hidden bg-slate-50">
-      <div className="flex flex-col lg:grid lg:grid-cols-[1.2fr_1fr]">
-        {/* Left content */}
-        <div className="px-4 py-12 sm:px-6 md:px-8 lg:px-12 lg:py-16 xl:px-16 xl:py-20">
-          <span className="text-xs font-bold tracking-[0.2em] text-amber-500 sm:text-sm">
-            CONTACT US
-          </span>
-          <h1 className="mt-2 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl md:text-5xl">
-            Contact Office Jobline
-          </h1>
-          <p className="mt-3 text-base text-slate-600 sm:text-lg">
-            Connecting job seekers and employers across Canada.
-          </p>
-          <p className="mt-3 max-w-xl text-sm text-slate-500 sm:text-base">
-            We're here to help! Whether you're looking for office jobs or administrative jobs,
-            need employer support, or want assistance hiring top talent in Canada, our team is
-            ready to assist you.
-          </p>
+    <section className="bg-offwhite">
+      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,0.9fr)]">
+        <div className="order-2 flex items-start lg:order-1">
+          <div className="mx-auto w-full max-w-3xl px-6 py-10 sm:px-10 lg:ml-auto lg:mr-6 lg:px-16 lg:py-16">
+            <p className="text-sm font-semibold tracking-wide text-teal">CONTACT US</p>
+            <h1 className="mt-3 font-display text-4xl font-bold leading-tight text-navy sm:text-5xl">
+              Contact Office Jobline
+            </h1>
+            <p className="mt-3 text-lg font-semibold text-muted">
+              Connecting job seekers and employers across Canada.
+            </p>
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
+              We&apos;re here to help. Whether you&apos;re looking for office and administrative jobs, need
+              support with your account, or you&apos;re an employer hiring across Canada, our team is ready
+              to connect you with the right next step.
+            </p>
 
-          <div className="mt-8 flex flex-col gap-6 md:grid md:grid-cols-[1.3fr_1fr] lg:mt-10">
-            {/* Form card */}
-            <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6 md:p-7">
-              <div className="flex items-start gap-3 sm:items-center">
-                <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#0B1B3A] text-amber-400">
-                  <FiMail className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-slate-900">Send us a message</h3>
-                  <p className="text-xs text-slate-500 sm:text-sm">
-                    Fill out the form below and we'll get back to you shortly.
+            <div className="mt-8 grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.9fr)]">
+              <ContactForm />
+
+              <InfoCard
+                title="Contact Information"
+                tone="gold"
+                divided={false}
+                footer={
+                  <p className="flex items-start gap-2 text-xs text-navy sm:text-sm">
+                    <HiOutlineMapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold" aria-hidden />
+                    <span>
+                      Proudly supporting job seekers and employers across Canada.{' '}
+                      <GiMapleLeaf className="mb-0.5 inline h-3.5 w-3.5 text-gold" aria-hidden />
+                    </span>
                   </p>
-                </div>
-              </div>
-
-              {/* Status Messages */}
-              {submitStatus === 'success' && (
-                <div className="mt-4 flex items-center gap-2 rounded-lg bg-green-50 p-3 text-sm text-green-700">
-                  <FiCheckCircle className="h-5 w-5 text-green-500" />
-                  Message sent successfully! We'll get back to you soon.
-                </div>
-              )}
-              {submitStatus === 'error' && (
-                <div className="mt-4 flex items-center gap-2 rounded-lg bg-red-50 p-3 text-sm text-red-700">
-                  <FiAlertCircle className="h-5 w-5 text-red-500" />
-                  Failed to send message. Please try again or contact us directly.
-                </div>
-              )}
-
-              <form className="mt-5 space-y-4" onSubmit={handleSubmit}>
-                <div>
-                  <label className="mb-1 block text-xs font-semibold text-slate-700 sm:text-sm">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="Enter your full name"
-                    required
-                    className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm placeholder:text-sm placeholder:text-slate-400 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-100 sm:px-4 sm:py-2.5"
-                  />
-                </div>
-                <div>
-                  <label className="mb-1 block text-xs font-semibold text-slate-700 sm:text-sm">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="Enter your email address"
-                    required
-                    className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm placeholder:text-sm placeholder:text-slate-400 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-100 sm:px-4 sm:py-2.5"
-                  />
-                </div>
-                <div>
-                  <label className="mb-1 block text-xs font-semibold text-slate-700 sm:text-sm">
-                    Subject
-                  </label>
-                  <select
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    required
-                    className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-100 sm:px-4 sm:py-2.5"
-                  >
-                    <option value="">Select a subject</option>
-                    <option value="Job Seeker Support">Job Seeker Support</option>
-                    <option value="Employer Support">Employer Support</option>
-                    <option value="General Inquiry">General Inquiry</option>
-                    <option value="Partnership">Partnership</option>
-                    <option value="Feedback">Feedback</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="mb-1 block text-xs font-semibold text-slate-700 sm:text-sm">
-                    Message
-                  </label>
-                  <textarea
-                    rows={3}
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    placeholder="How can we help you?"
-                    required
-                    className="w-full resize-none rounded-lg border border-slate-200 px-3 py-2 text-sm placeholder:text-sm placeholder:text-slate-400 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-100 sm:px-4 sm:py-2.5"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`flex w-full items-center justify-center gap-2 rounded-lg bg-[#0B1B3A] py-2.5 text-sm font-semibold text-white transition sm:py-3 ${
-                    isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-[#132a56]'
-                  }`}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
-                      </svg>
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <FiSend className="h-4 w-4" /> Send Message
-                    </>
-                  )}
-                </button>
-              </form>
-            </div>
-
-            {/* Contact info card */}
-            <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-100 sm:p-6 md:p-7">
-              <h3 className="mb-1 font-bold text-slate-900">Contact Information</h3>
-              <div className="mt-2 space-y-0">
-                <InfoRow icon={<FiMail className="h-4 w-4" />} title="Email Us">
-                  <button
-                    onClick={() => handleEmailClick('info@officejobline.com')}
-                    className="font-semibold text-amber-500 hover:underline"
-                  >
-                    info@officejobline.com
-                  </button>
-                  <p className="text-xs text-slate-500">We aim to reply within one business day.</p>
-                </InfoRow>
-                <InfoRow icon={<FiPhone className="h-4 w-4" />} title="Call Us">
-                  <button
-                    onClick={() => handlePhoneClick('+16475550198')}
-                    className="font-semibold text-amber-500 hover:underline"
-                  >
-                    +1 (647) 555-0198
-                  </button>
-                  <p className="text-xs text-slate-500">Mon – Fri, 9:00 AM – 5:00 PM ET</p>
-                </InfoRow>
-                <InfoRow icon={<FiClock className="h-4 w-4" />} title="Office Hours">
-                  <p className="text-sm">Monday – Friday</p>
-                  <p className="text-sm">9:00 AM – 5:00 PM ET</p>
-                  <p className="text-xs text-slate-500">Closed on weekends and statutory holidays.</p>
-                </InfoRow>
-              </div>
-              <div className="mt-4 flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-2.5 text-xs text-slate-700 sm:px-4 sm:py-3 sm:text-sm">
-                <FiMapPin className="flex-shrink-0 text-amber-500" />
-                <span>Proudly supporting job seekers and employers across Canada. </span>
-              </div>
+                }
+              >
+                <ul className="space-y-5">
+                  <li className="flex items-start gap-3">
+                    <IconCircle icon={HiOutlineEnvelope} color="navy" size="sm" />
+                    <div>
+                      <p className="text-sm font-semibold text-navy">Email Us</p>
+                      <a
+                        href={`mailto:${contactInfo.email}`}
+                        className="text-sm font-semibold text-gold hover:underline"
+                      >
+                        {contactInfo.email}
+                      </a>
+                      <p className="mt-0.5 text-xs text-muted">We aim to reply within one business day.</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <IconCircle icon={HiOutlinePhone} color="navy" size="sm" />
+                    <div>
+                      <p className="text-sm font-semibold text-navy">Call Us</p>
+                      <a
+                        href={toTelHref(contactInfo.phone)}
+                        className="text-sm font-semibold text-gold hover:underline"
+                      >
+                        {contactInfo.phone}
+                      </a>
+                      <p className="mt-0.5 text-xs text-muted">{contactInfo.hours}</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <IconCircle icon={HiOutlineClock} color="navy" size="sm" />
+                    <div>
+                      <p className="text-sm font-semibold text-navy">Office Hours</p>
+                      <p className="text-sm text-navy">{contactInfo.hoursDetail.days}</p>
+                      <p className="text-sm text-navy">{contactInfo.hoursDetail.time}</p>
+                      <p className="mt-0.5 text-xs text-muted">{contactInfo.hoursDetail.note}</p>
+                    </div>
+                  </li>
+                </ul>
+              </InfoCard>
             </div>
           </div>
         </div>
 
-        {/* Right side - real office photo with navy gradient overlay + logo lockup */}
-        <div className="relative min-h-[280px] sm:min-h-[340px] lg:min-h-full">
-          {/* Background photo */}
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage:
-                "url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=80')",
-            }}
+        <div className="relative order-1 h-80 w-full self-stretch sm:h-[320px] lg:order-2 lg:h-auto lg:min-h-[640px]">
+          <img
+            src={images.contactHero}
+            alt="Bright meeting room overlooking a Canadian city skyline"
+            className="h-full w-full object-cover"
           />
-          {/* Navy gradient overlay so the photo reads on-brand and text stays legible */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0B1B3A]/95 via-[#0B1B3A]/70 to-[#0B1B3A]/30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0B1B3A]/60 via-transparent to-transparent" />
-
-          {/* Logo lockup */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-            <svg viewBox="0 0 24 24" className="h-16 w-16 text-amber-400 drop-shadow-lg sm:h-20 sm:w-20" fill="currentColor">
-              <path d="M3 21V9l6-4v4l6-4v16H3zm2-2h2v-2H5v2zm0-4h2v-2H5v2zm0-4h2V9H5v2zm6 8h2v-2h-2v2zm0-4h2v-2h-2v2zm6 4h2v-9h-2v9z" />
-            </svg>
-            <span className="mt-2 text-2xl font-extrabold text-white drop-shadow-lg sm:text-3xl">
-              Office Jobline
-            </span>
+          <div
+            className="pointer-events-none absolute inset-0 bg-gradient-to-r from-offwhite via-offwhite/20 to-transparent lg:from-transparent lg:via-navy/20 lg:to-navy/50"
+            aria-hidden
+          />
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden>
+            <div className="flex items-center gap-3 rounded-lg border border-gold bg-navy/80 px-4 py-3">
+              <HiOutlineBuildingOffice2 className="h-8 w-8 text-gold" />
+              <span className="font-display text-lg font-bold text-white sm:text-xl">Office Jobline</span>
+            </div>
           </div>
         </div>
       </div>
+
+      <div className="mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 divide-y divide-border overflow-hidden rounded-xl border border-border bg-white shadow-card sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4 lg:divide-x">
+          {trustItems.map((item, index) => (
+            <article
+              key={item.title}
+              className={`flex items-start gap-4 p-6 ${index < 2 ? 'sm:border-b sm:border-border lg:border-b-0' : ''}`}
+            >
+              <IconCircle icon={item.icon} color="navy" />
+              <div>
+                <h3 className="font-display text-base font-semibold text-navy">{item.title}</h3>
+                <p className="mt-1 text-sm leading-relaxed text-muted">{item.description}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
     </section>
-  );
+  )
 }

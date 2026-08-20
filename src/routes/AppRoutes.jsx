@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 
 import Home from '../pages/Home';
@@ -9,7 +9,7 @@ import AboutUs from '../pages/AboutUs';
 import ContactUs from '../pages/ContactUs';
 import SignIn from '../pages/auth/SignIn';
 import SignUp from '../pages/auth/SignUp';
-import Pricing from '../components/employers/Pricing';
+import PricingSection from '../components/employers/PricingSection';
 import ComingSoonPage from '../pages/ComingSoonPage';
 
 import DashboardLayout from '../components/dashboard/common/DashboardLayout';
@@ -136,14 +136,29 @@ function AppRoutes() {
       <Routes location={location} key={location.pathname}>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
+        <Route path="/browse/cities" element={<ComingSoonPage title="Browse by City" />} />
+        <Route path="/browse/:id/apply" element={<ComingSoonPage title="Apply for this job" />} />
         <Route path="/browse" element={<Browse />} />
+        <Route path="/jobs/:id/apply" element={<ComingSoonPage title="Apply for this job" />} />
+        <Route path="/jobs" element={<Navigate to={`/browse${location.search}`} replace />} />
+        <Route path="/employers/:slug" element={<ComingSoonPage title="Employer Profile" />} />
         <Route path="/employers" element={<Employers />} />
+        <Route path="/job-alerts" element={<ComingSoonPage title="Job Alerts" />} />
+        <Route path="/upload-resume" element={<ComingSoonPage title="Upload Your Resume" />} />
+        <Route path="/career-tips/:slug" element={<ComingSoonPage title="Career Tips" />} />
         <Route path="/post-a-job" element={<PostJob />} />
         <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/contact" element={<Navigate to="/contact-us" replace />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/pricing" element={<PricingSection />} />
+        <Route path="/why-hire-with-us" element={<ComingSoonPage title="Why Hire With Us" />} />
+        <Route path="/talent-search" element={<ComingSoonPage title="Talent Search" />} />
+        <Route path="/browse-resumes" element={<ComingSoonPage title="Browse Resumes" />} />
+        <Route path="/recruitment-solutions" element={<ComingSoonPage title="Recruitment Solutions" />} />
+        <Route path="/employer-resources" element={<ComingSoonPage title="Employer Resources" />} />
+        <Route path="/career-advice" element={<ComingSoonPage title="Career Advice" />} />
         <Route path="/privacy-policy" element={<ComingSoonPage title="Privacy Policy" />} />
         <Route path="/terms-of-service" element={<ComingSoonPage title="Terms of Use" />} />
         <Route path="/accessibility" element={<ComingSoonPage title="Accessibility" />} />

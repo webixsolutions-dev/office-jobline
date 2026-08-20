@@ -1,16 +1,30 @@
 /** Canonical company contact details used by Footer and contact cards. */
+
+export function toTelHref(phone) {
+  return `tel:${String(phone).replace(/[^\d+]/g, '')}`
+}
+
 export const contactInfo = {
   name: 'Office Jobline',
-  tagline: 'Connecting office talent with opportunities across Canada.',
-  address: 'Toronto, Ontario, Canada',
-  email: 'info@officejobline.ca',
-  phone: '1 (647) 555-0198',
-  hours: 'Mon – Fri: 8:30 AM – 5:30 PM ET',
-  support: {
-    seeker: 'support@officejobline.ca',
-    employer: 'employers@officejobline.ca',
-    general: 'info@officejobline.ca',
+  tagline: 'Connecting job seekers and employers across Canada in office and administrative careers.',
+  address: '123 Front Street West, Toronto, ON M5J 2M2, Canada',
+  officeAddress: '150 King Street West, Suite 200, Toronto, ON M5H 1J9, Canada',
+  email: 'info@officejobline.com',
+  phone: '+1 (647) 555-0198',
+  hours: 'Mon – Fri, 9:00 AM – 5:00 PM ET',
+  hoursDetail: {
+    days: 'Monday – Friday',
+    time: '9:00 AM – 5:00 PM ET',
+    note: 'Closed on weekends and statutory holidays.',
   },
+  support: {
+    general: 'info@officejobline.com',
+    seeker: 'support@officejobline.com',
+    employer: 'employers@officejobline.com',
+    partnerships: 'partnerships@officejobline.com',
+  },
+  mapsSearchUrl:
+    'https://www.google.com/maps/search/?api=1&query=150+King+Street+West+Suite+200+Toronto+ON',
   socials: [
     { name: 'LinkedIn', url: 'https://linkedin.com' },
     { name: 'Facebook', url: 'https://facebook.com' },
@@ -18,3 +32,11 @@ export const contactInfo = {
     { name: 'YouTube', url: 'https://youtube.com' },
   ],
 }
+
+export const contactSubjects = [
+  { value: 'general', label: 'General Inquiry' },
+  { value: 'job-seeker', label: 'Job Seeker Support' },
+  { value: 'employer', label: 'Employer Support' },
+  { value: 'partnerships', label: 'Partnerships & Media' },
+  { value: 'other', label: 'Other' },
+]

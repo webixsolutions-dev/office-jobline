@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom'
 const variants = {
   teal: 'bg-teal text-white hover:bg-teal-dark',
   gold: 'bg-gold text-navy hover:bg-gold-dark',
+  navy: 'bg-navy text-white hover:bg-navy-light',
+  'navy-gold': 'bg-navy text-gold hover:bg-navy-light',
   outline: 'border-2 border-white bg-transparent text-white hover:bg-white/10',
+  'outline-teal': 'border-2 border-teal bg-transparent text-teal hover:bg-teal-light',
 }
 
 /**
- * @param {'teal' | 'gold' | 'outline'} [variant]
+ * @param {'teal' | 'gold' | 'navy' | 'navy-gold' | 'outline' | 'outline-teal'} [variant]
  * @param {string} [to] React Router destination
  * @param {string} [href] Native link (anchors, mailto)
  * @param {React.ComponentType} [icon]
@@ -23,11 +26,14 @@ export default function Button({
   className = '',
   type = 'button',
   onClick,
+  disabled = false,
+  ...rest
 }) {
   const classes = [
     'inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-semibold transition-colors',
     'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold',
     variants[variant] || variants.teal,
+    disabled ? 'cursor-not-allowed opacity-50' : '',
     className,
   ].join(' ')
 
@@ -41,7 +47,7 @@ export default function Button({
 
   if (to) {
     return (
-      <Link to={to} className={classes}>
+      <Link to={to} className={classes} {...rest}>
         {content}
       </Link>
     )
@@ -49,14 +55,14 @@ export default function Button({
 
   if (href) {
     return (
-      <a href={href} className={classes}>
+      <a href={href} className={classes} {...rest}>
         {content}
       </a>
     )
   }
 
   return (
-    <button type={type} onClick={onClick} className={classes}>
+    <button type={type} onClick={onClick} className={classes} disabled={disabled} {...rest}>
       {content}
     </button>
   )
