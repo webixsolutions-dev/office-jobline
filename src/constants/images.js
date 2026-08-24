@@ -15,5 +15,5 @@ export const images = {
   postJobHero: '/img13.webp',
   signInHero: '/img2.webp',
   // Static placeholder map for Visit Our Office — not a live Maps API embed.
-  officeMap: '/map-toronto.svg',
+  officeMap: '/map-toronto.jpg',
 }

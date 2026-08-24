@@ -23,9 +23,13 @@ export default function VisitOurOffice() {
             footer={
               <p className="flex items-start gap-2 text-sm text-navy">
                 <GiMapleLeaf className="mt-0.5 h-4 w-4 shrink-0 text-gold" aria-hidden />
-                Proudly supporting employers and job seekers across Canada.
+                <span>
+                  Proudly supporting employers<br />
+                  and job seekers across Canada.
+                </span>
               </p>
             }
+            footerDivided={true}
           />
 
           <MapCard />
@@ -33,8 +37,19 @@ export default function VisitOurOffice() {
           <InfoCard
             icon={HiOutlineClock}
             title="Office Hours"
-            description={`${contactInfo.hoursDetail.days}, ${contactInfo.hoursDetail.time}`}
-            footer={<p className="text-sm text-muted">{contactInfo.hoursDetail.note}</p>}
+            description={
+              <span>
+                Monday – Friday<br />
+                9:00 AM – 5:00 PM ET
+              </span>
+            }
+            footer={
+              <p className="text-sm text-muted">
+                Closed on weekends<br />
+                and statutory holidays.
+              </p>
+            }
+            footerDivided={true}
           />
         </div>
       </div>

@@ -14,11 +14,6 @@ export default function MapCard({
   return (
     <figure className="relative h-full min-h-[240px] overflow-hidden rounded-xl shadow-card">
       <img src={imageUrl} alt={alt} className="h-full w-full object-cover" />
-      <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" aria-hidden>
-        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-navy text-gold shadow-lg ring-4 ring-gold">
-          <HiOutlineBuildingOffice2 className="h-7 w-7" />
-        </span>
-      </div>
     </figure>
   )
 }

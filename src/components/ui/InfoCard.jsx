@@ -17,6 +17,7 @@ export default function InfoCard({
   tone = 'white',
   iconColor = 'navy',
   divided = true,
+  footerDivided = false,
   as: Tag = 'article',
   className = '',
   children,
@@ -34,7 +35,11 @@ export default function InfoCard({
       {children && (
         <div className={divided ? 'mt-5 border-t border-border pt-5' : 'mt-4'}>{children}</div>
       )}
-      {footer && <div className="mt-auto pt-6">{footer}</div>}
+      {footer && (
+        <div className={`mt-auto ${footerDivided ? 'border-t border-border pt-5 mt-5' : 'pt-6'}`}>
+          {footer}
+        </div>
+      )}
     </Tag>
   )
 }
