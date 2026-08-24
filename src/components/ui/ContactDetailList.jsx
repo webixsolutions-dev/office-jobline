@@ -14,7 +14,13 @@ export default function ContactDetailList({ items = [] }) {
           <>
             <Icon className="mt-0.5 h-4 w-4 shrink-0 text-gold" aria-hidden />
             <span>
-              <span className={item.icon === 'mail' ? 'font-semibold text-gold' : 'font-semibold text-navy'}>
+              <span
+                className={
+                  item.href
+                    ? 'font-semibold text-gold underline underline-offset-2'
+                    : 'font-medium text-navy'
+                }
+              >
                 {item.label}
               </span>
               {item.hint && <span className="mt-0.5 block text-xs text-muted">{item.hint}</span>}
@@ -27,9 +33,7 @@ export default function ContactDetailList({ items = [] }) {
             {item.href ? (
               <a
                 href={item.href}
-                className={`flex items-start gap-2 text-sm hover:underline ${
-                  item.icon === 'mail' ? 'text-gold' : 'text-navy'
-                }`}
+                className="flex items-start gap-2 text-sm text-gold"
               >
                 {content}
               </a>

@@ -26,7 +26,7 @@ export default function SplitHero({
   imagePosition = 'right',
   imageFade = false,
   overlay,
-  imageClassName = 'object-cover object-[center_20%]',
+  imageClassName = 'object-cover object-center',
   children,
 }) {
   const hasOverlay = Boolean(overlay)
@@ -55,12 +55,6 @@ export default function SplitHero({
       className={`relative h-80 w-full self-stretch sm:h-[320px] lg:h-auto lg:min-h-[520px] ${imageOrder}`}
     >
       <img src={imageUrl} alt={imageAlt} className={`h-full w-full ${imageClassName}`} />
-      {imageFade && (
-        <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-offwhite via-offwhite/30 to-transparent"
-          aria-hidden
-        />
-      )}
     </div>
   )
 

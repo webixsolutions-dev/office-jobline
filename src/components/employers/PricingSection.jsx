@@ -2,7 +2,7 @@ import { GiMapleLeaf } from 'react-icons/gi'
 import SectionHeading from '../ui/SectionHeading'
 import PricingCard from '../ui/PricingCard'
 import TestimonialCard from '../ui/TestimonialCard'
-import { pricingPlans } from '../../constants/pricingPlans'
+import { employerPricingPlans } from '../../constants/pricingPlans'
 import { employerTestimonials } from '../../constants/employerTestimonials'
 
 export default function PricingSection() {
@@ -17,7 +17,7 @@ export default function PricingSection() {
         />
 
         <div className="mt-12 grid grid-cols-1 items-stretch gap-6 lg:grid-cols-3 lg:gap-8">
-          {pricingPlans.map((plan) => (
+          {employerPricingPlans.map((plan) => (
             <PricingCard
               key={plan.name}
               name={plan.name}
@@ -28,8 +28,6 @@ export default function PricingSection() {
               ctaLabel={plan.ctaLabel}
               ctaTo={plan.ctaTo}
               featured={plan.isFeatured}
-              highlighted={plan.highlighted}
-              accent="gold"
             />
           ))}
         </div>

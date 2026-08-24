@@ -29,15 +29,11 @@ export default function HomeHero() {
 
   return (
     <section className="relative isolate overflow-hidden bg-offwhite" aria-labelledby="home-hero-heading">
-      {/* Right 50%: photo as a background, faded into the left — no boxed image column */}
+      {/* Right 50%: photo as a background, fully clear — no boxed image column */}
       <div
-        className="hero-photo-fade pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 bg-cover bg-[center_30%] lg:block"
+        className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 bg-cover bg-center lg:block"
         aria-hidden
         style={{ backgroundImage: `url('${images.homeHero}')` }}
-      />
-      <div
-        className="pointer-events-none absolute inset-y-0 right-[42%] hidden w-[16%] bg-gradient-to-r from-offwhite via-offwhite/80 to-transparent lg:block"
-        aria-hidden
       />
 
       <div className="relative mx-auto flex min-h-[28rem] max-w-7xl flex-col justify-center px-4 py-14 sm:min-h-[32rem] sm:px-6 lg:min-h-[34rem] lg:px-8 lg:py-20">
@@ -61,16 +57,12 @@ export default function HomeHero() {
 
         <div className="relative z-10 mt-8 w-full max-w-xl lg:max-w-[46rem]">{search}</div>
 
-        {/* Mobile / tablet: photo below copy, faded at the top so it never reads as a card */}
+        {/* Mobile / tablet: photo below copy */}
         <div className="relative mt-10 h-64 overflow-hidden sm:h-80 lg:hidden">
           <img
             src={images.homeHero}
             alt="Office professionals collaborating around a laptop"
-            className="h-full w-full object-cover object-[center_30%]"
-          />
-          <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-b from-offwhite via-offwhite/20 to-transparent"
-            aria-hidden
+            className="h-full w-full object-cover object-center"
           />
         </div>
       </div>

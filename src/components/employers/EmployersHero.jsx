@@ -28,7 +28,6 @@ export default function EmployersHero() {
       imageUrl={images.employersHero}
       imageAlt="Office professionals collaborating around a laptop in a bright Canadian workplace"
       imagePosition="right"
-      imageFade
     />
   )
 }

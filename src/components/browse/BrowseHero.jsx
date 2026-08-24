@@ -58,15 +58,11 @@ export default function BrowseHero() {
       className="relative isolate overflow-hidden bg-offwhite"
       aria-labelledby="browse-hero-heading"
     >
-      {/* Right 50%: photo as a background, faded into the left — same treatment as Home */}
+      {/* Right 50%: photo as a background, fully clear — same treatment as Home */}
       <div
-        className="hero-photo-fade pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 bg-cover bg-[center_30%] lg:block"
+        className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 bg-cover bg-center lg:block"
         aria-hidden
         style={{ backgroundImage: `url('${images.browseHero}')` }}
-      />
-      <div
-        className="pointer-events-none absolute inset-y-0 right-[42%] hidden w-[16%] bg-gradient-to-r from-offwhite via-offwhite/80 to-transparent lg:block"
-        aria-hidden
       />
 
       <div className="relative mx-auto flex min-h-[28rem] max-w-7xl flex-col justify-center px-4 py-14 sm:min-h-[32rem] sm:px-6 lg:min-h-[34rem] lg:px-8 lg:py-16">
@@ -122,11 +118,7 @@ export default function BrowseHero() {
           <img
             src={images.browseHero}
             alt=""
-            className="h-full w-full object-cover object-[center_30%]"
-          />
-          <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-b from-offwhite via-offwhite/25 to-transparent"
-            aria-hidden
+            className="h-full w-full object-cover object-center"
           />
         </div>
       </div>

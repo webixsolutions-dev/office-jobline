@@ -2,7 +2,6 @@ import AboutHero from '../components/about/AboutHero'
 import WhoWeAre from '../components/about/WhoWeAre'
 import OurMission from '../components/about/OurMission'
 import OurValues from '../components/about/OurValues'
-import StatsStrip from '../components/about/StatsStrip'
 import HowWeHelp from '../components/about/HowWeHelp'
 import FeatureHighlights from '../components/about/FeatureHighlights'
 import Testimonials from '../components/about/Testimonials'
@@ -16,7 +15,6 @@ export default function AboutUs() {
       <WhoWeAre />
       <OurMission />
       <OurValues />
-      <StatsStrip />
       <HowWeHelp />
       <FeatureHighlights />
       <Testimonials />

@@ -46,8 +46,10 @@ export default function PricingCard({
     >
       {isPopular && (
         <p
-          className={`py-2.5 text-center text-xs font-bold uppercase tracking-[0.14em] ${
-            highlighted ? 'bg-gold text-navy' : 'bg-teal text-white'
+          className={`py-2.5 text-center text-sm font-semibold ${
+            highlighted
+              ? 'bg-gold text-xs font-bold uppercase tracking-[0.14em] text-navy'
+              : 'bg-teal text-white'
           }`}
         >
           Most Popular

@@ -59,8 +59,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .hero-photo-fade {
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.35) 18%, #000 38%);
-  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.35) 18%, #000 38%);
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 
 .bg-noise {

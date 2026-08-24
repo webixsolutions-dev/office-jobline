@@ -110,6 +110,7 @@ export default function ContactForm() {
             aria-required="true"
             aria-invalid={Boolean(errors.name)}
             aria-describedby={errors.name ? `${formId}-name-error` : undefined}
+            placeholder="Enter your full name"
             className={fieldClass}
           />
           {errors.name && (
@@ -133,6 +134,7 @@ export default function ContactForm() {
             aria-required="true"
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? `${formId}-email-error` : undefined}
+            placeholder="Enter your email address"
             className={fieldClass}
           />
           {errors.email && (
@@ -183,6 +185,7 @@ export default function ContactForm() {
             aria-required="true"
             aria-invalid={Boolean(errors.message)}
             aria-describedby={errors.message ? `${formId}-message-error` : undefined}
+            placeholder="How can we help you?"
             className={`${fieldClass} resize-y`}
           />
           {errors.message && (
@@ -197,7 +200,7 @@ export default function ContactForm() {
           variant="navy"
           icon={FiSend}
           disabled={status === 'sending'}
-          className="w-full [&_svg]:text-gold"
+          className="w-full"
         >
           {status === 'sending' ? 'Sending…' : 'Send Message'}
         </Button>

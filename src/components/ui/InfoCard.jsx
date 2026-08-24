@@ -7,6 +7,7 @@ import IconCircle from './IconCircle'
  * (c) + checklist + button via footer
  *
  * @param {'white' | 'gold'} [tone]
+ * @param {string} [iconColor] IconCircle color token
  * @param {boolean} [divided] render a top border above children
  */
 export default function InfoCard({
@@ -14,6 +15,7 @@ export default function InfoCard({
   title,
   description,
   tone = 'white',
+  iconColor = 'navy',
   divided = true,
   as: Tag = 'article',
   className = '',
@@ -24,7 +26,7 @@ export default function InfoCard({
 
   return (
     <Tag className={`flex h-full flex-col rounded-xl p-6 shadow-card ${surface} ${className}`}>
-      {icon && <IconCircle icon={icon} color="navy" />}
+      {icon && <IconCircle icon={icon} color={iconColor} />}
       {title && (
         <h3 className={`font-display text-lg font-semibold text-navy ${icon ? 'mt-4' : ''}`}>{title}</h3>
       )}

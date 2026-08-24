@@ -35,7 +35,7 @@ export default function HowWeHelp() {
           subtitle="Simple solutions that connect office talent with opportunities across Canada."
         />
 
-        <div className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
           <ChecklistCard
             theme="teal"
             icon={SeekerIcon}

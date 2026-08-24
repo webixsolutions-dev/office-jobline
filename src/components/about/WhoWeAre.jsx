@@ -27,7 +27,7 @@ const pillars = [
 export default function WhoWeAre() {
   return (
     <section className="bg-offwhite" aria-labelledby="who-we-are-heading">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 pt-16 pb-6 sm:px-6 lg:px-8">
         <SectionHeading
           id="who-we-are-heading"
           title="Who We Are"
@@ -47,7 +47,7 @@ export default function WhoWeAre() {
           ))}
         </div>
 
-        <MapleDivider className="mt-14" />
+        <MapleDivider className="mt-10" />
       </div>
     </section>
   )

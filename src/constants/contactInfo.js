@@ -11,7 +11,7 @@ export const contactInfo = {
   address: '100 King St W, Suite 5600, Toronto, ON M5X 1C7, Canada',
   officeAddress: '100 King St W, Suite 5600, Toronto, ON M5X 1C7, Canada',
   email: 'info@officejobline.com',
-  phone: '+1 (416) 555-0187',
+  phone: '+1 (647) 555-0198',
   hours: 'Mon - Fri: 9:00 AM - 5:00 PM EST',
   hoursDetail: {
     days: 'Monday – Friday',

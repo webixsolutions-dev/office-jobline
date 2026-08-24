@@ -1,6 +1,6 @@
 /**
  * Circular icon wrapper used across cards and stats.
- * @param {'teal' | 'teal-solid' | 'gold-solid' | 'gold-tint' | 'gold-outline' | 'navy' | 'white'} [color]
+ * @param {'teal' | 'teal-solid' | 'gold-solid' | 'gold-tint' | 'gold-outline' | 'navy' | 'navy-white' | 'white'} [color]
  */
 export default function IconCircle({
   icon: Icon,
@@ -21,6 +21,7 @@ export default function IconCircle({
     'gold-tint': 'bg-gold-tint text-gold-dark',
     'gold-outline': 'border-2 border-gold bg-transparent text-gold',
     navy: 'bg-navy text-gold',
+    'navy-white': 'bg-navy text-white',
     white: 'bg-white text-teal',
   }
 

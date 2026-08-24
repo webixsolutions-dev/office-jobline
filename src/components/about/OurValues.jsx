@@ -1,6 +1,7 @@
 import { FiCheckCircle, FiShield, FiTrendingUp } from 'react-icons/fi'
 import { HiOutlineUserGroup } from 'react-icons/hi2'
 import IconTextCard from '../ui/IconTextCard'
+import StatsStrip from './StatsStrip'
 
 const values = [
   {
@@ -28,7 +29,7 @@ const values = [
 export default function OurValues() {
   return (
     <section className="bg-offwhite" aria-labelledby="our-values-heading">
-      <div className="mx-auto max-w-7xl px-4 pb-6 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
         <h2 id="our-values-heading" className="sr-only">
           Our Values
         </h2>
@@ -40,8 +41,13 @@ export default function OurValues() {
               title={item.title}
               description={item.description}
               layout="column"
+              className="h-full"
             />
           ))}
+        </div>
+
+        <div className="mt-6" aria-label="Office Jobline at a glance">
+          <StatsStrip />
         </div>
       </div>
     </section>

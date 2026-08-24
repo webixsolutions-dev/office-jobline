@@ -7,7 +7,7 @@ import { images } from '../../constants/images'
 export default function OurMission() {
   return (
     <section id="our-mission" className="bg-offwhite scroll-mt-24" aria-labelledby="our-mission-heading">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 pt-6 pb-16 sm:px-6 lg:px-8">
         <SectionHeading
           id="our-mission-heading"
           eyebrow="Our Mission & Values"

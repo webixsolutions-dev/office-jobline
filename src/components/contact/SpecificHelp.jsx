@@ -1,14 +1,13 @@
 import { FiBriefcase, FiMail, FiMessageCircle, FiUser } from 'react-icons/fi'
 import { FaHandshake } from 'react-icons/fa'
-import SectionHeading from '../ui/SectionHeading'
 import InfoCard from '../ui/InfoCard'
 import { CheckList } from '../ui/ContactDetailList'
 import Button from '../ui/Button'
+import ContactEyebrow from './ContactEyebrow'
 import { contactInfo } from '../../constants/contactInfo'
 
 /**
- * Contact Support / Talk to Sales scroll to the hero form with the matching subject pre-selected
- * (`?subject=job-seeker|employer#contact-form`) — more useful than a Coming Soon page.
+ * Contact Support / Talk to Sales scroll to the hero form with the matching subject pre-selected.
  * Send Inquiry opens a mailto to the partnerships inbox.
  */
 const cards = [
@@ -30,7 +29,7 @@ const cards = [
     points: ['Post a job or edit a listing', 'Account and billing support', 'Employer onboarding help'],
     action: {
       label: 'Talk to Sales',
-      icon: FaHandshake,
+      icon: FiUser,
       to: '/contact-us?subject=employer#contact-form',
     },
   },
@@ -51,30 +50,30 @@ export default function SpecificHelp() {
   return (
     <section className="bg-offwhite" aria-labelledby="specific-help-heading">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <SectionHeading
-          align="left"
-          showIcon={false}
-          eyebrow="CONTACT US"
-          title="Need Help With Something Specific?"
-          subtitle="Choose the option that best fits your needs. Our team is here to provide the right support and connect you with the right person."
-          as="h2"
-          id="specific-help-heading"
-        />
+        <ContactEyebrow>CONTACT US</ContactEyebrow>
+        <h2 id="specific-help-heading" className="mt-4 font-display text-3xl font-bold text-navy sm:text-4xl">
+          Need Help With Something Specific?
+        </h2>
+        <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
+          Choose the option that best fits your needs. Our team is here to provide the right support and
+          connect you with the right person.
+        </p>
 
         <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {cards.map((card) => (
             <InfoCard
               key={card.title}
               icon={card.icon}
+              iconColor="navy-white"
               title={card.title}
               description={card.description}
               footer={
                 card.action.to ? (
-                  <Button variant="navy-gold" to={card.action.to} icon={card.action.icon} className="w-full">
+                  <Button variant="navy" to={card.action.to} icon={card.action.icon} className="w-full">
                     {card.action.label}
                   </Button>
                 ) : (
-                  <Button variant="navy-gold" href={card.action.href} icon={card.action.icon} className="w-full">
+                  <Button variant="navy" href={card.action.href} icon={card.action.icon} className="w-full">
                     {card.action.label}
                   </Button>
                 )
