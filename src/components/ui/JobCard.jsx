@@ -3,12 +3,22 @@ import { Link } from 'react-router-dom'
 import { FiBookmark, FiBriefcase, FiHeart, FiMapPin } from 'react-icons/fi'
 import { HiOutlineBuildingOffice2 } from 'react-icons/hi2'
 import Button from './Button'
+import { useSavedJobsContext } from '../../lib/SavedJobsContext'
 
 /**
  * Single job listing card.
  */
 export default function JobCard({ job }) {
-  const [saved, setSaved] = useState(false)
+  const { isSaved, toggleSaved } = useSavedJobsContext()
+  const saved = isSaved(job.id)
+
+  const handleSaveToggle = (e) => {
+    if (e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+    toggleSaved(job.id)
+  }
 
   return (
     <article className="flex h-full flex-col rounded-xl bg-white p-5 shadow-card sm:p-6">
@@ -35,7 +45,7 @@ export default function JobCard({ job }) {
           type="button"
           aria-pressed={saved}
           aria-label={saved ? 'Unsave job' : 'Save job'}
-          onClick={() => setSaved((v) => !v)}
+          onClick={handleSaveToggle}
           className={`rounded-full p-1 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold ${
             saved ? 'text-teal' : 'text-muted hover:text-teal'
           }`}
@@ -71,7 +81,7 @@ export default function JobCard({ job }) {
           icon={FiBookmark}
           iconPosition="right"
           className="flex-1"
-          onClick={() => setSaved((v) => !v)}
+          onClick={handleSaveToggle}
           aria-pressed={saved}
         >
           {saved ? 'Saved' : 'Save Job'}
@@ -80,3 +90,4 @@ export default function JobCard({ job }) {
     </article>
   )
 }
+

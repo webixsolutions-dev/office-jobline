@@ -1,20 +1,40 @@
-// src/pages/seeker/hooks/useSavedJobs.js
-import { useState } from 'react';
-import { MOCK_SAVED_JOBS } from '../../data/seeker/savedJobs';
+// src/hooks/seeker/useSavedJobs.js
+import { useState, useMemo } from 'react';
+import { useSavedJobsContext } from '../../lib/SavedJobsContext';
+import { useServiceCareJobs } from '../useServiceCareJobs';
 
 export function useSavedJobs() {
-  const [savedJobs, setSavedJobs] = useState(MOCK_SAVED_JOBS);
+  const { savedIds, toggleSaved, loading: contextLoading, error: contextError } = useSavedJobsContext();
+  const { jobs: allJobs, loading: jobsLoading, error: jobsError } = useServiceCareJobs({ limit: 100 });
   const [searchTerm, setSearchTerm] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showRemoveModal, setShowRemoveModal] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const filteredJobs = savedJobs.filter(item => {
-    const matchesSearch = item.job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.job.company_name.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesSearch;
-  });
+  // Derive savedJobs from savedIds and allJobs
+  const savedJobs = useMemo(() => {
+    return allJobs.filter(job => savedIds.has(String(job.id))).map(job => ({
+      id: job.id,
+      job_id: job.id,
+      job: {
+        id: job.id,
+        title: job.title,
+        company_name: job.company,
+        location: job.location,
+        type: job.type,
+        salaryLabel: job.salaryLabel,
+        postedDate: job.postedDate,
+        status: 'active',
+      }
+    }));
+  }, [allJobs, savedIds]);
+
+  const filteredJobs = useMemo(() => {
+    return savedJobs.filter(item => {
+      const matchesSearch = item.job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           item.job.company_name.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesSearch;
+    });
+  }, [savedJobs, searchTerm]);
 
   const handleRemove = (jobId) => {
     setShowRemoveModal(jobId);
@@ -23,11 +43,10 @@ export function useSavedJobs() {
   const confirmRemove = async () => {
     setIsSubmitting(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setSavedJobs(prev => prev.filter(item => item.job_id !== showRemoveModal));
+      await toggleSaved(showRemoveModal);
       setShowRemoveModal(null);
     } catch (error) {
-      setIsError(true);
+      console.error('Failed to remove saved job:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -38,12 +57,7 @@ export function useSavedJobs() {
   };
 
   const handleRetry = () => {
-    setIsError(false);
-    setIsLoading(true);
-    setTimeout(() => {
-      setSavedJobs(MOCK_SAVED_JOBS);
-      setIsLoading(false);
-    }, 1000);
+    // Handled dynamically
   };
 
   const formatDate = (dateString) => {
@@ -57,17 +71,14 @@ export function useSavedJobs() {
   };
 
   const getJobStatusDisplay = (jobStatus) => {
-    if (jobStatus === 'expired') {
-      return 'Expired';
-    }
-    if (jobStatus === 'closed') {
-      return 'Closed';
-    }
-    if (jobStatus === 'removed') {
-      return 'Removed';
-    }
+    if (jobStatus === 'expired') return 'Expired';
+    if (jobStatus === 'closed') return 'Closed';
+    if (jobStatus === 'removed') return 'Removed';
     return null;
   };
+
+  const isLoading = contextLoading || jobsLoading;
+  const isError = !!(contextError || jobsError);
 
   return {
     savedJobs,

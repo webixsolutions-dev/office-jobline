@@ -5,7 +5,7 @@ import { GiMapleLeaf } from 'react-icons/gi'
 import FilterSidebar from '../ui/FilterSidebar'
 import JobCard from '../ui/JobCard'
 import Pagination from '../ui/Pagination'
-import { jobs } from '../../constants/jobs'
+import { useServiceCareJobs } from '../../hooks/useServiceCareJobs'
 import {
   JOB_LISTINGS_ID,
   SORT_OPTIONS,
@@ -23,6 +23,8 @@ export default function JobListings() {
   const [draft, setDraft] = useState(applied)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const isFirstLoad = useRef(true)
+
+  const { jobs: apiJobs, loading, error } = useServiceCareJobs({ limit: 100 })
 
   useEffect(() => {
     setDraft(filtersFromSearchParams(searchParams))
@@ -46,7 +48,7 @@ export default function JobListings() {
     return () => window.removeEventListener('keydown', onKey)
   }, [drawerOpen])
 
-  const filtered = applyJobFilters(jobs, applied)
+  const filtered = applyJobFilters(apiJobs || [], applied)
   const { items, total, pageCount, page } = paginate(filtered, applied.page, applied.perPage)
 
   const commit = (next, { closeDrawer = true } = {}) => {
@@ -161,7 +163,11 @@ export default function JobListings() {
               </div>
             </div>
 
-            {items.length === 0 ? (
+            {loading ? (
+              <p className="mt-8 text-center text-muted" aria-live="polite">Loading jobs...</p>
+            ) : error ? (
+              <p className="mt-8 text-center text-rose-600" aria-live="assertive">{error}</p>
+            ) : items.length === 0 ? (
               <p className="mt-8 rounded-xl bg-white p-8 text-center text-muted shadow-card">
                 No jobs match these filters. Try clearing a filter or searching a different city.
               </p>
@@ -193,3 +199,4 @@ export default function JobListings() {
     </section>
   )
 }
+

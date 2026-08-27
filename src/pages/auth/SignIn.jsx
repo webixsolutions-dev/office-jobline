@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FiMail, FiLock, FiArrowRight } from 'react-icons/fi'
 import AuthLayout from '../../components/auth/AuthLayout'
 import RoleToggle from '../../components/ui/RoleToggle'
 import Input from '../../components/ui/Input'
 import Button from '../../components/ui/Button'
 import { images } from '../../constants/images'
+import { useAuth } from '../../hooks/useAuth'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -19,6 +20,8 @@ const signInTestimonial = {
 }
 
 export default function SignIn() {
+  const navigate = useNavigate()
+  const { signIn } = useAuth()
   const [role, setRole] = useState('job_seeker')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -34,20 +37,23 @@ export default function SignIn() {
     return next
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     const next = validate()
     setErrors(next)
     if (Object.keys(next).length > 0) return
 
     setSubmitting(true)
-    console.log('Sign in (placeholder)', {
-      role,
-      email: email.trim(),
-      rememberMe,
-      redirectTo: role === 'employer' ? '/recruiter' : '/dashboard',
-    })
-    window.setTimeout(() => setSubmitting(false), 400)
+    try {
+      // Map 'employer' role toggle to 'recruiter' backend role value if necessary
+      const apiRole = role === 'employer' ? 'recruiter' : role
+      await signIn(email.trim(), password)
+      navigate(apiRole === 'recruiter' ? '/recruiter' : '/dashboard')
+    } catch (err) {
+      setErrors({ form: err.message || 'Login failed. Please try again.' })
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -61,6 +67,12 @@ export default function SignIn() {
       <RoleToggle value={role} onChange={setRole} />
 
       <form className="mt-6 space-y-4" onSubmit={handleSubmit} noValidate>
+        {errors.form && (
+          <div className="rounded-md bg-red-50 p-3 text-sm text-red-700 border border-red-200">
+            {errors.form}
+          </div>
+        )}
+
         <Input
           label="Email address"
           name="email"
@@ -69,7 +81,7 @@ export default function SignIn() {
           value={email}
           onChange={(e) => {
             setEmail(e.target.value)
-            setErrors((prev) => ({ ...prev, email: undefined }))
+            setErrors((prev) => ({ ...prev, email: undefined, form: undefined }))
           }}
           placeholder="you@example.com"
           required
@@ -85,7 +97,7 @@ export default function SignIn() {
           value={password}
           onChange={(e) => {
             setPassword(e.target.value)
-            setErrors((prev) => ({ ...prev, password: undefined }))
+            setErrors((prev) => ({ ...prev, password: undefined, form: undefined }))
           }}
           placeholder="Enter your password"
           required
@@ -135,3 +147,4 @@ export default function SignIn() {
     </AuthLayout>
   )
 }
+

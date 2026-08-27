@@ -9,26 +9,25 @@ import {
   ConfirmModal,
 } from '../../../components/dashboard/common';
 import { FiFileText, FiBookmark, FiBell } from 'react-icons/fi';
+import { useAuth } from '../../../hooks/useAuth';
+import { useApplications } from '../../../hooks/seeker/useApplications';
+import { useSavedJobs } from '../../../hooks/seeker/useSavedJobs';
 
 export default function DashBoard() {
   const navigate = useNavigate();
-  const [isLoading] = useState(false);
-  const [isError] = useState(false);
+  const { user } = useAuth();
+  const { applications, isLoading, isError } = useApplications();
+  const { savedJobs } = useSavedJobs();
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const applications = [
-    { id: '1', job_title: 'Office Administrator', company_name: 'Acme Co.', status: 'submitted' },
-    { id: '2', job_title: 'Receptionist', company_name: 'Beta Ltd.', status: 'shortlisted' },
-  ];
+  const notificationsCount = 0;
 
-  const notifications = [
-    { id: 1, type: 'application.status_changed', payload: { message: 'Your application was viewed' }, read_at: null, created_at: new Date().toISOString() },
-  ];
+  const firstName = user?.full_name ? user.full_name.split(' ')[0] : 'Job Seeker';
 
   return (
     <>
       <PageHeader 
-        title="Welcome back, Sarah" 
+        title={`Welcome back, ${firstName}`} 
         subtitle="Here's what's happening with your job search." 
       />
 
@@ -36,8 +35,8 @@ export default function DashBoard() {
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 mb-6">
         <StatCard icon={FiFileText} label="Applications" value={applications.length} />
-        <StatCard icon={FiBookmark} label="Saved Jobs" value={4} accent="gold" />
-        <StatCard icon={FiBell} label="Unread Notifications" value={notifications.length} accent="emerald" />
+        <StatCard icon={FiBookmark} label="Saved Jobs" value={savedJobs.length} accent="gold" />
+        <StatCard icon={FiBell} label="Unread Notifications" value={notificationsCount} accent="emerald" />
       </div>
 
       <DataState
