@@ -4,7 +4,7 @@ import { homeFeatures } from '../../constants/homeContent'
 export default function WhyChooseUs() {
   return (
     <section className="bg-offwhite" aria-labelledby="why-choose-heading">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="site-container py-16">
         <h2 id="why-choose-heading" className="font-display text-3xl font-bold text-navy sm:text-4xl">
           Why Choose Office Jobline
         </h2>

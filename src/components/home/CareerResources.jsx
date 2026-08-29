@@ -4,7 +4,7 @@ import { homeArticles } from '../../constants/homeContent'
 export default function CareerResources() {
   return (
     <section className="bg-offwhite" aria-labelledby="career-resources-heading">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="site-container py-16">
         <h2 id="career-resources-heading" className="font-display text-3xl font-bold text-navy sm:text-4xl">
           Career Support &amp; Hiring Insights
         </h2>

@@ -6,7 +6,7 @@ import { supportArticles } from '../../constants/supportArticles'
 export default function JobSeekerSupport() {
   return (
     <section className="bg-offwhite" aria-labelledby="job-seeker-support-heading">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="site-container py-16">
         <div className="flex items-start gap-4">
           <IconCircle icon={FiUser} color="teal" />
           <div>

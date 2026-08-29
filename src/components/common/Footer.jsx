@@ -39,7 +39,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-navy text-white">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="site-container py-16">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <img src={logo} alt="Office Jobline" className="h-auto w-44 sm:w-52" />

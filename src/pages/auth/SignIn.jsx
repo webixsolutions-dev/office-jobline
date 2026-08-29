@@ -8,8 +8,6 @@ import Button from '../../components/ui/Button'
 import { images } from '../../constants/images'
 import { useAuth } from '../../hooks/useAuth'
 
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
 const signInTestimonial = {
   quote:
     'Office Jobline made it simple to manage our administrative hiring. We filled a receptionist role in days, not weeks.',
@@ -21,39 +19,20 @@ const signInTestimonial = {
 
 export default function SignIn() {
   const navigate = useNavigate()
-  const { signIn } = useAuth()
+  const { devSignIn } = useAuth()
   const [role, setRole] = useState('job_seeker')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [rememberMe, setRememberMe] = useState(false)
-  const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
 
-  const validate = () => {
-    const next = {}
-    if (!email.trim()) next.email = 'Enter your email address.'
-    else if (!EMAIL_PATTERN.test(email.trim())) next.email = 'Enter a valid email address.'
-    if (!password) next.password = 'Enter your password.'
-    return next
-  }
-
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
-    const next = validate()
-    setErrors(next)
-    if (Object.keys(next).length > 0) return
-
     setSubmitting(true)
-    try {
-      // Map 'employer' role toggle to 'recruiter' backend role value if necessary
-      const apiRole = role === 'employer' ? 'recruiter' : role
-      await signIn(email.trim(), password)
-      navigate(apiRole === 'recruiter' ? '/recruiter' : '/dashboard')
-    } catch (err) {
-      setErrors({ form: err.message || 'Login failed. Please try again.' })
-    } finally {
-      setSubmitting(false)
-    }
+    const apiRole = role === 'employer' ? 'recruiter' : role
+    devSignIn(email.trim(), role)
+    navigate(apiRole === 'recruiter' ? '/employer-dashboard/overview' : '/dashboard/overview')
+    setSubmitting(false)
   }
 
   return (
@@ -67,26 +46,15 @@ export default function SignIn() {
       <RoleToggle value={role} onChange={setRole} />
 
       <form className="mt-6 space-y-4" onSubmit={handleSubmit} noValidate>
-        {errors.form && (
-          <div className="rounded-md bg-red-50 p-3 text-sm text-red-700 border border-red-200">
-            {errors.form}
-          </div>
-        )}
-
         <Input
           label="Email address"
           name="email"
           type="email"
           icon={FiMail}
           value={email}
-          onChange={(e) => {
-            setEmail(e.target.value)
-            setErrors((prev) => ({ ...prev, email: undefined, form: undefined }))
-          }}
+          onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
-          required
           autoComplete="email"
-          error={errors.email}
         />
         <Input
           label="Password"
@@ -95,14 +63,9 @@ export default function SignIn() {
           icon={FiLock}
           showToggle
           value={password}
-          onChange={(e) => {
-            setPassword(e.target.value)
-            setErrors((prev) => ({ ...prev, password: undefined, form: undefined }))
-          }}
+          onChange={(e) => setPassword(e.target.value)}
           placeholder="Enter your password"
-          required
           autoComplete="current-password"
-          error={errors.password}
         />
 
         <div className="flex items-center justify-between gap-3 text-sm">

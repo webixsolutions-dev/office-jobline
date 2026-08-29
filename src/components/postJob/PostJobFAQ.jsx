@@ -20,7 +20,7 @@ export default function PostJobFAQ() {
       />
 
       <section className="bg-offwhite" aria-labelledby="post-job-faq-heading">
-        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="site-container py-16">
           <div className="grid gap-8 lg:grid-cols-[minmax(0,280px)_1fr] lg:items-start">
             <div className="flex items-start gap-4">
               <IconCircle icon={FiHelpCircle} color="teal-solid" />

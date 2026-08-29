@@ -51,7 +51,7 @@ export default function HeroWithForm() {
   return (
     <section className="grid grid-cols-1 lg:grid-cols-2">
       {/* Left column: Copy, buttons and trust badges */}
-      <div className="flex flex-col justify-center bg-white px-6 py-12 sm:px-10 lg:px-16 lg:py-20">
+      <div className="site-gutter flex flex-col justify-center bg-white py-12 lg:py-20">
         <div className="mx-auto w-full max-w-xl">
           <p className="text-xs font-bold tracking-[0.18em] text-gold sm:text-sm">POST A JOB</p>
           <span className="mt-2 block h-1 w-10 bg-gold" aria-hidden />
@@ -88,7 +88,7 @@ export default function HeroWithForm() {
 
       {/* Right column: Image background with Form card on top */}
       <div
-        className="relative flex items-center justify-center bg-cover bg-center px-6 py-12 sm:px-10 lg:px-16 lg:py-20"
+        className="site-gutter relative flex items-center justify-center bg-cover bg-center py-12 lg:py-20"
         style={{ backgroundImage: `url('${images.postJobHero}')` }}
       >
         <div

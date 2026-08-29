@@ -5,7 +5,7 @@ import { faqs } from '../../constants/faqs'
 export default function FAQSection() {
   return (
     <section className="bg-offwhite" aria-labelledby="faq-heading">
-      <div className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+      <div className="site-container pb-16">
         <ContactEyebrow>FAQ</ContactEyebrow>
         <h2 id="faq-heading" className="mt-4 font-display text-3xl font-bold text-navy sm:text-4xl">
           Frequently Asked Questions

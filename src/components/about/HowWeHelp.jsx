@@ -27,7 +27,7 @@ const employerPoints = [
 export default function HowWeHelp() {
   return (
     <section className="bg-offwhite" aria-labelledby="how-we-help-heading">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="site-container py-16">
         <SectionHeading
           id="how-we-help-heading"
           showIcon={false}

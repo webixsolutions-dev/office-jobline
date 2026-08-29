@@ -13,8 +13,8 @@ import Button from './Button'
  */
 export default function CTABanner({ icon, heading, subtitle, primary, secondary, className = '' }) {
   return (
-    <section className={`bg-white px-4 py-8 sm:px-6 lg:px-8 ${className}`}>
-      <div className="mx-auto flex max-w-7xl flex-col gap-6 rounded-2xl bg-navy px-6 py-8 sm:px-10 sm:py-10 lg:flex-row lg:items-center lg:justify-between">
+    <section className={`site-gutter bg-white py-8 ${className}`}>
+      <div className="mx-auto flex w-full flex-col gap-6 rounded-2xl bg-navy px-6 py-8 sm:px-10 sm:py-10 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-start gap-4 lg:max-w-2xl">
           <IconCircle icon={icon} color="gold-outline" size="lg" />
           <div>

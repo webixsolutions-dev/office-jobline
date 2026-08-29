@@ -42,7 +42,7 @@ export default function ContactHero() {
     <section className="bg-offwhite">
       <div className="grid grid-cols-1 lg:grid-cols-2">
         <div className="order-2 flex flex-col justify-center lg:order-1">
-          <div className="mx-auto w-full max-w-5xl px-6 py-10 sm:px-10 lg:ml-auto lg:mr-8 lg:px-16 lg:py-20">
+          <div className="site-gutter w-full py-10 lg:py-20">
             <div className="max-w-xl">
               <ContactEyebrow>CONTACT US</ContactEyebrow>
               <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-navy sm:text-5xl">
@@ -133,7 +133,7 @@ export default function ContactHero() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <div className="site-container py-10">
         <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {trustItems.map((item) => (
             <article key={item.title} className="flex items-start gap-4 rounded-xl bg-white p-6 shadow-card">

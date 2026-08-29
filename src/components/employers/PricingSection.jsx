@@ -8,7 +8,7 @@ import { employerTestimonials } from '../../constants/employerTestimonials'
 export default function PricingSection() {
   return (
     <section className="bg-offwhite" aria-labelledby="employer-pricing-heading" id="employer-pricing">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="site-container py-16">
         <SectionHeading
           id="employer-pricing-heading"
           showIcon={false}

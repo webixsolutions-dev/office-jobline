@@ -6,7 +6,7 @@ import { homeCategories } from '../../constants/homeContent'
 export default function PopularJobCategories() {
   return (
     <section className="bg-offwhite" aria-labelledby="popular-categories-heading">
-      <div className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+      <div className="site-container pb-16">
         <h2 id="popular-categories-heading" className="font-display text-3xl font-bold text-navy sm:text-4xl">
           Popular Office Job Categories
         </h2>

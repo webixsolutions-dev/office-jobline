@@ -190,12 +190,112 @@ About Us is composed from prop-driven pieces in `src/components/ui/` that later 
 
 `Button`, `SectionHeading`, `IconTextCard` (`layout="row" | "column"`, optional `underline` / `divider`), `StatItem`, `TestimonialCard` (`variant="person" | "company"`, optional `avatar`, `showRating`, `theme="glass"`), `ChecklistCard` (`theme="teal" | "gold"`), `SplitHero` (optional `children`, optional `secondaryCta`, optional `overlay`), `ImageTextRow`, `StepCard` (`variant="default" | "process"`), `PricingCard` (`featured` teal / `highlighted` gold), `PromoBanner` (`theme="teal" | "gold" | "neutral"`), `CTABanner`, `FAQAccordion`, `Input`, `Select`, `RoleToggle`, `ProcessStep`, `ArticleCard`, `TrustCard`, `SkylineGraphic`, Browse Jobs tiles listed under Module 2, plus Contact Us pieces listed under Module 3.
 
+## Job Seeker Dashboard (`/dashboard/*`)
+
+The authenticated **Job Seeker Dashboard** is a private workspace for signed-in job seekers, structurally separate from the public marketing site (no public Navbar/Footer) but built from the same design tokens (`src/style/tokens.css`, `src/style/index.css`) and shared UI library.
+
+### Routes
+
+| Route | Page |
+| --- | --- |
+| `/dashboard` | Redirects to `/dashboard/overview` |
+| `/dashboard/overview` | Overview — stats, profile completeness, recommended jobs |
+| `/dashboard/find-jobs` | Find Jobs — reuses Browse Jobs search/filter/pagination inside the dashboard shell |
+| `/dashboard/applications` | My Applications — status tracking, filter/sort, withdraw with confirmation |
+| `/dashboard/saved-jobs` | Saved Jobs — bookmarked jobs with apply/remove actions |
+| `/dashboard/profile` | My Profile — simplified personal details form (no resume upload) |
+| `/dashboard/settings` | Settings — account, notifications, sign out (no delete account) |
+
+### Auth gating
+
+All `/dashboard/*` routes are wrapped in `RequireAuth`. Logged-out users are redirected to `/sign-in`. Users with the **Employer/Recruiter** role are redirected to `/employer-dashboard/overview`.
+
+### State management
+
+`DashboardDataContext` (`src/lib/DashboardDataContext.jsx`) centralizes frontend-only mock state:
+
+- `applications`, `savedJobs`, `profile`
+- Actions: `applyToJob`, `withdrawApplication`, `toggleSaveJob`, `removeSavedJob`, `updateProfile`
+
+Seed data lives in `src/data/mockApplications.js` and `src/data/mockRecommendedJobs.js` (extends `constants/jobs.js`). Actions are structured so real API calls can replace the in-memory logic later.
+
+### My Profile (v2 — simplified)
+
+Intentionally approachable for newcomers: a single **Personal Details** card with Full Name, Email (prominently near the top), Phone, Location, Skills (chip input), and optional Work Experience / Education repeatable sections. **No resume upload** and **no professional headline field**.
+
+### Settings (v2)
+
+Account email/password placeholders and notification toggles only. **Account deletion was intentionally removed** from this version.
+
+### Dashboard components
+
+`SeekerDashboardLayout`, `SeekerDashboardSidebar`, `DashboardUserCard`, `SidebarNavItem`, `DashboardTopBanner`, `StatCardRow`, `RecommendedJobsSection`, `ApplicationStatusBadge`, `ApplicationListItem`, `SavedJobListItem`, `ProfileCompletenessBar`
+
+`JobCard` accepts optional dashboard props (`isApplied`, `isSaved`, `onApply`, `onSaveToggle`) so apply/save state is shared between Overview, Find Jobs, and Saved Jobs.
+
+## Employer Dashboard (`/employer-dashboard/*`)
+
+The authenticated **Employer / Recruiter Dashboard** is a private workspace for signed-in employers, structurally parallel to the Job Seeker Dashboard (same shell pattern: persistent sidebar, top banner, stat card row) but with employer-specific navigation and content. Legacy `/recruiter/*` routes redirect here.
+
+### Routes
+
+| Route | Page |
+| --- | --- |
+| `/employer-dashboard` | Redirects to `/employer-dashboard/overview` |
+| `/employer-dashboard/overview` | Overview — stats, recent applicants, active postings |
+| `/employer-dashboard/job-postings` | Job Postings — filter/search, edit, close, delete |
+| `/employer-dashboard/post-a-job` | Post / edit a job (`?edit=:jobId` for edit mode) |
+| `/employer-dashboard/job-postings/:jobId/applicants` | Applicants for one posting |
+| `/employer-dashboard/applicants` | All Applicants — filter by job, stage, name |
+| `/employer-dashboard/company-profile` | Company Profile form |
+| `/employer-dashboard/settings` | Settings — account, notifications, sign out, delete company account |
+
+### Auth gating
+
+All `/employer-dashboard/*` routes use `RequireEmployerAuth`. Logged-out users redirect to `/sign-in`. Signed-in **Job Seeker** users redirect to `/dashboard/overview`.
+
+### State management
+
+`EmployerDataContext` (`src/lib/EmployerDataContext.jsx`) centralizes frontend-only mock state:
+
+- `jobPostings`, `applicants`, `companyProfile`
+- Actions: `createJobPosting`, `updateJobPosting`, `closeJobPosting`, `deleteJobPosting`, `advanceApplicantStage`, `rejectApplicant`, `updateApplicantNotes`, `updateCompanyProfile`, etc.
+
+Seed data: `src/data/mockJobPostings.js`, `src/data/mockApplicants.js`. Actions are structured for future API integration.
+
+### Pipeline stage mapping (seeker ↔ employer)
+
+| Job Seeker (applicant-facing) | Employer (recruiter-facing) |
+| --- | --- |
+| Applied | New |
+| In Review | Reviewed / Shortlisted |
+| Interview | Interview |
+| Offer | Offer |
+| Not Selected | Rejected |
+
+Defined in `src/constants/pipelineStages.js` for consistent reconciliation when a backend is connected.
+
+### Reused components
+
+`EmployerDashboardLayout` / `EmployerDashboardSidebar` mirror the seeker shell (`SeekerDashboardLayout`, `SeekerDashboardSidebar`). `StatCardRow` is reused via `EmployerStatCardRow`. `JobPostingForm` (`src/components/postJob/JobPostingForm.jsx`) is shared with the public Post a Job flow. `ConfirmModal` handles close posting, delete posting, reject applicant, and delete company account.
+
+### Employer dashboard components
+
+`EmployerStatCardRow`, `JobPostingCard`, `JobPostingStatusBadge`, `ApplicantListItem`, `ApplicantProfileDrawer`, `CompanyProfileForm`, `JobPostingsFilterBar`, `ApplicantStageBadge`
+
+---
+
 ## Folder overview
 
 ```
 src/
-  constants/          images, nav, contact, jobs, categories, employers, cities
-  lib/                job filter / pagination helpers
+  constants/          images, nav, contact, jobs, categories, pipelineStages
+  components/
+    dashboard/          seeker + employer shell (layouts, sidebars, shared dashboard UI)
+    employerDashboard/    employer-specific cards, badges, forms, drawers
+    postJob/              public Post a Job + JobPostingForm
+  lib/                  auth, SavedJobsContext, DashboardDataContext, EmployerDataContext
+  data/                 mock dashboard seed data (applications, job postings, applicants)
   components/
     common/           Navbar, Footer, ScrollToTop
     ui/               shared buttons, cards, heroes, browse tiles

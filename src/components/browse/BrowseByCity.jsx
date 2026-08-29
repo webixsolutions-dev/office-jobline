@@ -7,7 +7,7 @@ import { cities } from '../../constants/cities'
 export default function BrowseByCity() {
   return (
     <section className="bg-offwhite" aria-labelledby="browse-by-city-heading">
-      <div className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+      <div className="site-container pb-16">
         <SectionHeading
           id="browse-by-city-heading"
           title="Browse Office Jobs by City"

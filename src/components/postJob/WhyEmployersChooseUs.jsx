@@ -16,7 +16,7 @@ export default function WhyEmployersChooseUs() {
         className="pointer-events-none absolute -right-8 top-12 h-56 w-56 text-navy/5"
         aria-hidden
       />
-      <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="site-container relative py-16">
         <SectionHeading
           id="why-employers-heading"
           showIcon={false}

@@ -55,10 +55,35 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const devSignIn = (email, role) => {
+    const apiRole = role === 'employer' ? 'recruiter' : 'job_seeker';
+    const mockSession = {
+      dev: true,
+      session: {
+        access_token: 'dev-token',
+        refresh_token: 'dev-refresh',
+        expires_at: Date.now() + 86400000,
+      },
+      user: {
+        email: email || 'demo@example.com',
+        role: apiRole,
+        full_name: 'Demo User',
+      },
+    };
+    setSession(mockSession);
+    writeSession(mockSession);
+    return mockSession;
+  };
+
   // Check and load profile on mount or session change
   useEffect(() => {
     const initAuth = async () => {
       const activeSession = readSession();
+      if (activeSession?.dev) {
+        setSession(activeSession);
+        setLoading(false);
+        return;
+      }
       if (activeSession?.session?.access_token) {
         // If expired or expiring soon (e.g. within 5 mins), try refreshing
         const expiresAt = activeSession.session.expires_at;
@@ -174,6 +199,7 @@ export function AuthProvider({ children }) {
     loading,
     error,
     signIn,
+    devSignIn,
     signUp,
     signOut,
     refreshSession: () => session?.session?.refresh_token ? refresh(session.session.refresh_token) : null,

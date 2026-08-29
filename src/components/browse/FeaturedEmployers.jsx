@@ -7,7 +7,7 @@ import { employers } from '../../constants/employers'
 export default function FeaturedEmployers() {
   return (
     <section className="bg-offwhite" aria-labelledby="featured-employers-heading">
-      <div className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+      <div className="site-container pb-16">
         <SectionHeading
           id="featured-employers-heading"
           title="Featured Employers Hiring Office Talent"

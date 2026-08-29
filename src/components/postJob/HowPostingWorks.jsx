@@ -19,7 +19,7 @@ function Step({ step }) {
 export default function HowPostingWorks() {
   return (
     <section className="bg-white" aria-labelledby="how-posting-works-heading">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="site-container py-16">
         <SectionHeading
           id="how-posting-works-heading"
           showIcon={false}

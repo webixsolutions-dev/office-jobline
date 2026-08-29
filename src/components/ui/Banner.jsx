@@ -45,8 +45,8 @@ export default function Banner({
   const bg = theme === 'navy' ? 'bg-navy' : 'bg-teal'
 
   return (
-    <section className="px-4 py-8 sm:px-6 lg:px-8">
-      <div className={`relative mx-auto max-w-7xl overflow-hidden rounded-2xl ${bg} px-6 py-8 sm:px-10 lg:py-10`}>
+    <section className="site-gutter py-8">
+      <div className={`relative w-full overflow-hidden rounded-2xl ${bg} px-6 py-8 sm:px-10 lg:py-10`}>
         {showSkyline && <SkylineGraphic />}
         {showMapleLeaf && (
           <GiMapleLeaf

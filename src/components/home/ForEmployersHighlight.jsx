@@ -4,7 +4,7 @@ import { homeEmployerHighlights } from '../../constants/homeContent'
 export default function ForEmployersHighlight() {
   return (
     <section className="bg-offwhite" aria-labelledby="for-employers-heading">
-      <div className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+      <div className="site-container pb-16">
         <div className="rounded-2xl bg-teal-light p-6 sm:p-10">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_2fr] lg:gap-10 lg:items-center">
             <div>

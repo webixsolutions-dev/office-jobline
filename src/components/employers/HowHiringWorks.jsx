@@ -7,7 +7,7 @@ import { hiringSteps } from '../../constants/hiringSteps'
 export default function HowHiringWorks() {
   return (
     <section className="bg-white" aria-labelledby="how-hiring-works-heading">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="site-container py-16">
         <div className="mx-auto mb-3 h-1 w-12 bg-gold" aria-hidden />
         <SectionHeading
           id="how-hiring-works-heading"

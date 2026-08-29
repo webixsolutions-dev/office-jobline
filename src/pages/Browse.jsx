@@ -1,4 +1,5 @@
 import BrowseHero from '../components/browse/BrowseHero'
+import BrowseSearch from '../components/browse/BrowseSearch'
 import TrustStrip from '../components/browse/TrustStrip'
 import JobListings from '../components/browse/JobListings'
 import PopularCategories from '../components/browse/PopularCategories'
@@ -12,6 +13,7 @@ export default function Browse() {
   return (
     <>
       <BrowseHero />
+      <BrowseSearch />
       <TrustStrip />
       <JobListings />
       <PopularCategories />

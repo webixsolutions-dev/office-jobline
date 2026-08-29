@@ -22,7 +22,7 @@ const testimonials = [
 export default function Testimonials() {
   return (
     <section className="bg-offwhite" aria-label="Testimonials">
-      <div className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+      <div className="site-container pb-16">
         <MapleDivider variant="quote" />
 
         <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2">

@@ -100,7 +100,7 @@ export default function SplitHero({
   const textCol = (
     <div className={`relative z-10 flex items-center overflow-visible bg-offwhite ${textOrder}`}>
       <div
-        className={`mx-auto w-full px-6 py-14 sm:px-10 lg:ml-auto lg:mr-8 lg:px-16 lg:py-20 ${
+        className={`site-gutter w-full py-14 lg:py-20 ${
           children ? 'max-w-2xl' : 'max-w-xl'
         }`}
       >

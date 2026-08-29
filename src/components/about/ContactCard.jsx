@@ -26,7 +26,7 @@ const cards = [
 export default function ContactCards() {
   return (
     <section className="bg-offwhite" aria-label="Ways to contact us">
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      <div className="site-container py-14">
         <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
           {cards.map(({ icon, title, desc, email }) => (
             <article

@@ -12,124 +12,30 @@ import SignUp from '../pages/auth/SignUp';
 import PricingSection from '../components/employers/PricingSection';
 import ComingSoonPage from '../pages/ComingSoonPage';
 
-import DashboardLayout from '../components/dashboard/common/DashboardLayout';
+import SeekerDashboardLayout from '../components/dashboard/SeekerDashboardLayout';
+import EmployerDashboardLayout from '../components/dashboard/EmployerDashboardLayout';
+import RequireAuth from '../components/dashboard/RequireAuth';
+import RequireEmployerAuth from '../components/dashboard/RequireEmployerAuth';
 
-// Job Seeker Pages - Using canonical /dashboard/* routes (R1)
-import DashBoard from '../pages/dashboard/Seeker/DashBoard';
-import MyApplications from '../pages/dashboard/Seeker/Applications';
-import SavedJobs from '../pages/dashboard/Seeker/SavedJobs';
-import ProfileSettings from '../pages/dashboard/Seeker/ProfileSetting';
-import SeekerNotifications from '../pages/dashboard/Seeker/Notifications';
+// Job Seeker Dashboard v2 pages
+import OverviewPage from '../pages/dashboard/OverviewPage';
+import FindJobsPage from '../pages/dashboard/FindJobsPage';
+import MyApplicationsPage from '../pages/dashboard/MyApplicationsPage';
+import SavedJobsPage from '../pages/dashboard/SavedJobsPage';
+import MyProfilePage from '../pages/dashboard/MyProfilePage';
+import NotificationsPage from '../pages/dashboard/NotificationsPage';
 
-// Recruiter Pages - Using canonical /recruiter/* routes (R1)
-import RecruiterDashboard from '../pages/dashboard/recruiter/Dashboard';
-import CompanySetup from '../pages/dashboard/Recruiter/CompanySetup';
-import MyJobs from '../pages/dashboard/Recruiter/MyJobs';
-import PostJobRecruiter from '../pages/dashboard/recruiter/PostJob';
-import Applicants from '../pages/dashboard/Recruiter/Applicants';
-import CompanyProfile from '../pages/dashboard/Recruiter/CompanyProfile';
-import RecruiterNotifications from '../pages/dashboard/Recruiter/Notifications';
-
-// Mock Data - Seeker
-const mockSeekerProfile = {
-  full_name: 'Sarah Johnson',
-  email: 'sarah@email.com',
-  role: 'job_seeker',
-};
-
-const mockSeekerNotifications = [
-  {
-    id: 1,
-    read_at: null,
-    created_at: '2026-07-18T10:00:00Z',
-    payload: { message: 'Your application for Senior React Developer has been viewed.' },
-  },
-  {
-    id: 2,
-    read_at: null,
-    created_at: '2026-07-17T14:30:00Z',
-    payload: { message: 'New job recommendation: UX Designer at Design Studio.' },
-  },
-  {
-    id: 3,
-    read_at: '2026-07-16T09:00:00Z',
-    created_at: '2026-07-15T16:00:00Z',
-    payload: { message: 'Your application for Full Stack Developer was shortlisted.' },
-  },
-];
-
-// Mock Data - Recruiter
-const mockRecruiterProfile = {
-  full_name: 'John Smith',
-  email: 'john@techcorp.com',
-  role: 'recruiter',
-  company_name: 'TechCorp Inc.',
-  company_verification_status: 'verified',
-};
-
-const mockRecruiterNotifications = [
-  {
-    id: 1,
-    read_at: null,
-    created_at: '2026-07-18T10:00:00Z',
-    payload: { message: 'New applicant for Senior React Developer position.' },
-  },
-  {
-    id: 2,
-    read_at: null,
-    created_at: '2026-07-17T14:30:00Z',
-    payload: { message: 'Your company verification was approved.' },
-  },
-  {
-    id: 3,
-    read_at: '2026-07-16T09:00:00Z',
-    created_at: '2026-07-15T16:00:00Z',
-    payload: { message: 'Your job "Full Stack Developer" is now active.' },
-  },
-];
+// Employer Dashboard pages
+import EmployerOverviewPage from '../pages/employerDashboard/EmployerOverviewPage';
+import JobPostingsPage from '../pages/employerDashboard/JobPostingsPage';
+import PostJobDashboardPage from '../pages/employerDashboard/PostJobDashboardPage';
+import JobApplicantsPage from '../pages/employerDashboard/JobApplicantsPage';
+import AllApplicantsPage from '../pages/employerDashboard/AllApplicantsPage';
+import CompanyProfilePage from '../pages/employerDashboard/CompanyProfilePage';
+import EmployerSettingsPage from '../pages/employerDashboard/EmployerSettingsPage';
 
 function AppRoutes() {
   const location = useLocation();
-
-  // Seeker Dashboard Props
-  const seekerUnreadCount = mockSeekerNotifications.filter((n) => !n.read_at).length;
-  const seekerDashboardProps = {
-    role: 'job_seeker',
-    basePath: '/dashboard',
-    pageTitle: 'Dashboard',
-    user: {
-      name: mockSeekerProfile.full_name,
-      subtitle: 'Job Seeker',
-    },
-    notifications: mockSeekerNotifications,
-    unreadCount: seekerUnreadCount,
-    onMarkRead: (id) => console.log('Mark read:', id),
-    onMarkAllRead: () => console.log('Mark all read'),
-    onViewAll: () => console.log('View all notifications'),
-    onProfile: () => console.log('Profile'),
-    onSettings: () => console.log('Settings'),
-    onLogout: () => console.log('Logout'),
-  };
-
-  // Recruiter Dashboard Props
-  const recruiterUnreadCount = mockRecruiterNotifications.filter((n) => !n.read_at).length;
-  const recruiterDashboardProps = {
-    role: 'recruiter',
-    basePath: '/recruiter',
-    pageTitle: 'Dashboard',
-    user: {
-      name: mockRecruiterProfile.full_name,
-      subtitle: mockRecruiterProfile.company_name,
-    },
-    notifications: mockRecruiterNotifications,
-    unreadCount: recruiterUnreadCount,
-    onMarkRead: (id) => console.log('Mark read:', id),
-    onMarkAllRead: () => console.log('Mark all read'),
-    onViewAll: () => console.log('View all notifications'),
-    onProfile: () => console.log('Profile'),
-    onSettings: () => console.log('Settings'),
-    onLogout: () => console.log('Logout'),
-  };
 
   return (
     <AnimatePresence mode="wait">
@@ -171,26 +77,46 @@ function AppRoutes() {
         <Route path="/accessibility" element={<ComingSoonPage title="Accessibility" />} />
         <Route path="/sitemap" element={<ComingSoonPage title="Sitemap" />} />
 
-        {/* Job Seeker Dashboard Routes - /dashboard/* */}
-        <Route path="/dashboard" element={<DashboardLayout {...seekerDashboardProps} />}>
-          <Route index element={<DashBoard />} />
-          <Route path="applications" element={<MyApplications />} />
-          <Route path="saved-jobs" element={<SavedJobs />} />
-          <Route path="profile" element={<ProfileSettings />} />
-          <Route path="notifications" element={<SeekerNotifications />} />
+        {/* Job Seeker Dashboard Routes - /dashboard/* (v2) */}
+        <Route
+          path="/dashboard"
+          element={
+            <RequireAuth>
+              <SeekerDashboardLayout />
+            </RequireAuth>
+          }
+        >
+          <Route index element={<Navigate to="/dashboard/overview" replace />} />
+          <Route path="overview" element={<OverviewPage />} />
+          <Route path="find-jobs" element={<FindJobsPage />} />
+          <Route path="applications" element={<MyApplicationsPage />} />
+          <Route path="saved-jobs" element={<SavedJobsPage />} />
+          <Route path="profile" element={<MyProfilePage />} />
+          <Route path="settings" element={<Navigate to="/dashboard/profile" replace />} />
+          <Route path="notifications" element={<NotificationsPage />} />
         </Route>
 
-        {/* Recruiter Dashboard Routes - /recruiter/* */}
-        <Route path="/recruiter" element={<DashboardLayout {...recruiterDashboardProps} />}>
-          <Route index element={<RecruiterDashboard />} />
-          <Route path="company-setup" element={<CompanySetup />} />
-          <Route path="jobs" element={<MyJobs />} />
-          <Route path="jobs/new" element={<PostJobRecruiter />} />
-          <Route path="jobs/:id/edit" element={<PostJobRecruiter />} />
-          <Route path="/recruiter/applicants" element={<Applicants />} />
-          <Route path="company" element={<CompanyProfile />} />
-          <Route path="notifications" element={<RecruiterNotifications />} />
+        {/* Employer Dashboard Routes - /employer-dashboard/* */}
+        <Route
+          path="/employer-dashboard"
+          element={
+            <RequireEmployerAuth>
+              <EmployerDashboardLayout />
+            </RequireEmployerAuth>
+          }
+        >
+          <Route index element={<Navigate to="/employer-dashboard/overview" replace />} />
+          <Route path="overview" element={<EmployerOverviewPage />} />
+          <Route path="job-postings" element={<JobPostingsPage />} />
+          <Route path="post-a-job" element={<PostJobDashboardPage />} />
+          <Route path="job-postings/:jobId/applicants" element={<JobApplicantsPage />} />
+          <Route path="applicants" element={<AllApplicantsPage />} />
+          <Route path="company-profile" element={<CompanyProfilePage />} />
+          <Route path="settings" element={<EmployerSettingsPage />} />
         </Route>
+
+        {/* Legacy recruiter routes redirect to employer dashboard */}
+        <Route path="/recruiter/*" element={<Navigate to="/employer-dashboard/overview" replace />} />
       </Routes>
     </AnimatePresence>
   );

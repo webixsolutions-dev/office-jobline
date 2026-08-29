@@ -88,7 +88,7 @@ export default function JobListings() {
 
   return (
     <section id={JOB_LISTINGS_ID} className="scroll-mt-24 bg-offwhite" aria-labelledby="listings-heading">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="site-container py-8">
         <h2 id="listings-heading" className="sr-only">
           Job listings
         </h2>

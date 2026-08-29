@@ -8,7 +8,7 @@ import { postJobPlans, postJobTestimonials, SALES_TO } from '../../constants/pos
 export default function PricingPlans() {
   return (
     <section className="bg-offwhite" id="pricing" aria-labelledby="pricing-heading">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="site-container py-16">
         <SectionHeading
           id="pricing-heading"
           showIcon={false}

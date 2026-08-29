@@ -81,6 +81,7 @@ export const useAuth = () => {
     loading: context.loading,
     error: context.error,
     signIn: context.signIn,
+    devSignIn: context.devSignIn,
     signUp: context.signUp,
     signOut: context.signOut,
     isAuthenticated: context.isAuthenticated,

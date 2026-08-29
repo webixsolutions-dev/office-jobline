@@ -1,0 +1,7 @@
+/* Global horizontal gutters — single source of truth for site-wide edge spacing */
+@layer components {
+  .site-gutter,
+  .site-container {
+    @apply w-full px-6 sm:px-12 md:px-16 lg:px-24;
+  }
+}

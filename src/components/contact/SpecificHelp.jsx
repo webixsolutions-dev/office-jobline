@@ -49,7 +49,7 @@ const cards = [
 export default function SpecificHelp() {
   return (
     <section className="bg-offwhite" aria-labelledby="specific-help-heading">
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      <div className="site-container py-14">
         <ContactEyebrow>CONTACT US</ContactEyebrow>
         <h2 id="specific-help-heading" className="mt-4 font-display text-3xl font-bold text-navy sm:text-4xl">
           Need Help With Something Specific?

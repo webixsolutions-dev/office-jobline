@@ -8,7 +8,7 @@ export default function HomeClosingCTA() {
     <section className="relative overflow-hidden bg-teal">
       <SkylineGraphic position="left" />
       <SkylineGraphic position="right" />
-      <div className="relative mx-auto flex max-w-5xl flex-col items-center gap-6 px-4 py-16 text-center sm:px-6 lg:flex-row lg:px-8 lg:py-20 lg:text-left">
+      <div className="site-gutter relative mx-auto flex max-w-5xl flex-col items-center gap-6 py-16 text-center lg:flex-row lg:py-20 lg:text-left">
         <IconCircle icon={FiBriefcase} color="white" size="lg" />
         <div className="flex-1">
           <h2 className="font-display text-3xl font-bold text-white sm:text-4xl">

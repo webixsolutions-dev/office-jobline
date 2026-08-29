@@ -18,7 +18,7 @@ export default function ContactClosingCTA() {
         aria-hidden
       />
 
-      <div className="relative mx-auto max-w-4xl px-4 py-16 text-center sm:px-6 lg:px-8 lg:py-20">
+      <div className="site-gutter relative mx-auto max-w-4xl py-16 text-center lg:py-20">
         <h2 className="font-display text-3xl font-bold text-white sm:text-4xl">
           Office Jobline is ready to help{' '}
           <span className="text-gold">job seekers and employers across Canada.</span>

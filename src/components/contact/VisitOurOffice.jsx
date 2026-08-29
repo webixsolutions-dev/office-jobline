@@ -7,7 +7,7 @@ import { contactInfo } from '../../constants/contactInfo'
 export default function VisitOurOffice() {
   return (
     <section className="bg-offwhite" aria-labelledby="visit-office-heading">
-      <div className="mx-auto max-w-7xl px-4 pb-14 sm:px-6 lg:px-8">
+      <div className="site-container pb-14">
         <h2 id="visit-office-heading" className="font-display text-3xl font-bold text-navy sm:text-4xl">
           Visit Our Office
         </h2>

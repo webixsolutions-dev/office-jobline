@@ -1,6 +1,6 @@
 import TestimonialCard from '../ui/TestimonialCard'
 import logo from '../../assets/images/logo.png'
-
+import { SiteContainer } from '../layout'
 /**
  * Full-bleed photo auth shell: left messaging + testimonial, right form card.
  *
@@ -20,7 +20,7 @@ export default function AuthLayout({
   children,
 }) {
   return (
-    <section className="relative min-h-[calc(100vh-80px)] overflow-hidden">
+    <section className="relative min-h-screen overflow-hidden">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url('${backgroundImage}')` }}
@@ -28,7 +28,7 @@ export default function AuthLayout({
       />
       <div className="absolute inset-0 bg-[var(--color-navy-overlay)]" />
 
-      <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:px-8 lg:py-16">
+      <SiteContainer className="relative grid gap-10 py-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:py-16">
         <div className="text-white">
           <img src={logo} alt="Office Jobline" className="h-auto w-44 sm:w-52" />
           <h1 className="mt-8 font-display text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
@@ -52,7 +52,6 @@ export default function AuthLayout({
         </div>
 
         <div className="rounded-2xl bg-white p-6 shadow-2xl sm:p-8">{children}</div>
-      </div>
-    </section>
+      </SiteContainer>    </section>
   )
 }

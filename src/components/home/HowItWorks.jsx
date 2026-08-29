@@ -19,7 +19,7 @@ export default function HowItWorks() {
         aria-hidden
       />
 
-      <div className="relative mx-auto flex min-h-[28rem] max-w-7xl flex-col justify-center px-4 py-16 sm:min-h-[32rem] sm:px-6 lg:min-h-[34rem] lg:px-8 lg:py-20">
+      <div className="site-gutter relative flex min-h-[28rem] flex-col justify-center py-16 sm:min-h-[32rem] lg:min-h-[34rem] lg:py-20">
         <div className="w-full lg:max-w-[54%]">
           <h2 id="how-it-works-heading" className="font-display text-3xl font-bold text-navy sm:text-4xl">
             How It Works

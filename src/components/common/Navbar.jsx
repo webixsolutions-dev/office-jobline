@@ -29,7 +29,7 @@ export default function Navbar() {
       }`}
     >
       <nav
-        className="mx-auto grid max-w-7xl grid-cols-[1fr_auto] items-center px-4 py-3 sm:px-6 lg:grid-cols-[1fr_auto_1fr] lg:px-8"
+        className="site-gutter grid w-full grid-cols-[1fr_auto] items-center py-3 lg:grid-cols-[1fr_auto_1fr]"
         aria-label="Primary"
       >
         <NavLink to="/" className="flex items-center gap-2.5 justify-self-start" onClick={() => setOpen(false)}>
@@ -91,7 +91,7 @@ export default function Navbar() {
             transition={{ duration: 0.25 }}
             className="overflow-hidden border-t border-white/10 bg-navy lg:hidden"
           >
-            <div className="flex flex-col gap-1 px-4 py-4 sm:px-6">
+            <div className="site-gutter flex flex-col gap-1 py-4">
               {navLinks.map((link) => (
                 <NavLink
                   key={link.to}

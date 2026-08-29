@@ -27,7 +27,7 @@ const pillars = [
 export default function WhoWeAre() {
   return (
     <section className="bg-offwhite" aria-labelledby="who-we-are-heading">
-      <div className="mx-auto max-w-7xl px-4 pt-16 pb-6 sm:px-6 lg:px-8">
+      <div className="site-container pt-16 pb-6">
         <SectionHeading
           id="who-we-are-heading"
           title="Who We Are"

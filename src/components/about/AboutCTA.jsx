@@ -26,7 +26,7 @@ export default function AboutCTA() {
   return (
     <section className="relative overflow-hidden bg-navy">
       <SkylineGraphic />
-      <div className="relative mx-auto max-w-4xl px-4 py-16 text-center sm:px-6 lg:px-8 lg:py-20">
+      <div className="site-gutter relative mx-auto max-w-4xl py-16 text-center lg:py-20">
         <h2 className="font-display text-3xl font-bold text-white sm:text-4xl">
           Ready to Find Office Opportunities or Hire Great Talent?
         </h2>

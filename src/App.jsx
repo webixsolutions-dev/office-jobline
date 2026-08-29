@@ -6,8 +6,8 @@ import ScrollToTop from './components/common/ScrollToTop'
 import AppRoutes from './routes/AppRoutes'
 
 // Pages that manage their own chrome (auth screens + dashboard)
-const AUTH_PAGES = ['/signup', '/register']
-const DASHBOARD_PAGES = ['/dashboard','/dashboard','/recruiter']
+const AUTH_PAGES = ['/sign-in', '/signin', '/sign-up', '/signup', '/register', '/forgot-password']
+const DASHBOARD_PAGES = ['/dashboard', '/recruiter', '/employer-dashboard']
 
 function App() {
   const location = useLocation()

@@ -1,4 +1,5 @@
 import HomeHero from '../components/home/HomeHero'
+import HomeSearch from '../components/home/HomeSearch'
 import HomeStatsStrip from '../components/home/HomeStatsStrip'
 import WhyChooseUs from '../components/home/WhyChooseUs'
 import PopularJobCategories from '../components/home/PopularJobCategories'
@@ -13,6 +14,7 @@ export default function Home() {
   return (
     <>
       <HomeHero />
+      <HomeSearch />
       <HomeStatsStrip />
       <WhyChooseUs />
       <PopularJobCategories />
