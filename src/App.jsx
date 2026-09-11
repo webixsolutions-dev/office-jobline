@@ -6,8 +6,8 @@ import ScrollToTop from './components/common/ScrollToTop'
 import AppRoutes from './routes/AppRoutes'
 
 // Pages that manage their own chrome (auth screens + dashboard)
-const AUTH_PAGES = ['/signin', '/signup', '/register']
-const DASHBOARD_PAGES = ['/dashboard','/dashboard','/recruiter']
+const AUTH_PAGES = ['/sign-in', '/signin', '/sign-up', '/signup', '/register', '/forgot-password']
+const DASHBOARD_PAGES = ['/dashboard', '/recruiter', '/employer-dashboard']
 
 function App() {
   const location = useLocation()
@@ -15,7 +15,7 @@ function App() {
   const isDashboardPage = DASHBOARD_PAGES.some((path) => location.pathname.startsWith(path))
   const hideChrome = isAuthPage || isDashboardPage
   return (
-    <div className="flex min-h-screen flex-col bg-[#f7f8fb]">
+    <div className="flex min-h-screen flex-col bg-offwhite">
       {!hideChrome && <Navbar />}
       <ScrollToTop />
       <main className="flex-1">

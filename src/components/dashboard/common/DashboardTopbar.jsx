@@ -45,7 +45,7 @@ export default function DashboardTopbar({
   };
 
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-slate-200 bg-white/90 px-4 py-3 backdrop-blur sm:px-6">
+    <header className="site-gutter sticky top-0 z-30 flex items-center justify-between gap-3 border-b border-slate-200 bg-white/90 py-3 backdrop-blur">
       <div className="flex min-w-0 items-center gap-3">
         <button
           type="button"
