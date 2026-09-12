@@ -1,9 +1,14 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { PageHeader } from '../../../components/dashboard/common';
-import { FiSave, FiX } from 'react-icons/fi';
-import { useAuth } from '../../../hooks/useAuth';
-import { getServiceCareCategories, getMyCompanies, createEmployerJob } from '../../../lib/jobs';
+import { useState, useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { PageHeader } from '../../../components/dashboard/common'
+import { FiSave, FiX } from 'react-icons/fi'
+import { useAuth } from '../../../hooks/useAuth'
+import { getPublicCategories, createEmployerJob } from '../../../lib/jobs'
+import {
+  validateRecruiterJobForm,
+  hasValidationErrors,
+} from '../../../lib/validation'
+import { getApiErrorMessage, getApiErrorCode, mapApiFieldErrors } from '../../../lib/apiErrors'
 
 const EMPLOYMENT_TYPES = [
   { value: 'full_time', label: 'Full-time' },
@@ -12,29 +17,45 @@ const EMPLOYMENT_TYPES = [
   { value: 'temporary', label: 'Temporary' },
   { value: 'internship', label: 'Internship' },
   { value: 'seasonal', label: 'Seasonal' },
-];
+]
 
 const PROVINCES = [
-  'Alberta', 'British Columbia', 'Manitoba', 'New Brunswick',
-  'Newfoundland and Labrador', 'Nova Scotia', 'Ontario',
-  'Prince Edward Island', 'Quebec', 'Saskatchewan',
-];
+  'Alberta',
+  'British Columbia',
+  'Manitoba',
+  'New Brunswick',
+  'Newfoundland and Labrador',
+  'Nova Scotia',
+  'Ontario',
+  'Prince Edward Island',
+  'Quebec',
+  'Saskatchewan',
+]
 
-const SALARY_PERIODS = ['hourly', 'weekly', 'monthly', 'yearly'];
+const SALARY_PERIODS = ['hourly', 'weekly', 'monthly', 'yearly']
+
+function fieldInputClass(hasError) {
+  return `w-full rounded-md border px-3 py-2.5 text-sm focus:ring-2 focus:ring-gold-500 focus:border-transparent ${
+    hasError ? 'border-red-400' : 'border-slate-200'
+  }`
+}
+
+function FieldError({ message }) {
+  if (!message) return null
+  return <p className="mt-1 text-xs text-red-700">{message}</p>
+}
 
 export default function PostJob() {
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const isEditing = !!id;
-  const { token } = useAuth();
+  const navigate = useNavigate()
+  const { id } = useParams()
+  const isEditing = !!id
+  const { token } = useAuth()
 
-  const [categories, setCategories] = useState([]);
-  const [companies, setCompanies] = useState([]);
+  const [categories, setCategories] = useState([])
 
   const [formData, setFormData] = useState({
     title: '',
     category_id: '',
-    company_id: '',
     description: '',
     employment_type: '',
     location_province: '',
@@ -44,107 +65,150 @@ export default function PostJob() {
     salary_max: '',
     salary_period: 'yearly',
     skills: [],
-  });
+  })
 
-  const [skillInput, setSkillInput] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formError, setFormError] = useState('');
+  const [skillInput, setSkillInput] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [formError, setFormError] = useState('')
+  const [fieldErrors, setFieldErrors] = useState({})
 
   useEffect(() => {
-    // Load categories
-    getServiceCareCategories()
-      .then(data => setCategories(data || []))
-      .catch(err => console.error('Error fetching categories:', err));
+    getPublicCategories()
+      .then((data) => setCategories(data || []))
+      .catch((err) => console.error('Error fetching categories:', err))
+  }, [])
 
-    // Load recruiter companies
-    if (token) {
-      getMyCompanies(token)
-        .then(data => {
-          setCompanies(data || []);
-          if (data && data.length > 0) {
-            setFormData(prev => ({ ...prev, company_id: String(data[0].id) }));
-          }
-        })
-        .catch(err => console.error('Error fetching companies:', err));
-    }
-  }, [token]);
+  const clearField = (name) => {
+    setFieldErrors((prev) => {
+      if (!prev[name]) return prev
+      const next = { ...prev }
+      delete next[name]
+      return next
+    })
+    setFormError('')
+  }
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    const { name, value, type, checked } = e.target
+    setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
-    }));
-  };
+    }))
+    clearField(name)
+  }
 
   const handleAddSkill = () => {
     if (skillInput.trim() && !formData.skills.includes(skillInput.trim())) {
-      setFormData(prev => ({
+      if (formData.skills.length >= 50) {
+        setFieldErrors((prev) => ({
+          ...prev,
+          skills: 'You can add at most 50 skills.',
+        }))
+        return
+      }
+      if (skillInput.trim().length > 80) {
+        setFieldErrors((prev) => ({
+          ...prev,
+          skills: 'Each skill must be 80 characters or fewer.',
+        }))
+        return
+      }
+      setFormData((prev) => ({
         ...prev,
         skills: [...prev.skills, skillInput.trim()],
-      }));
-      setSkillInput('');
+      }))
+      setSkillInput('')
+      clearField('skills')
     }
-  };
+  }
 
   const handleRemoveSkill = (skill) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      skills: prev.skills.filter(s => s !== skill),
-    }));
-  };
+      skills: prev.skills.filter((s) => s !== skill),
+    }))
+  }
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      e.preventDefault();
-      handleAddSkill();
+      e.preventDefault()
+      handleAddSkill()
     }
-  };
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (!token) {
-      setFormError('You must be logged in to post a job.');
-      return;
-    }
-    if (!formData.company_id) {
-      setFormError('Please select or set up a company first.');
-      return;
+      setFormError('You must be logged in to post a job.')
+      return
     }
 
-    setIsSubmitting(true);
-    setFormError('');
+    const errors = validateRecruiterJobForm({
+      title: formData.title,
+      category_id: formData.category_id,
+      employment_type: formData.employment_type,
+      description: formData.description,
+      location_province: formData.location_province,
+      is_remote: formData.is_remote,
+    })
+
+    if (hasValidationErrors(errors)) {
+      setFieldErrors(errors)
+      setFormError('Fix the highlighted fields before posting.')
+      return
+    }
+
+    setIsSubmitting(true)
+    setFormError('')
+    setFieldErrors({})
 
     try {
       const payload = {
-        company_id: String(formData.company_id),
         category_id: Number(formData.category_id),
-        title: formData.title,
-        description: formData.description,
-        city: formData.location_city || 'Toronto',
-        province: formData.location_province || 'Ontario',
+        title: formData.title.trim(),
+        description: formData.description.trim(),
+        city: formData.location_city.trim() || null,
+        province: formData.is_remote ? null : formData.location_province || null,
         is_remote: formData.is_remote,
-        employment_type: formData.employment_type || 'full_time',
+        workplace_type: formData.is_remote ? 'remote' : 'onsite',
+        employment_type: formData.employment_type,
         salary_currency: 'CAD',
-        salary_min: Number(formData.salary_min) || 0,
-        salary_max: Number(formData.salary_max) || 0,
+        salary_min: formData.salary_min === '' ? null : Number(formData.salary_min),
+        salary_max: formData.salary_max === '' ? null : Number(formData.salary_max),
         salary_period: formData.salary_period,
-      };
+        skills: formData.skills,
+      }
 
-      await createEmployerJob(payload, token);
-      navigate('/recruiter/jobs');
+      await createEmployerJob(payload, token)
+      navigate('/recruiter/jobs')
     } catch (error) {
-      console.error('Error submitting job:', error);
-      setFormError(error.message || 'Failed to submit job posting. Please try again.');
+      const code = getApiErrorCode(error)
+      if (code === 'RECRUITER_COMPANY_NOT_BOUND') {
+        setFormError('Set up your company profile before posting jobs.')
+      } else if (code === 'SITE_CATEGORY_MISMATCH') {
+        setFieldErrors({ category_id: 'This category is not available on Office Jobline.' })
+        setFormError('')
+      } else if (code === 'VALIDATION_ERROR') {
+        const apiFields = mapApiFieldErrors(error)
+        const mapped = {}
+        if (apiFields.title) mapped.title = apiFields.title
+        if (apiFields.description) mapped.description = apiFields.description
+        if (apiFields.category_id) mapped.category_id = apiFields.category_id
+        if (apiFields.employment_type) mapped.employment_type = apiFields.employment_type
+        setFieldErrors(mapped)
+        setFormError(Object.keys(mapped).length ? '' : getApiErrorMessage(error))
+      } else {
+        setFormError(getApiErrorMessage(error))
+      }
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
 
   return (
     <div className="max-w-4xl mx-auto">
-      <PageHeader 
-        title={isEditing ? 'Edit Job' : 'Post a New Job'} 
+      <PageHeader
+        title={isEditing ? 'Edit Job' : 'Post a New Job'}
         subtitle={isEditing ? 'Update your job posting' : 'Fill in the details to post a new job'}
       >
         <button
@@ -163,76 +227,39 @@ export default function PostJob() {
             {formError}
           </div>
         )}
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6" noValidate>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
-              Job Title *
-            </label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Job Title *</label>
             <input
               type="text"
               name="title"
               value={formData.title}
               onChange={handleChange}
-              required
-              placeholder="e.g. Senior React Developer"
-              className="w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+              placeholder="e.g. Administrative Assistant"
+              className={fieldInputClass(fieldErrors.title)}
+              aria-invalid={fieldErrors.title ? 'true' : undefined}
             />
+            <FieldError message={fieldErrors.title} />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Company *
-              </label>
-              <select
-                name="company_id"
-                value={formData.company_id}
-                onChange={handleChange}
-                required
-                className="w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-              >
-                <option value="">Select a company</option>
-                {companies.map(comp => (
-                  <option key={comp.id} value={comp.id}>{comp.name}</option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Category *
-              </label>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Category *</label>
               <select
                 name="category_id"
                 value={formData.category_id}
                 onChange={handleChange}
-                required
-                className="w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                className={fieldInputClass(fieldErrors.category_id)}
+                aria-invalid={fieldErrors.category_id ? 'true' : undefined}
               >
                 <option value="">Select a category</option>
-                {categories.map(cat => (
+                {categories.map((cat) => (
                   <option key={cat.id} value={cat.id}>{cat.name}</option>
                 ))}
               </select>
+              <FieldError message={fieldErrors.category_id} />
             </div>
-          </div>
 
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
-              Description *
-            </label>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              required
-              rows={6}
-              placeholder="Describe the job responsibilities, requirements, and benefits..."
-              className="w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Employment Type *
@@ -241,121 +268,128 @@ export default function PostJob() {
                 name="employment_type"
                 value={formData.employment_type}
                 onChange={handleChange}
-                required
-                className="w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                className={fieldInputClass(fieldErrors.employment_type)}
+                aria-invalid={fieldErrors.employment_type ? 'true' : undefined}
               >
                 <option value="">Select type</option>
-                {EMPLOYMENT_TYPES.map(type => (
+                {EMPLOYMENT_TYPES.map((type) => (
                   <option key={type.value} value={type.value}>
                     {type.label}
                   </option>
                 ))}
               </select>
-            </div>
-            <div className="flex items-center pt-6">
-              <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
-                <input
-                  type="checkbox"
-                  name="is_remote"
-                  checked={formData.is_remote}
-                  onChange={handleChange}
-                  className="h-4 w-4 rounded border-slate-300 text-gold-500 focus:ring-gold-500"
-                />
-                Remote
-              </label>
+              <FieldError message={fieldErrors.employment_type} />
             </div>
           </div>
 
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Description *</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              rows={6}
+              placeholder="Describe the job responsibilities, requirements, and benefits..."
+              className={fieldInputClass(fieldErrors.description)}
+              aria-invalid={fieldErrors.description ? 'true' : undefined}
+            />
+            <FieldError message={fieldErrors.description} />
+          </div>
+
+          <div className="flex items-center pt-2">
+            <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+              <input
+                type="checkbox"
+                name="is_remote"
+                checked={formData.is_remote}
+                onChange={handleChange}
+                className="h-4 w-4 rounded border-slate-300 text-gold-500 focus:ring-gold-500"
+              />
+              Remote position
+            </label>
+          </div>
 
           {!formData.is_remote && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Province *
-                </label>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Province *</label>
                 <select
                   name="location_province"
                   value={formData.location_province}
                   onChange={handleChange}
-                  required={!formData.is_remote}
-                  className="w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                  className={fieldInputClass(fieldErrors.location_province)}
+                  aria-invalid={fieldErrors.location_province ? 'true' : undefined}
                 >
                   <option value="">Select province</option>
-                  {PROVINCES.map(province => (
+                  {PROVINCES.map((province) => (
                     <option key={province} value={province}>{province}</option>
                   ))}
                 </select>
+                <FieldError message={fieldErrors.location_province} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  City
-                </label>
+                <label className="block text-sm font-medium text-slate-700 mb-1">City</label>
                 <input
                   type="text"
                   name="location_city"
                   value={formData.location_city}
                   onChange={handleChange}
                   placeholder="e.g. Toronto"
-                  className="w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                  className={fieldInputClass(false)}
                 />
               </div>
             </div>
           )}
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
-              Salary Range
-            </label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Salary Range</label>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <input
-                  type="number"
-                  name="salary_min"
-                  value={formData.salary_min}
-                  onChange={handleChange}
-                  placeholder="Min"
-                  className="w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                />
-              </div>
-              <div>
-                <input
-                  type="number"
-                  name="salary_max"
-                  value={formData.salary_max}
-                  onChange={handleChange}
-                  placeholder="Max"
-                  className="w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                />
-              </div>
-              <div>
-                <select
-                  name="salary_period"
-                  value={formData.salary_period}
-                  onChange={handleChange}
-                  className="w-full rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                >
-                  {SALARY_PERIODS.map(period => (
-                    <option key={period} value={period}>
-                      {period.charAt(0).toUpperCase() + period.slice(1)}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <input
+                type="number"
+                name="salary_min"
+                value={formData.salary_min}
+                onChange={handleChange}
+                placeholder="Min"
+                min="0"
+                className={fieldInputClass(false)}
+              />
+              <input
+                type="number"
+                name="salary_max"
+                value={formData.salary_max}
+                onChange={handleChange}
+                placeholder="Max"
+                min="0"
+                className={fieldInputClass(false)}
+              />
+              <select
+                name="salary_period"
+                value={formData.salary_period}
+                onChange={handleChange}
+                className={fieldInputClass(false)}
+              >
+                {SALARY_PERIODS.map((period) => (
+                  <option key={period} value={period}>
+                    {period.charAt(0).toUpperCase() + period.slice(1)}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
-              Skills
-            </label>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Skills</label>
             <div className="flex gap-2">
               <input
                 type="text"
                 value={skillInput}
-                onChange={(e) => setSkillInput(e.target.value)}
+                onChange={(e) => {
+                  setSkillInput(e.target.value)
+                  clearField('skills')
+                }}
                 onKeyDown={handleKeyDown}
                 placeholder="Add a skill and press Enter"
-                className="flex-1 rounded-md border border-slate-200 px-3 py-2.5 text-sm focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                className={`flex-1 ${fieldInputClass(fieldErrors.skills)}`}
               />
               <button
                 type="button"
@@ -365,6 +399,7 @@ export default function PostJob() {
                 Add
               </button>
             </div>
+            <FieldError message={fieldErrors.skills} />
             <div className="mt-3 flex flex-wrap gap-2">
               {formData.skills.map((skill) => (
                 <span
@@ -393,16 +428,9 @@ export default function PostJob() {
               <FiSave className="h-4 w-4" />
               {isSubmitting ? 'Saving...' : isEditing ? 'Update Job' : 'Post Job'}
             </button>
-            <button
-              type="button"
-              onClick={() => navigate('/recruiter/dashboard/jobs')}
-              className="rounded-md border border-slate-200 px-6 py-2.5 text-sm font-semibold text-navy-900 transition hover:bg-slate-50"
-            >
-              Cancel
-            </button>
           </div>
         </form>
       </div>
     </div>
-  );
+  )
 }

@@ -5,11 +5,17 @@ import JobPostingForm, { EMPTY_JOB_FORM } from '../../components/postJob/JobPost
 import { useEmployerData } from '../../lib/EmployerDataContext'
 
 function mapPostingToForm(posting) {
+  const categoryId =
+    posting.raw?.category_id != null
+      ? String(posting.raw.category_id)
+      : posting.categoryId != null
+        ? String(posting.categoryId)
+        : ''
   return {
     jobTitle: posting.title || '',
     companyName: posting.companyName || '',
     location: posting.location || '',
-    category: posting.category || '',
+    category: categoryId,
     employmentType: posting.employmentType || '',
     salaryRange: posting.salaryRange || '',
     description: posting.description || '',
@@ -22,6 +28,7 @@ function mapFormToPosting(values) {
     companyName: values.companyName,
     location: values.location,
     category: values.category,
+    category_id: Number(values.category),
     employmentType: values.employmentType,
     salaryRange: values.salaryRange,
     description: values.description,
@@ -39,24 +46,31 @@ export default function PostJobDashboardPage() {
   const isEdit = !!existingPosting
   const initialValues = isEdit ? mapPostingToForm(existingPosting) : EMPTY_JOB_FORM
 
+  const [submitError, setSubmitError] = useState('')
+
   const handleSubmit = async (values, status) => {
     setSubmitting(true)
+    setSubmitError('')
     const data = mapFormToPosting(values)
 
-    window.setTimeout(() => {
+    try {
       if (isEdit) {
-        updateJobPosting(editId, { ...data, status })
+        await updateJobPosting(editId, { ...data, status })
       } else {
-        createJobPosting(data, status)
+        await createJobPosting(data, status)
       }
-      setSubmitting(false)
-      const message = status === 'Draft'
-        ? 'Job posting saved as draft.'
-        : isEdit
-          ? 'Job posting updated successfully.'
-          : 'Job posting published successfully.'
+      const message =
+        status === 'Draft'
+          ? 'Job posting saved as draft.'
+          : isEdit
+            ? 'Job posting updated successfully.'
+            : 'Job posting published successfully.'
       navigate('/employer-dashboard/job-postings', { state: { success: message } })
-    }, 400)
+    } catch (err) {
+      setSubmitError(err.message || 'Could not save the job posting. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -72,6 +86,11 @@ export default function PostJobDashboardPage() {
       />
 
       <div className="max-w-2xl rounded-xl border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-card)] sm:p-6">
+        {submitError && (
+          <p className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+            {submitError}
+          </p>
+        )}
         <JobPostingForm
           initialValues={initialValues}
           onSubmit={handleSubmit}

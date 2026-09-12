@@ -57,8 +57,8 @@ function AppRoutes() {
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/signin" element={<Navigate to="/sign-in" replace />} />
-        <Route path="/sign-up" element={<ComingSoonPage title="Sign Up" />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/signup" element={<Navigate to="/sign-up" replace />} />
         <Route path="/forgot-password" element={<ComingSoonPage title="Forgot Password" />} />
         <Route path="/post-a-job/create" element={<ComingSoonPage title="Create a Job Posting" />} />
         <Route path="/post-a-job" element={<PostJob />} />

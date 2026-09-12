@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { FiFilter, FiX } from 'react-icons/fi'
 import DashboardTopBanner from '../../components/dashboard/DashboardTopBanner'
 import SearchBar from '../../components/ui/SearchBar'
@@ -44,6 +44,19 @@ export default function FindJobsPage() {
 
   const { jobs: apiJobs, loading, error } = useServiceCareJobs({ limit: 100 })
   const { isJobApplied, isJobSaved, applyToJob, toggleSaveJob } = useDashboardData()
+  const [actionError, setActionError] = useState('')
+
+  const handleApply = async (job) => {
+    setActionError('')
+    const result = await applyToJob(job)
+    if (!result.success) setActionError(result.error)
+  }
+
+  const handleSaveToggle = async (job) => {
+    setActionError('')
+    const result = await toggleSaveJob(job)
+    if (!result.success) setActionError(result.error)
+  }
 
   useEffect(() => {
     setDraft(filtersFromSearchParams(searchParams))
@@ -195,6 +208,22 @@ export default function FindJobsPage() {
               </div>
             </div>
 
+            {actionError && (
+              <div className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+                <p>{actionError}</p>
+                {actionError.toLowerCase().includes('resume') && (
+                  <p className="mt-2">
+                    <Link
+                      to="/dashboard/profile"
+                      className="font-semibold text-[var(--color-teal)] underline"
+                    >
+                      Upload your resume in Profile &amp; Settings
+                    </Link>
+                  </p>
+                )}
+              </div>
+            )}
+
             {loading ? (
               <p className="mt-8 text-center text-[var(--color-text-secondary)]">Loading jobs...</p>
             ) : error ? (
@@ -211,8 +240,8 @@ export default function FindJobsPage() {
                     job={job}
                     isApplied={isJobApplied(job.id)}
                     isSaved={isJobSaved(job.id)}
-                    onApply={() => applyToJob(job)}
-                    onSaveToggle={() => toggleSaveJob(job)}
+                    onApply={() => handleApply(job)}
+                    onSaveToggle={() => handleSaveToggle(job)}
                   />
                 ))}
               </div>

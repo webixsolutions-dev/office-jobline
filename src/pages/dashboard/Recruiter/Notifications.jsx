@@ -19,78 +19,8 @@ import {
   FiXCircle,
 } from 'react-icons/fi';
 
-const MOCK_NOTIFICATIONS = [
-  {
-    id: 1,
-    type: 'job.new_applicant',
-    message: 'New applicant for Senior React Developer position',
-    read_at: null,
-    created_at: '2026-07-18T10:30:00Z',
-    entity_type: 'job',
-    entity_id: 'JOB-001',
-    icon: FiUser,
-  },
-  {
-    id: 2,
-    type: 'company.verified',
-    message: 'Your company verification was approved',
-    read_at: null,
-    created_at: '2026-07-18T08:15:00Z',
-    entity_type: 'company',
-    entity_id: 'COM-001',
-    icon: FiCheckCircle,
-  },
-  {
-    id: 3,
-    type: 'job.expiring',
-    message: 'Your job "Senior React Developer" is expiring soon',
-    read_at: null,
-    created_at: '2026-07-17T16:45:00Z',
-    entity_type: 'job',
-    entity_id: 'JOB-001',
-    icon: FiCalendar,
-  },
-  {
-    id: 4,
-    type: 'application.status_changed',
-    message: 'John Doe applied for UX/UI Designer position',
-    read_at: '2026-07-17T14:20:00Z',
-    created_at: '2026-07-17T13:00:00Z',
-    entity_type: 'application',
-    entity_id: 'APP-004',
-    icon: FiFileText,
-  },
-  {
-    id: 5,
-    type: 'job.active',
-    message: 'Your job "Full Stack Developer" is now active',
-    read_at: '2026-07-16T09:00:00Z',
-    created_at: '2026-07-16T08:00:00Z',
-    entity_type: 'job',
-    entity_id: 'JOB-003',
-    icon: FiBriefcase,
-  },
-  {
-    id: 6,
-    type: 'application.status_changed',
-    message: 'Mike Johnson was shortlisted for Product Manager',
-    read_at: '2026-07-15T11:30:00Z',
-    created_at: '2026-07-15T10:00:00Z',
-    entity_type: 'application',
-    entity_id: 'APP-006',
-    icon: FiStar,
-  },
-  {
-    id: 7,
-    type: 'company.rejected',
-    message: 'Your company verification was rejected - Please update your documents',
-    read_at: '2026-07-14T16:00:00Z',
-    created_at: '2026-07-14T15:00:00Z',
-    entity_type: 'company',
-    entity_id: 'COM-001',
-    icon: FiXCircle,
-  },
-];
+/** No recruiter notifications endpoint on shared backend yet. */
+const EMPTY_NOTIFICATIONS = [];
 
 const NOTIFICATION_TYPES = {
   all: 'All Notifications',
@@ -101,7 +31,7 @@ const NOTIFICATION_TYPES = {
 
 export default function RecruiterNotifications() {
   const navigate = useNavigate();
-  const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
+  const [notifications, setNotifications] = useState(EMPTY_NOTIFICATIONS);
   const [filterType, setFilterType] = useState('all');
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -154,7 +84,7 @@ export default function RecruiterNotifications() {
     setIsError(false);
     setIsLoading(true);
     setTimeout(() => {
-      setNotifications(MOCK_NOTIFICATIONS);
+      setNotifications(EMPTY_NOTIFICATIONS);
       setIsLoading(false);
     }, 1000);
   };

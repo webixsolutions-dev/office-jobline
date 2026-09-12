@@ -7,6 +7,8 @@ import Input from '../../components/ui/Input'
 import Button from '../../components/ui/Button'
 import { images } from '../../constants/images'
 import { useAuth } from '../../hooks/useAuth'
+import { validateSignInFields, hasValidationErrors } from '../../lib/validation'
+import { getApiErrorMessage, mapApiFieldErrors, getApiErrorCode } from '../../lib/apiErrors'
 
 const signInTestimonial = {
   quote:
@@ -19,20 +21,60 @@ const signInTestimonial = {
 
 export default function SignIn() {
   const navigate = useNavigate()
-  const { devSignIn } = useAuth()
+  const { signIn } = useAuth()
   const [role, setRole] = useState('job_seeker')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [rememberMe, setRememberMe] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [fieldErrors, setFieldErrors] = useState({})
+  const [formError, setFormError] = useState('')
 
-  const handleSubmit = (event) => {
+  const clearField = (name) => {
+    setFieldErrors((prev) => {
+      if (!prev[name]) return prev
+      const next = { ...prev }
+      delete next[name]
+      return next
+    })
+    setFormError('')
+  }
+
+  const handleSubmit = async (event) => {
     event.preventDefault()
+    const errors = validateSignInFields({ email, password })
+    if (hasValidationErrors(errors)) {
+      setFieldErrors(errors)
+      setFormError('')
+      return
+    }
+
     setSubmitting(true)
-    const apiRole = role === 'employer' ? 'recruiter' : role
-    devSignIn(email.trim(), role)
-    navigate(apiRole === 'recruiter' ? '/employer-dashboard/overview' : '/dashboard/overview')
-    setSubmitting(false)
+    setFieldErrors({})
+    setFormError('')
+
+    try {
+      await signIn(email.trim(), password)
+      const apiRole = role === 'employer' ? 'recruiter' : 'job_seeker'
+      navigate(apiRole === 'recruiter' ? '/employer-dashboard/overview' : '/dashboard/overview')
+    } catch (err) {
+      if (getApiErrorCode(err) === 'VALIDATION_ERROR') {
+        const mapped = mapApiFieldErrors(err)
+        setFieldErrors({
+          email: mapped.email,
+          password: mapped.password,
+        })
+        setFormError('')
+      } else if (getApiErrorCode(err) === 'ACCOUNT_INACTIVE') {
+        setFormError('Your account is inactive. Contact support for help.')
+      } else if (getApiErrorCode(err) === 'SIGN_IN_FAILED') {
+        setFormError('Incorrect email or password. Please try again.')
+      } else {
+        setFormError(getApiErrorMessage(err))
+      }
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -46,15 +88,28 @@ export default function SignIn() {
       <RoleToggle value={role} onChange={setRole} />
 
       <form className="mt-6 space-y-4" onSubmit={handleSubmit} noValidate>
+        {formError && (
+          <div
+            className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+            role="alert"
+          >
+            {formError}
+          </div>
+        )}
+
         <Input
           label="Email address"
           name="email"
           type="email"
           icon={FiMail}
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value)
+            clearField('email')
+          }}
           placeholder="you@example.com"
           autoComplete="email"
+          error={fieldErrors.email}
         />
         <Input
           label="Password"
@@ -63,9 +118,13 @@ export default function SignIn() {
           icon={FiLock}
           showToggle
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value)
+            clearField('password')
+          }}
           placeholder="Enter your password"
           autoComplete="current-password"
+          error={fieldErrors.password}
         />
 
         <div className="flex items-center justify-between gap-3 text-sm">
@@ -94,7 +153,7 @@ export default function SignIn() {
           disabled={submitting}
           className="w-full"
         >
-          Log In
+          {submitting ? 'Signing in…' : 'Log In'}
         </Button>
       </form>
 
@@ -110,4 +169,3 @@ export default function SignIn() {
     </AuthLayout>
   )
 }
-
