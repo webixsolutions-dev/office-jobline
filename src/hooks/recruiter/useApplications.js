@@ -1,67 +1,47 @@
-import { useState } from 'react';
-import { MOCK_APPLICANTS } from '../../../data/recruiter/applicants';
+import { useState, useEffect, useMemo } from 'react'
+import { getRecruiterApplications } from '../../lib/jobs'
+import { mapRecruiterApplicant } from '../../lib/mappers'
+import { useAuth } from '../useAuth'
 
-const STATUS_OPTIONS = [
-  'submitted',
-  'viewed',
-  'shortlisted',
-  'interviewing',
-  'offered',
-  'hired',
-  'rejected',
-];
+export function useApplications(jobId) {
+  const { token, isAuthenticated } = useAuth()
+  const [applicants, setApplicants] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [isError, setIsError] = useState(false)
 
-export function useApplicants() {
-  const [applicants, setApplicants] = useState(MOCK_APPLICANTS);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
+  const fetchApplicants = async () => {
+    if (!isAuthenticated || !token) {
+      setApplicants([])
+      setIsLoading(false)
+      return
+    }
+    setIsLoading(true)
+    try {
+      const data = await getRecruiterApplications(token, { pageSize: 100 })
+      let items = (data?.items || []).map(mapRecruiterApplicant)
+      if (jobId) {
+        items = items.filter((a) => a.jobId === String(jobId))
+      }
+      setApplicants(items)
+      setIsError(false)
+    } catch (err) {
+      console.error('Failed to load applications', err)
+      setIsError(true)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
-  const filteredApplicants = applicants.filter(applicant => {
-    const matchesSearch = applicant.applicant_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         applicant.applicant_headline.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || applicant.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
+  useEffect(() => {
+    fetchApplicants()
+  }, [token, isAuthenticated, jobId])
 
-  const handleStatusChange = (applicantId, newStatus) => {
-    setApplicants(prev =>
-      prev.map(app =>
-        app.id === applicantId ? { ...app, status: newStatus } : app
-      )
-    );
-  };
-
-  const handleRetry = () => {
-    setIsError(false);
-    setIsLoading(true);
-    setTimeout(() => {
-      setApplicants(MOCK_APPLICANTS);
-      setIsLoading(false);
-    }, 1000);
-  };
-
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-  };
+  const filteredApplicants = useMemo(() => applicants, [applicants])
 
   return {
-    applicants,
-    filteredApplicants,
-    searchTerm,
-    setSearchTerm,
-    statusFilter,
-    setStatusFilter,
+    applicants: filteredApplicants,
     isLoading,
     isError,
-    handleStatusChange,
-    handleRetry,
-    formatDate,
-    STATUS_OPTIONS,
-  };
+    refetch: fetchApplicants,
+  }
 }

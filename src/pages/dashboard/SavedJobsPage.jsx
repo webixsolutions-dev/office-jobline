@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { FiBookmark } from 'react-icons/fi'
 import DashboardTopBanner from '../../components/dashboard/DashboardTopBanner'
 import SavedJobListItem from '../../components/dashboard/SavedJobListItem'
@@ -5,7 +6,11 @@ import Button from '../../components/ui/Button'
 import { useDashboardData } from '../../lib/DashboardDataContext'
 
 export default function SavedJobsPage() {
-  const { savedJobs } = useDashboardData()
+  const { savedJobs, loading, refreshDashboard } = useDashboardData()
+
+  useEffect(() => {
+    refreshDashboard()
+  }, [refreshDashboard])
 
   return (
     <>
@@ -15,7 +20,9 @@ export default function SavedJobsPage() {
         subtitle="Jobs you've bookmarked to review or apply to later."
       />
 
-      {savedJobs.length === 0 ? (
+      {loading ? (
+        <p className="text-sm text-[var(--color-text-secondary)]">Loading saved jobs…</p>
+      ) : savedJobs.length === 0 ? (
         <div className="rounded-xl border border-[var(--color-border)] bg-white p-10 text-center shadow-[var(--shadow-card)]">
           <FiBookmark className="mx-auto h-10 w-10 text-[var(--color-text-secondary)]" aria-hidden />
           <h2 className="mt-4 font-display text-lg font-bold text-[var(--color-text-primary)]">No saved jobs yet</h2>

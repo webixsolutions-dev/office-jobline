@@ -1,194 +1,185 @@
 // src/lib/auth/AuthContext.jsx
-import React, { createContext, useState, useEffect, useContext } from 'react';
-import { Navigate } from 'react-router-dom';
-import { api } from '../api';
+import React, { createContext, useState, useEffect, useContext } from 'react'
+import { Navigate } from 'react-router-dom'
+import { api } from '../api'
 
+const SESSION_KEY = 'office-jobline.session'
 
-const SESSION_KEY = 'servicecare.session';
-
-const AuthContext = createContext(null);
+const AuthContext = createContext(null)
 
 export function readSession() {
   try {
-    const s = localStorage.getItem(SESSION_KEY);
-    return s ? JSON.parse(s) : null;
-  } catch (e) {
-    return null;
+    const s = localStorage.getItem(SESSION_KEY)
+    return s ? JSON.parse(s) : null
+  } catch {
+    return null
   }
 }
 
 export function writeSession(session) {
   try {
     if (session) {
-      localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+      localStorage.setItem(SESSION_KEY, JSON.stringify(session))
     } else {
-      localStorage.removeItem(SESSION_KEY);
+      localStorage.removeItem(SESSION_KEY)
     }
-  } catch (e) {
-    // Ignored
+  } catch {
+    // ignored
+  }
+}
+
+function normalizeExpiresAt(expiresAt) {
+  if (expiresAt == null) return null
+  const n = Number(expiresAt)
+  if (Number.isNaN(n)) return null
+  return n < 1e12 ? n * 1000 : n
+}
+
+function buildSessionFromAuthResponse(data) {
+  const expiresAt = normalizeExpiresAt(data?.session?.expires_at)
+  return {
+    user: data?.user ?? null,
+    profile: data?.profile ?? null,
+    company: data?.company ?? null,
+    session: data?.session
+      ? {
+          ...data.session,
+          expires_at: expiresAt ?? data.session.expires_at,
+        }
+      : null,
+    confirmationRequired: data?.confirmationRequired ?? false,
+  }
+}
+
+function mergeMeIntoSession(base, me) {
+  if (!me) return base
+  const profile = me.profile ?? base?.profile
+  const user = me.user ?? base?.user
+  return {
+    ...base,
+    user: {
+      ...user,
+      ...profile,
+      id: user?.id ?? profile?.id,
+      email: user?.email ?? profile?.email,
+      role: profile?.role ?? user?.role,
+    },
+    profile,
   }
 }
 
 export function AuthProvider({ children }) {
-  const [session, setSession] = useState(() => readSession());
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [session, setSession] = useState(() => readSession())
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-  // Helper to load user profile
   const loadProfile = async (token) => {
-    try {
-      const userProfile = await api('/v1/auth/me', { method: 'GET' }, token);
-      setSession(prev => {
-        if (!prev) return null;
-        const updated = {
-          ...prev,
-          user: {
-            ...prev.user,
-            ...userProfile,
-          },
-        };
-        writeSession(updated);
-        return updated;
-      });
-    } catch (err) {
-      console.error('Failed to load profile', err);
-    }
-  };
+    const me = await api('auth/me', { method: 'GET' }, token)
+    setSession((prev) => {
+      if (!prev) return null
+      const updated = mergeMeIntoSession(prev, me)
+      writeSession(updated)
+      return updated
+    })
+    return me
+  }
 
-  const devSignIn = (email, role) => {
-    const apiRole = role === 'employer' ? 'recruiter' : 'job_seeker';
-    const mockSession = {
-      dev: true,
-      session: {
-        access_token: 'dev-token',
-        refresh_token: 'dev-refresh',
-        expires_at: Date.now() + 86400000,
-      },
-      user: {
-        email: email || 'demo@example.com',
-        role: apiRole,
-        full_name: 'Demo User',
-      },
-    };
-    setSession(mockSession);
-    writeSession(mockSession);
-    return mockSession;
-  };
-
-  // Check and load profile on mount or session change
   useEffect(() => {
     const initAuth = async () => {
-      const activeSession = readSession();
-      if (activeSession?.dev) {
-        setSession(activeSession);
-        setLoading(false);
-        return;
-      }
+      const activeSession = readSession()
       if (activeSession?.session?.access_token) {
-        // If expired or expiring soon (e.g. within 5 mins), try refreshing
-        const expiresAt = activeSession.session.expires_at;
-        const now = Date.now();
-        if (expiresAt && expiresAt - now < 300000) {
-          try {
-            await refresh(activeSession.session.refresh_token);
-          } catch (e) {
-            console.error('Failed to refresh session on startup', e);
-            // Clear session if refresh fails
-            setSession(null);
-            writeSession(null);
-          }
-        } else {
-          // Normal profile load
-          await loadProfile(activeSession.session.access_token);
+        try {
+          await loadProfile(activeSession.session.access_token)
+          setSession(readSession())
+        } catch (e) {
+          console.error('Failed to restore session', e)
+          setSession(null)
+          writeSession(null)
         }
       }
-      setLoading(false);
-    };
+      setLoading(false)
+    }
 
-    initAuth();
-  }, []);
+    initAuth()
+  }, [])
 
   const signIn = async (email, password) => {
-    setLoading(true);
-    setError(null);
+    setLoading(true)
+    setError(null)
     try {
-      const data = await api('/v1/auth/login', {
+      const data = await api('auth/sign-in', {
         method: 'POST',
         body: JSON.stringify({ email, password }),
-      });
-      setSession(data);
-      writeSession(data);
-      if (data?.session?.access_token) {
-        await loadProfile(data.session.access_token);
+      })
+      let next = buildSessionFromAuthResponse(data)
+      writeSession(next)
+      setSession(next)
+      if (next.session?.access_token) {
+        await loadProfile(next.session.access_token)
+        setSession(readSession())
       }
-      return data;
+      return readSession()
     } catch (err) {
-      setError(err.message);
-      throw err;
+      setError(err.message)
+      throw err
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
-  const signUp = async (data) => {
-    setLoading(true);
-    setError(null);
+  const signUp = async (payload) => {
+    setLoading(true)
+    setError(null)
     try {
-      const res = await api('/v1/auth/register', {
-        method: 'POST',
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-          full_name: data.full_name,
-          role: data.role,
-        }),
-      });
-      // If the API immediately returns session data, log them in
-      if (res?.session) {
-        setSession(res);
-        writeSession(res);
+      const body = {
+        email: payload.email,
+        password: payload.password,
+        name: payload.name,
+        role: payload.role,
       }
-      return res;
-    } catch (err) {
-      setError(err.message);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
+      if (payload.role === 'recruiter') {
+        body.company_name = payload.company_name
+        body.company_website = payload.company_website
+        body.company_registration_number = payload.company_registration_number
+      }
 
-  const refresh = async (refreshToken) => {
-    try {
-      const data = await api('/v1/auth/refresh', {
+      const data = await api('auth/sign-up', {
         method: 'POST',
-        body: JSON.stringify({ refresh_token: refreshToken }),
-      });
-      setSession(prev => {
-        const updated = {
-          ...prev,
-          session: data.session,
-          user: data.user || prev?.user,
-        };
-        writeSession(updated);
-        return updated;
-      });
-      return data;
+        body: JSON.stringify(body),
+      })
+
+      let next = buildSessionFromAuthResponse(data)
+      if (data?.company) {
+        next = { ...next, company: data.company }
+      }
+      if (next.session?.access_token) {
+        writeSession(next)
+        setSession(next)
+        await loadProfile(next.session.access_token)
+        setSession(readSession())
+      } else {
+        writeSession(next)
+        setSession(next)
+      }
+      return { ...data, confirmationRequired: data?.confirmationRequired ?? !data?.session }
     } catch (err) {
-      setError(err.message);
-      throw err;
+      setError(err.message)
+      throw err
+    } finally {
+      setLoading(false)
     }
-  };
+  }
 
   const signOut = async () => {
-    setSession(null);
-    writeSession(null);
-    setError(null);
-  };
+    setSession(null)
+    writeSession(null)
+    setError(null)
+  }
 
-  const isAuthenticated = !!session?.session?.access_token;
-  const user = session?.user || null;
-  const token = session?.session?.access_token || null;
-  const role = user?.role || null;
+  const isAuthenticated = !!session?.session?.access_token
+  const user = session?.user || null
+  const token = session?.session?.access_token || null
+  const role = user?.role || session?.profile?.role || null
 
   const value = {
     session,
@@ -199,42 +190,40 @@ export function AuthProvider({ children }) {
     loading,
     error,
     signIn,
-    devSignIn,
     signUp,
     signOut,
-    refreshSession: () => session?.session?.refresh_token ? refresh(session.session.refresh_token) : null,
-  };
+    loadProfile: () => (token ? loadProfile(token) : null),
+  }
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
 export function useAuthContext() {
-  const context = useContext(AuthContext);
+  const context = useContext(AuthContext)
   if (!context) {
-    throw new Error('useAuthContext must be used within an AuthProvider');
+    throw new Error('useAuthContext must be used within an AuthProvider')
   }
-  return context;
+  return context
 }
 
 export function ProtectedRoute({ children, requiredRole }) {
-  const { isAuthenticated, role, loading } = useAuthContext();
-  
+  const { isAuthenticated, role, loading } = useAuthContext()
+
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-offwhite">
         <p className="text-navy font-semibold">Loading session...</p>
       </div>
-    );
+    )
   }
-  
-  if (!isAuthenticated) {
-    return <Navigate to="/sign-in" replace />;
-  }
-  
-  if (requiredRole && role !== requiredRole) {
-    return <Navigate to="/" replace />;
-  }
-  
-  return children;
-}
 
+  if (!isAuthenticated) {
+    return <Navigate to="/sign-in" replace />
+  }
+
+  if (requiredRole && role !== requiredRole) {
+    return <Navigate to="/" replace />
+  }
+
+  return children
+}

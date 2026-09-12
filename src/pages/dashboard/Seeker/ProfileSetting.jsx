@@ -34,6 +34,8 @@ export default function ProfileSettings() {
     handleDeleteAccount,
     getInitials,
     formatDate,
+    fieldErrors,
+    saveError,
   } = useProfile();
 
   return (
@@ -55,6 +57,11 @@ export default function ProfileSettings() {
       </PageHeader>
 
       <div className="space-y-6">
+        {saveError && (
+          <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+            {saveError}
+          </div>
+        )}
         <ProfileHeader
           fullName={formData.full_name}
           initials={getInitials(formData.full_name)}
@@ -70,6 +77,7 @@ export default function ProfileSettings() {
           formData={formData}
           isEditing={isEditing}
           onChange={handleChange}
+          fieldErrors={fieldErrors}
         />
 
         <SkillsSection
@@ -80,6 +88,7 @@ export default function ProfileSettings() {
           onAddSkill={handleAddSkill}
           onRemoveSkill={handleRemoveSkill}
           onKeyDown={handleKeyDown}
+          error={fieldErrors.skills}
         />
 
         <ResumeSection

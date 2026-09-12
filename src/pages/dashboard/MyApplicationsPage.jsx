@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react'
 import { FiBriefcase } from 'react-icons/fi'
 import DashboardTopBanner from '../../components/dashboard/DashboardTopBanner'
 import ApplicationListItem from '../../components/dashboard/ApplicationListItem'
-import ConfirmModal from '../../components/dashboard/common/ConfirmModal'
 import Button from '../../components/ui/Button'
 import { useDashboardData } from '../../lib/DashboardDataContext'
 
@@ -13,11 +12,27 @@ const SORT_OPTIONS = [
 ]
 
 export default function MyApplicationsPage() {
-  const { applications, withdrawApplication } = useDashboardData()
+  const { applications, loading, isJobSaved, toggleSaveJob } = useDashboardData()
   const [statusFilter, setStatusFilter] = useState('All')
   const [sortBy, setSortBy] = useState('date-desc')
-  const [withdrawTarget, setWithdrawTarget] = useState(null)
+  const [savingJobId, setSavingJobId] = useState(null)
+  const [saveError, setSaveError] = useState('')
 
+  const handleToggleSave = async (app) => {
+    const job = app.job || {
+      id: app.jobId,
+      title: app.title,
+      company: app.company,
+      location: app.location,
+    }
+    setSavingJobId(app.jobId)
+    setSaveError('')
+    const result = await toggleSaveJob(job)
+    if (!result.success) {
+      setSaveError(result.error || 'Could not save this job.')
+    }
+    setSavingJobId(null)
+  }
   const filtered = useMemo(() => {
     let list = [...applications]
     if (statusFilter !== 'All') {
@@ -31,13 +46,6 @@ export default function MyApplicationsPage() {
     return list
   }, [applications, statusFilter, sortBy])
 
-  const handleConfirmWithdraw = () => {
-    if (withdrawTarget) {
-      withdrawApplication(withdrawTarget.id)
-      setWithdrawTarget(null)
-    }
-  }
-
   return (
     <>
       <DashboardTopBanner
@@ -45,6 +53,12 @@ export default function MyApplicationsPage() {
         title="My Applications"
         subtitle="Track the status of every job you've applied to."
       />
+
+      {saveError && (
+        <p className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+          {saveError}
+        </p>
+      )}
 
       {applications.length > 0 && (
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -75,7 +89,9 @@ export default function MyApplicationsPage() {
         </div>
       )}
 
-      {filtered.length === 0 ? (
+      {loading ? (
+        <p className="text-sm text-[var(--color-text-secondary)]">Loading applications…</p>
+      ) : filtered.length === 0 ? (
         <div className="rounded-xl border border-[var(--color-border)] bg-white p-10 text-center shadow-[var(--shadow-card)]">
           <FiBriefcase className="mx-auto h-10 w-10 text-[var(--color-text-secondary)]" aria-hidden />
           <h2 className="mt-4 font-display text-lg font-bold text-[var(--color-text-primary)]">
@@ -91,20 +107,17 @@ export default function MyApplicationsPage() {
       ) : (
         <div className="space-y-4">
           {filtered.map((app) => (
-            <ApplicationListItem key={app.id} application={app} onWithdraw={setWithdrawTarget} />
+            <ApplicationListItem
+              key={app.id}
+              application={app}
+              isSaved={isJobSaved(app.jobId)}
+              onToggleSave={() => handleToggleSave(app)}
+              saving={savingJobId === app.jobId}
+            />
           ))}
         </div>
       )}
 
-      <ConfirmModal
-        isOpen={!!withdrawTarget}
-        title="Withdraw application?"
-        description="This will remove the application from your list. You can always apply again later."
-        confirmLabel="Yes, Withdraw"
-        danger
-        onConfirm={handleConfirmWithdraw}
-        onClose={() => setWithdrawTarget(null)}
-      />
     </>
   )
 }

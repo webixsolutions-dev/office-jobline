@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   PageHeader,
@@ -19,50 +19,44 @@ import {
   FiAlertCircle
 } from 'react-icons/fi';
 
-const MOCK_COMPANY = {
-  id: '1',
-  name: 'TechCorp Inc.',
-  website: 'https://techcorp.com',
-  registration_number: 'REG-12345',
-  logo_path: null,
-  description: 'Leading provider of innovative technology solutions.',
-  verification_status: 'verified',
-  rejection_reason: null,
-  status: 'active',
-  created_at: '2024-01-15T10:30:00Z',
-};
+import { useCompanyProfile } from '../../../hooks/recruiter/useCompanyProfile';
+import { getMyCompanies } from '../../../lib/jobs';
+import { useAuth } from '../../../hooks/useAuth';
 
 export default function CompanyProfile() {
   const navigate = useNavigate();
+  const { token } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  
-  const [company, setCompany] = useState(MOCK_COMPANY);
-  const [formData, setFormData] = useState({ ...MOCK_COMPANY });
+  const {
+    company,
+    formData,
+    isLoading,
+    isSaving,
+    error,
+    handleChange,
+    handleSave: saveCompany,
+    setFormData,
+  } = useCompanyProfile();
 
-  const isVerified = company.verification_status === 'verified';
-  const isPending = company.verification_status === 'pending';
-  const isRejected = company.verification_status === 'rejected';
+  const [fullCompany, setFullCompany] = useState(null);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
+  useEffect(() => {
+    if (!token) return
+    getMyCompanies(token).then((list) => setFullCompany(list[0] || null))
+  }, [token, company.id])
+
+  const verification_status = fullCompany?.verification_status || 'pending';
+  const isVerified = verification_status === 'verified';
+  const isPending = verification_status === 'pending';
+  const isRejected = verification_status === 'rejected';
 
   const handleSave = async () => {
-    setIsSaving(true);
-    try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setCompany({ ...formData });
-      setIsEditing(false);
-      alert('Company profile updated successfully!');
-    } catch (error) {
-      console.error('Error saving company:', error);
-      alert('Failed to save company profile.');
-    } finally {
-      setIsSaving(false);
+    await saveCompany();
+    setIsEditing(false);
+    if (token) {
+      const list = await getMyCompanies(token);
+      setFullCompany(list[0] || null);
     }
   };
 

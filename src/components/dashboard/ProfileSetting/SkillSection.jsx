@@ -8,6 +8,7 @@ export default function SkillsSection({
   onAddSkill,
   onRemoveSkill,
   onKeyDown,
+  error,
 }) {
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-6">
@@ -23,7 +24,9 @@ export default function SkillsSection({
               onChange={(e) => onSkillInputChange(e.target.value)}
               onKeyDown={onKeyDown}
               placeholder="Add a skill and press Enter"
-              className="flex-1 rounded-md border border-slate-200 px-3 py-2 text-sm"
+              className={`flex-1 rounded-md border px-3 py-2 text-sm ${
+                error ? 'border-red-400' : 'border-slate-200'
+              }`}
             />
             <button
               type="button"
@@ -33,6 +36,7 @@ export default function SkillsSection({
               Add
             </button>
           </div>
+          {error && <p className="mt-1 text-xs text-red-700">{error}</p>}
           <div className="mt-3 flex flex-wrap gap-2">
             {skills.map((skill) => (
               <span

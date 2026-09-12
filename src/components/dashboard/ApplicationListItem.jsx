@@ -1,3 +1,4 @@
+import { FiBookmark } from 'react-icons/fi'
 import ApplicationStatusBadge from './ApplicationStatusBadge'
 
 function formatDate(dateStr) {
@@ -9,11 +10,19 @@ function formatDate(dateStr) {
   })
 }
 
-export default function ApplicationListItem({ application, onWithdraw }) {
+export default function ApplicationListItem({
+  application,
+  onWithdraw,
+  isSaved,
+  onToggleSave,
+  saving,
+}) {
   return (
     <div className="flex flex-col gap-3 rounded-xl border border-[var(--color-border)] bg-white p-4 shadow-[var(--shadow-card)] sm:flex-row sm:items-center sm:justify-between sm:p-5">
       <div className="min-w-0 flex-1">
-        <p className="font-display text-base font-bold text-[var(--color-text-primary)]">{application.title}</p>
+        <p className="font-display text-base font-bold text-[var(--color-text-primary)]">
+          {application.title}
+        </p>
         <p className="text-sm text-[var(--color-text-secondary)]">{application.company}</p>
         <p className="mt-1 text-xs text-[var(--color-text-secondary)]">
           {application.location} · Applied {formatDate(application.dateApplied)}
@@ -21,13 +30,31 @@ export default function ApplicationListItem({ application, onWithdraw }) {
       </div>
       <div className="flex flex-wrap items-center gap-3">
         <ApplicationStatusBadge status={application.status} />
-        <button
-          type="button"
-          onClick={() => onWithdraw(application)}
-          className="text-sm font-medium text-[var(--status-error)] hover:underline"
-        >
-          Withdraw Application
-        </button>
+        {onToggleSave && (
+          <button
+            type="button"
+            disabled={saving}
+            onClick={onToggleSave}
+            aria-pressed={isSaved}
+            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-semibold transition ${
+              isSaved
+                ? 'bg-[var(--color-gold-tint)] text-[var(--color-gold-dark)]'
+                : 'border border-[var(--color-border)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-alt)]'
+            }`}
+          >
+            <FiBookmark className={`h-4 w-4 ${isSaved ? 'fill-current' : ''}`} aria-hidden />
+            {isSaved ? 'Saved' : 'Save job'}
+          </button>
+        )}
+        {onWithdraw && (
+          <button
+            type="button"
+            onClick={() => onWithdraw(application)}
+            className="text-sm font-medium text-[var(--status-error)] hover:underline"
+          >
+            Withdraw Application
+          </button>
+        )}
       </div>
     </div>
   )

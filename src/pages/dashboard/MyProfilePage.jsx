@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FiPlus, FiX } from 'react-icons/fi'
 import DashboardTopBanner from '../../components/dashboard/DashboardTopBanner'
 import ProfileCompletenessBar from '../../components/dashboard/ProfileCompletenessBar'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import { calculateProfileCompleteness, useDashboardData } from '../../lib/DashboardDataContext'
+import ProfileResumeUpload from '../../components/dashboard/ProfileResumeUpload'
 
 function RepeatableSection({ title, optional, items, onAdd, onRemove, renderForm, emptyLabel }) {
   const [adding, setAdding] = useState(false)
@@ -81,10 +82,16 @@ function RepeatableSection({ title, optional, items, onAdd, onRemove, renderForm
 }
 
 export default function MyProfilePage() {
-  const { profile, updateProfile } = useDashboardData()
+  const { profile, updateProfile, loading, refreshDashboard } = useDashboardData()
   const [form, setForm] = useState({ ...profile })
   const [skillInput, setSkillInput] = useState('')
   const [saved, setSaved] = useState(false)
+  const [saveError, setSaveError] = useState('')
+  const [saving, setSaving] = useState(false)
+
+  useEffect(() => {
+    setForm({ ...profile })
+  }, [profile])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -107,9 +114,17 @@ export default function MyProfilePage() {
     }
   }
 
-  const handleSave = () => {
-    updateProfile(form)
-    setSaved(true)
+  const handleSave = async () => {
+    setSaving(true)
+    setSaveError('')
+    try {
+      await updateProfile(form)
+      setSaved(true)
+    } catch (err) {
+      setSaveError(err.message || 'Could not save profile.')
+    } finally {
+      setSaving(false)
+    }
   }
 
   const addExperience = (entry) => {
@@ -139,6 +154,15 @@ export default function MyProfilePage() {
       />
 
       <ProfileCompletenessBar percent={calculateProfileCompleteness(form)} showLink={false} />
+
+      {loading && (
+        <p className="mb-4 text-sm text-[var(--color-text-secondary)]">Loading profile…</p>
+      )}
+      {saveError && (
+        <p className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+          {saveError}
+        </p>
+      )}
 
       <div className="rounded-xl border border-[var(--color-border)] bg-white p-5 shadow-[var(--shadow-card)] sm:p-8">
         <h2 className="font-display text-lg font-bold text-[var(--color-text-primary)]">Personal Details</h2>
@@ -258,6 +282,14 @@ export default function MyProfilePage() {
             )}
           />
 
+          <ProfileResumeUpload
+            defaultResumePath={form.default_resume_path || form.defaultResumePath}
+            onUploaded={() => {
+              refreshDashboard()
+              setSaved(false)
+            }}
+          />
+
           <RepeatableSection
             title="Education"
             optional
@@ -297,8 +329,8 @@ export default function MyProfilePage() {
         </div>
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <Button variant="teal" onClick={handleSave}>
-            Save Changes
+          <Button variant="teal" onClick={handleSave} disabled={saving}>
+            {saving ? 'Saving…' : 'Save Changes'}
           </Button>
           {saved && (
             <p className="text-sm font-medium text-[var(--status-success-text)]" role="status">

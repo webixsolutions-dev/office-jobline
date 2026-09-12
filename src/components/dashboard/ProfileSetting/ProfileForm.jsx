@@ -6,10 +6,22 @@ import {
   FiTag 
 } from 'react-icons/fi';
 
+function inputClass(disabled, hasError) {
+  return `w-full rounded-md border px-3 py-2 text-sm disabled:bg-slate-50 disabled:text-slate-500 ${
+    hasError ? 'border-red-400' : 'border-slate-200'
+  }`
+}
+
+function FieldError({ message }) {
+  if (!message) return null
+  return <p className="mt-1 text-xs text-red-700">{message}</p>
+}
+
 export default function ProfileForm({
   formData,
   isEditing,
   onChange,
+  fieldErrors = {},
 }) {
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-6">
@@ -28,9 +40,11 @@ export default function ProfileForm({
             value={formData.full_name}
             onChange={onChange}
             disabled={!isEditing}
-            className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm disabled:bg-slate-50 disabled:text-slate-500"
+            className={inputClass(!isEditing, fieldErrors.full_name)}
+            aria-invalid={fieldErrors.full_name ? 'true' : undefined}
             required
           />
+          <FieldError message={fieldErrors.full_name} />
         </div>
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1">
@@ -56,8 +70,10 @@ export default function ProfileForm({
             value={formData.phone || ''}
             onChange={onChange}
             disabled={!isEditing}
-            className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm disabled:bg-slate-50 disabled:text-slate-500"
+            className={inputClass(!isEditing, fieldErrors.phone)}
+            aria-invalid={fieldErrors.phone ? 'true' : undefined}
           />
+          <FieldError message={fieldErrors.phone} />
         </div>
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1">
@@ -71,8 +87,10 @@ export default function ProfileForm({
             onChange={onChange}
             disabled={!isEditing}
             placeholder="e.g. Senior React Developer"
-            className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm disabled:bg-slate-50 disabled:text-slate-500"
+            className={inputClass(!isEditing, fieldErrors.headline)}
+            aria-invalid={fieldErrors.headline ? 'true' : undefined}
           />
+          <FieldError message={fieldErrors.headline} />
         </div>
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1">
@@ -85,8 +103,10 @@ export default function ProfileForm({
             value={formData.location_province || ''}
             onChange={onChange}
             disabled={!isEditing}
-            className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm disabled:bg-slate-50 disabled:text-slate-500"
+            className={inputClass(!isEditing, fieldErrors.location_province)}
+            aria-invalid={fieldErrors.location_province ? 'true' : undefined}
           />
+          <FieldError message={fieldErrors.location_province} />
         </div>
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1">
@@ -99,8 +119,10 @@ export default function ProfileForm({
             value={formData.location_city || ''}
             onChange={onChange}
             disabled={!isEditing}
-            className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm disabled:bg-slate-50 disabled:text-slate-500"
+            className={inputClass(!isEditing, fieldErrors.location_city)}
+            aria-invalid={fieldErrors.location_city ? 'true' : undefined}
           />
+          <FieldError message={fieldErrors.location_city} />
         </div>
       </div>
     </div>
