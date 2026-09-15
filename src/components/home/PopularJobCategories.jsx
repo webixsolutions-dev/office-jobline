@@ -11,7 +11,7 @@ export default function PopularJobCategories() {
           Popular Office Job Categories
         </h2>
 
-        <div className="mt-8 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="mt-8 grid grid-cols-2 items-stretch gap-5 sm:grid-cols-3 lg:grid-cols-6">
           {homeCategories.map((item) => (
             <CategoryCard
               key={item.slug}

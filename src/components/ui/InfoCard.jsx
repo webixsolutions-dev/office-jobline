@@ -31,7 +31,9 @@ export default function InfoCard({
       {title && (
         <h3 className={`font-display text-lg font-semibold text-navy ${icon ? 'mt-4' : ''}`}>{title}</h3>
       )}
-      {description && <p className="mt-1.5 text-sm leading-relaxed text-muted">{description}</p>}
+      {description && (
+        <div className="mt-1.5 text-sm leading-relaxed text-muted">{description}</div>
+      )}
       {children && (
         <div className={divided ? 'mt-5 border-t border-border pt-5' : 'mt-4'}>{children}</div>
       )}

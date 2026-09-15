@@ -10,7 +10,7 @@ import IconCircle from './IconCircle'
  */
 export default function ProcessStep({ number, icon, title, description, className = '' }) {
   return (
-    <article className={`relative ${className}`}>
+    <article className={`relative min-w-0 ${className}`}>
       <div className="relative inline-flex">
         <IconCircle icon={icon} color="teal" />
         <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-teal text-[11px] font-bold text-white">

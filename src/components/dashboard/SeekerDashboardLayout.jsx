@@ -9,10 +9,10 @@ export default function SeekerDashboardLayout() {
 
   return (
     <DashboardDataProvider>
-      <div className="min-h-screen bg-[var(--color-bg-page)]">
+      <div className="min-h-screen overflow-x-clip bg-[var(--color-bg-page)]">
         <SeekerDashboardSidebar isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
 
-        <div className="flex min-h-screen flex-col lg:pl-64">
+        <div className="flex min-h-screen min-w-0 flex-col lg:pl-64">
           <header className="site-gutter sticky top-0 z-30 flex items-center border-b border-[var(--color-border)] bg-white/90 py-3 backdrop-blur lg:hidden">
             <button
               type="button"

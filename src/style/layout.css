@@ -2,6 +2,6 @@
 @layer components {
   .site-gutter,
   .site-container {
-    @apply w-full px-6 sm:px-12 md:px-16 lg:px-24;
+    @apply w-full min-w-0 px-6 sm:px-12 md:px-16 lg:px-24;
   }
 }

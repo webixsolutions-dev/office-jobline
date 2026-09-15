@@ -15,10 +15,10 @@ function App() {
   const isDashboardPage = DASHBOARD_PAGES.some((path) => location.pathname.startsWith(path))
   const hideChrome = isAuthPage || isDashboardPage
   return (
-    <div className="flex min-h-screen flex-col bg-offwhite">
+    <div className="flex min-h-screen flex-col overflow-x-clip bg-offwhite">
       {!hideChrome && <Navbar />}
       <ScrollToTop />
-      <main className="flex-1">
+      <main className="min-w-0 flex-1">
         <AppRoutes />
       </main>
       {!hideChrome && <Footer />}

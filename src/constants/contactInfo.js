@@ -13,9 +13,15 @@ export const contactInfo = {
   email: 'info@officejobline.com',
   phone: '+1 (647) 555-0198',
   hours: 'Mon - Fri: 9:00 AM - 5:00 PM EST',
+  officeHoursTime: '9:00 AM – 5:00 PM EST',
+  officeHoursSchedule: [
+    { day: 'Monday', hours: '9:00 AM – 5:00 PM EST' },
+    { day: 'Tuesday', hours: '9:00 AM – 5:00 PM EST' },
+    { day: 'Wednesday', hours: '9:00 AM – 5:00 PM EST' },
+    { day: 'Thursday', hours: '9:00 AM – 5:00 PM EST' },
+    { day: 'Friday', hours: '9:00 AM – 5:00 PM EST' },
+  ],
   hoursDetail: {
-    days: 'Monday – Friday',
-    time: '9:00 AM – 5:00 PM EST',
     note: 'Closed on weekends and statutory holidays.',
   },
   support: {

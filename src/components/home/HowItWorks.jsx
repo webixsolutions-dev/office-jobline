@@ -10,17 +10,17 @@ export default function HowItWorks() {
     >
       {/* Right 50%: photo as a background, faded into the left — no boxed image */}
       <div
-        className="hero-photo-fade pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 bg-cover bg-[center_25%] lg:block"
+        className="hero-photo-fade pointer-events-none absolute inset-y-0 right-0 hidden w-[38%] bg-cover bg-[center_25%] lg:block"
         aria-hidden
         style={{ backgroundImage: `url('${images.homeHowItWorks}')` }}
       />
       <div
-        className="pointer-events-none absolute inset-y-0 right-[42%] hidden w-[16%] bg-gradient-to-r from-white via-white/80 to-transparent lg:block"
+        className="pointer-events-none absolute inset-y-0 right-[34%] hidden w-[22%] bg-gradient-to-r from-white via-white/95 to-transparent lg:block"
         aria-hidden
       />
 
       <div className="site-gutter relative flex min-h-[28rem] flex-col justify-center py-16 sm:min-h-[32rem] lg:min-h-[34rem] lg:py-20">
-        <div className="w-full lg:max-w-[54%]">
+        <div className="w-full lg:max-w-[46%] xl:max-w-[42rem]">
           <h2 id="how-it-works-heading" className="font-display text-3xl font-bold text-navy sm:text-4xl">
             How It Works
           </h2>
@@ -33,7 +33,7 @@ export default function HowItWorks() {
               className="absolute left-6 right-6 top-6 hidden border-t border-dashed border-border lg:block"
               aria-hidden
             />
-            <div className="relative grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+            <div className="relative grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
               {homeSteps.map((step) => (
                 <ProcessStep
                   key={step.title}

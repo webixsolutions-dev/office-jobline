@@ -98,7 +98,7 @@ export default function SplitHero({
   )
 
   const textCol = (
-    <div className={`relative z-10 flex items-center overflow-visible bg-offwhite ${textOrder}`}>
+    <div className={`relative z-10 flex min-w-0 items-center overflow-x-clip bg-offwhite lg:overflow-visible ${textOrder}`}>
       <div
         className={`site-gutter w-full py-14 lg:py-20 ${
           children ? 'max-w-2xl' : 'max-w-xl'
@@ -115,7 +115,7 @@ export default function SplitHero({
   )
 
   return (
-    <section className="relative grid grid-cols-1 lg:grid-cols-2">
+    <section className="relative grid grid-cols-1 overflow-x-clip lg:grid-cols-2">
       {imageCol}
       {textCol}
     </section>

@@ -75,7 +75,7 @@ export default function ContactForm() {
     'w-full rounded-lg border border-border bg-white px-4 py-2.5 text-sm text-navy placeholder:text-muted/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold'
 
   return (
-    <article id="contact-form" className="scroll-mt-24 rounded-xl bg-white p-6 shadow-card sm:p-7">
+    <article id="contact-form" className="scroll-mt-24 min-w-0 rounded-xl bg-white p-6 shadow-card sm:p-7">
       <div className="flex items-start gap-3">
         <IconCircle icon={HiOutlineEnvelope} color="navy" size="sm" />
         <div>

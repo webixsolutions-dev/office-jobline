@@ -23,7 +23,10 @@ export default function Pagination({ page, pageCount, perPage, onPageChange, onP
 
   return (
     <div className="mt-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
-      <nav aria-label="Job results pages" className="flex items-center gap-1">
+      <nav
+        aria-label="Job results pages"
+        className="flex max-w-full items-center gap-1 overflow-x-auto pb-1 sm:overflow-visible sm:pb-0"
+      >
         <button
           type="button"
           aria-label="Previous page"
