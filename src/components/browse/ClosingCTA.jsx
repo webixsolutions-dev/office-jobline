@@ -10,9 +10,10 @@ export default function ClosingCTA() {
       title="Ready to Find Your Next Office Opportunity?"
       subtitle="Browse more office and administrative jobs across Canada or set up job alerts and never miss a new opportunity."
       primary={{
-        label: 'Browse More Jobs →',
+        label: 'Browse More Jobs',
         onClick: scrollToJobListings,
         icon: FiArrowRight,
+        iconPosition: 'right',
         variant: 'gold',
       }}
       secondary={{

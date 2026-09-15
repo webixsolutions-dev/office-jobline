@@ -9,6 +9,7 @@ import { GiMapleLeaf } from 'react-icons/gi'
 import IconCircle from '../ui/IconCircle'
 import ContactForm from '../ui/ContactForm'
 import InfoCard from '../ui/InfoCard'
+import OfficeHoursSchedule from '../ui/OfficeHoursSchedule'
 import ContactEyebrow from './ContactEyebrow'
 import logo from '../../assets/images/logo.png'
 import { images } from '../../constants/images'
@@ -40,101 +41,104 @@ const trustItems = [
 export default function ContactHero() {
   return (
     <section className="bg-offwhite">
-      <div className="grid grid-cols-1 lg:grid-cols-2">
-        <div className="order-2 flex flex-col justify-center lg:order-1">
-          <div className="site-gutter w-full py-10 lg:py-20">
-            <div className="max-w-xl">
-              <ContactEyebrow>CONTACT US</ContactEyebrow>
-              <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-navy sm:text-5xl">
-                Contact Office Jobline
-              </h1>
-              <p className="mt-3 text-lg font-semibold text-navy">
-                Connecting job seekers and employers across Canada.
-              </p>
-              <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
-                We&apos;re here to help. Whether you&apos;re looking for office and administrative jobs, need
-                support with your account, or you&apos;re an employer hiring across Canada, our team is ready
-                to connect you with the right next step.
-              </p>
-            </div>
-
-            <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
-              <ContactForm />
-
-              <InfoCard
-                title="Contact Information"
-                tone="gold"
-                divided={false}
-                footer={
-                  <p className="flex items-start gap-2 text-sm text-navy">
-                    <HiOutlineMapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold" aria-hidden />
-                    <span>
-                      Proudly supporting job seekers and employers across Canada.{' '}
-                      <GiMapleLeaf className="mb-0.5 inline h-3.5 w-3.5 text-gold" aria-hidden />
-                    </span>
-                  </p>
-                }
-              >
-                <ul className="space-y-5">
-                  <li className="flex items-start gap-3">
-                    <IconCircle icon={HiOutlineEnvelope} color="gold-solid" size="sm" />
-                    <div>
-                      <p className="text-sm font-semibold text-navy">Email Us</p>
-                      <a
-                        href={`mailto:${contactInfo.email}`}
-                        className="text-sm font-semibold text-gold underline-offset-2 hover:underline"
-                      >
-                        {contactInfo.email}
-                      </a>
-                      <p className="mt-0.5 text-xs text-muted">We aim to reply within one business day.</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <IconCircle icon={HiOutlinePhone} color="gold-solid" size="sm" />
-                    <div>
-                      <p className="text-sm font-semibold text-navy">Call Us</p>
-                      <a
-                        href={toTelHref(contactInfo.phone)}
-                        className="text-sm font-semibold text-gold underline-offset-2 hover:underline"
-                      >
-                        {contactInfo.phone}
-                      </a>
-                      <p className="mt-0.5 text-xs text-muted">{contactInfo.hours}</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <IconCircle icon={HiOutlineClock} color="gold-solid" size="sm" />
-                    <div>
-                      <p className="text-sm font-semibold text-navy">Office Hours</p>
-                      <p className="text-sm text-navy">
-                        {contactInfo.hoursDetail.days} {contactInfo.hoursDetail.time}
-                      </p>
-                      <p className="mt-0.5 text-xs text-muted">{contactInfo.hoursDetail.note}</p>
-                    </div>
-                  </li>
-                </ul>
-              </InfoCard>
-            </div>
-          </div>
+      <div className="site-container py-10 lg:py-14">
+        <div className="max-w-3xl">
+          <ContactEyebrow>CONTACT US</ContactEyebrow>
+          <h1 className="mt-4 font-display text-4xl font-bold leading-tight text-navy sm:text-5xl">
+            Contact Office Jobline
+          </h1>
+          <p className="mt-3 text-lg font-semibold text-navy">
+            Connecting job seekers and employers across Canada.
+          </p>
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
+            We&apos;re here to help. Whether you&apos;re looking for office and administrative jobs, need
+            support with your account, or you&apos;re an employer hiring across Canada, our team is ready
+            to connect you with the right next step.
+          </p>
         </div>
+      </div>
 
-        <div className="relative order-1 h-80 w-full self-stretch sm:h-[360px] lg:order-2 lg:h-auto lg:min-h-[420px]">
+      <div className="relative min-h-[32rem] overflow-hidden lg:min-h-[36rem]">
+        <div className="absolute inset-0" aria-hidden>
           <img
             src={images.contactHero}
-            alt="Bright meeting room overlooking a Canadian city skyline"
-            className="h-full w-full object-cover object-center"
-          />
-          <img
-            src={logo}
             alt=""
-            className="pointer-events-none absolute right-4 top-1/2 w-40 -translate-y-1/2 drop-shadow-lg sm:right-8 sm:w-52 lg:right-10 lg:w-60"
-            aria-hidden
+            className="h-full w-full scale-105 object-cover object-center blur-[3px]"
           />
+          <div className="absolute inset-0 bg-navy/55" />
+        </div>
+
+        <img
+          src={logo}
+          alt=""
+          className="pointer-events-none absolute right-6 top-1/2 z-0 hidden w-44 -translate-y-1/2 drop-shadow-lg opacity-90 sm:block lg:right-12 lg:w-56"
+          aria-hidden
+        />
+
+        <div className="site-container relative z-10 py-12 lg:py-16">
+          <div className="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
+            <div className="min-w-0">
+              <ContactForm />
+            </div>
+
+            <InfoCard
+              className="min-w-0"
+              title="Contact Information"
+              tone="gold"
+              divided={false}
+              footer={
+                <p className="flex items-start gap-2 text-sm text-navy">
+                  <HiOutlineMapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold" aria-hidden />
+                  <span>
+                    Proudly supporting job seekers and employers across Canada.{' '}
+                    <GiMapleLeaf className="mb-0.5 inline h-3.5 w-3.5 text-gold" aria-hidden />
+                  </span>
+                </p>
+              }
+            >
+              <ul className="space-y-5">
+                <li className="flex items-start gap-3">
+                  <IconCircle icon={HiOutlineEnvelope} color="gold-solid" size="sm" />
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-navy">Email Us</p>
+                    <a
+                      href={`mailto:${contactInfo.email}`}
+                      className="break-all text-sm font-semibold text-gold underline-offset-2 hover:underline sm:break-normal"
+                    >
+                      {contactInfo.email}
+                    </a>
+                    <p className="mt-0.5 text-xs text-muted">We aim to reply within one business day.</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <IconCircle icon={HiOutlinePhone} color="gold-solid" size="sm" />
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-navy">Call Us</p>
+                    <a
+                      href={toTelHref(contactInfo.phone)}
+                      className="text-sm font-semibold text-gold underline-offset-2 hover:underline"
+                    >
+                      {contactInfo.phone}
+                    </a>
+                    <p className="mt-0.5 text-xs text-muted">{contactInfo.hours}</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <IconCircle icon={HiOutlineClock} color="gold-solid" size="sm" />
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-navy">Office Hours</p>
+                    <OfficeHoursSchedule className="mt-0.5" />
+                    <p className="mt-1 text-xs text-muted">{contactInfo.hoursDetail.note}</p>
+                  </div>
+                </li>
+              </ul>
+            </InfoCard>
+          </div>
         </div>
       </div>
 
       <div className="site-container py-10">
-        <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {trustItems.map((item) => (
             <article key={item.title} className="flex items-start gap-4 rounded-xl bg-white p-6 shadow-card">
               <IconCircle icon={item.icon} color="navy" />

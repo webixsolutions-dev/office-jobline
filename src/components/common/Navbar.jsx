@@ -33,7 +33,7 @@ export default function Navbar() {
         aria-label="Primary"
       >
         <NavLink to="/" className="flex items-center gap-2.5 justify-self-start" onClick={() => setOpen(false)}>
-          <img src={logo} className="h-auto w-44 sm:w-52" alt="Office Jobline" />
+          <img src={logo} className="h-auto w-32 max-w-[calc(100vw-4.5rem)] sm:w-44 md:w-52" alt="Office Jobline" />
         </NavLink>
 
         <div className="hidden items-center gap-1 lg:flex">

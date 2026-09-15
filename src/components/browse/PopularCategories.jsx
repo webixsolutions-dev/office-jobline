@@ -11,7 +11,7 @@ export default function PopularCategories() {
           title="Popular Office Job Categories"
           subtitle="Explore the most in-demand office and administrative jobs across Canada."
         />
-        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
+        <div className="mt-10 grid grid-cols-2 items-stretch gap-4 sm:grid-cols-4 lg:grid-cols-8">
           {categories.map((item) => (
             <CategoryCard
               key={item.slug}

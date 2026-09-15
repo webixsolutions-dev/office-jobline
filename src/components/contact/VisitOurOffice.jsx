@@ -2,6 +2,7 @@ import { GiMapleLeaf } from 'react-icons/gi'
 import { HiOutlineClock, HiOutlineMapPin } from 'react-icons/hi2'
 import InfoCard from '../ui/InfoCard'
 import MapCard from '../ui/MapCard'
+import OfficeHoursSchedule from '../ui/OfficeHoursSchedule'
 import { contactInfo } from '../../constants/contactInfo'
 
 export default function VisitOurOffice() {
@@ -37,12 +38,7 @@ export default function VisitOurOffice() {
           <InfoCard
             icon={HiOutlineClock}
             title="Office Hours"
-            description={
-              <span>
-                Monday – Friday<br />
-                9:00 AM – 5:00 PM ET
-              </span>
-            }
+            description={<OfficeHoursSchedule lineClassName="text-sm leading-snug text-muted" />}
             footer={
               <p className="text-sm text-muted">
                 Closed on weekends<br />
